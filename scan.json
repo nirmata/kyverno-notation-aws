@@ -1,0 +1,1858 @@
+{
+  "invocation": {
+    "parameters": null,
+    "uri": "",
+    "event_id": "",
+    "builder.id": ""
+  },
+  "scanner": {
+    "uri": "pkg:github/aquasecurity/trivy@0.37.3",
+    "version": "0.37.3",
+    "db": {
+      "uri": "",
+      "version": ""
+    },
+    "result": {
+      "SchemaVersion": 2,
+      "ArtifactName": "jimnotarytest.azurecr.io/jim/net-monitor:v1",
+      "ArtifactType": "container_image",
+      "Metadata": {
+        "OS": {
+          "Family": "alpine",
+          "Name": "3.17.1"
+        },
+        "ImageID": "sha256:f5fa74992806f5c1916d1690271997102b712cc93a42a604bb28f0b45e880d2b",
+        "DiffIDs": [
+          "sha256:8e012198eea15b2554b07014081c85fec4967a1b9cc4b65bd9a4bce3ae1c0c88",
+          "sha256:fed3867670f4097ff91c92322620849816701a00698783882313ca8f929f9b13",
+          "sha256:408f8eebddcee6eaca1de8573ee26753c1a103a01923678ced749c66198b61a8"
+        ],
+        "RepoTags": [
+          "jimnotarytest.azurecr.io/jim/net-monitor2:v1",
+          "jimnotarytest.azurecr.io/jim/net-monitor:v1"
+        ],
+        "RepoDigests": [
+          "jimnotarytest.azurecr.io/jim/net-monitor2@sha256:5cceae44df6a2f68146b874e917e78013ab656f24e014f1e12c56fd00db95f4f",
+          "jimnotarytest.azurecr.io/jim/net-monitor@sha256:5cceae44df6a2f68146b874e917e78013ab656f24e014f1e12c56fd00db95f4f"
+        ],
+        "ImageConfig": {
+          "architecture": "amd64",
+          "container": "08c67a52eaeea600d4c9fe7729b564e571c43c20b4bbbb705d4e9c05e9579370",
+          "created": "2023-01-15T02:46:57.146034249Z",
+          "docker_version": "20.10.16",
+          "history": [
+            {
+              "created": "2023-01-09T17:05:20Z",
+              "created_by": "/bin/sh -c #(nop) ADD file:e4d600fc4c9c293efe360be7b30ee96579925d1b4634c94332e2ec73f7d8eca1 in / "
+            },
+            {
+              "created": "2023-01-09T17:05:20Z",
+              "created_by": "/bin/sh -c #(nop)  CMD [\"/bin/sh\"]",
+              "empty_layer": true
+            },
+            {
+              "created": "2023-01-15T02:46:54Z",
+              "created_by": "/bin/sh -c #(nop)  ARG SLEEP=30m",
+              "empty_layer": true
+            },
+            {
+              "created": "2023-01-15T02:46:54Z",
+              "created_by": "/bin/sh -c #(nop)  ARG TEXT=Local net-monitor docker image text no arguments",
+              "empty_layer": true
+            },
+            {
+              "created": "2023-01-15T02:46:55Z",
+              "created_by": "|2 SLEEP=30m TEXT=Local net-monitor docker image text no arguments /bin/sh -c echo $TEXT 'now sleeping for' $SLEEP 'at:' \u003emessage.txt"
+            },
+            {
+              "created": "2023-01-15T02:46:56Z",
+              "created_by": "|2 SLEEP=30m TEXT=Local net-monitor docker image text no arguments /bin/sh -c echo $SLEEP \u003esleep.txt"
+            },
+            {
+              "created": "2023-01-15T02:46:57Z",
+              "created_by": "/bin/sh -c #(nop)  CMD [\"/bin/sh\" \"-c\" \"cat message.txt \u0026\u0026 date \u0026\u0026 sleep $(cat sleep.txt)\"]",
+              "empty_layer": true
+            }
+          ],
+          "os": "linux",
+          "rootfs": {
+            "type": "layers",
+            "diff_ids": [
+              "sha256:8e012198eea15b2554b07014081c85fec4967a1b9cc4b65bd9a4bce3ae1c0c88",
+              "sha256:fed3867670f4097ff91c92322620849816701a00698783882313ca8f929f9b13",
+              "sha256:408f8eebddcee6eaca1de8573ee26753c1a103a01923678ced749c66198b61a8"
+            ]
+          },
+          "config": {
+            "Cmd": [
+              "/bin/sh",
+              "-c",
+              "cat message.txt \u0026\u0026 date \u0026\u0026 sleep $(cat sleep.txt)"
+            ],
+            "Env": [
+              "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+            ],
+            "Image": "sha256:8abb96edb1291a4d8e6975ab220cb03689829c5b41c74c561a505fa61567bd6b"
+          }
+        }
+      },
+      "Results": [
+        {
+          "Target": "jimnotarytest.azurecr.io/jim/net-monitor:v1 (alpine 3.17.1)",
+          "Class": "os-pkgs",
+          "Type": "alpine",
+          "Vulnerabilities": [
+            {
+              "VulnerabilityID": "CVE-2022-4450",
+              "PkgID": "libcrypto3@3.0.7-r2",
+              "PkgName": "libcrypto3",
+              "InstalledVersion": "3.0.7-r2",
+              "FixedVersion": "3.0.8-r0",
+              "Layer": {
+                "Digest": "sha256:8921db27df2831fa6eaa85321205a2470c669b855f3ec95d5a3c2b46de0442c9",
+                "DiffID": "sha256:8e012198eea15b2554b07014081c85fec4967a1b9cc4b65bd9a4bce3ae1c0c88"
+              },
+              "SeveritySource": "nvd",
+              "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-4450",
+              "DataSource": {
+                "ID": "alpine",
+                "Name": "Alpine Secdb",
+                "URL": "https://secdb.alpinelinux.org/"
+              },
+              "Title": "double free after calling PEM_read_bio_ex",
+              "Description": "The function PEM_read_bio_ex() reads a PEM file from a BIO and parses and decodes the \"name\" (e.g. \"CERTIFICATE\"), any header data and the payload data. If the function succeeds then the \"name_out\", \"header\" and \"data\" arguments are populated with pointers to buffers containing the relevant decoded data. The caller is responsible for freeing those buffers. It is possible to construct a PEM file that results in 0 bytes of payload data. In this case PEM_read_bio_ex() will return a failure code but will populate the header argument with a pointer to a buffer that has already been freed. If the caller also frees this buffer then a double free will occur. This will most likely lead to a crash. This could be exploited by an attacker who has the ability to supply malicious PEM files for parsing to achieve a denial of service attack. The functions PEM_read_bio() and PEM_read() are simple wrappers around PEM_read_bio_ex() and therefore these functions are also directly affected. These functions are also called indirectly by a number of other OpenSSL functions including PEM_X509_INFO_read_bio_ex() and SSL_CTX_use_serverinfo_file() which are also vulnerable. Some OpenSSL internal uses of these functions are not vulnerable because the caller does not free the header argument if PEM_read_bio_ex() returns a failure code. These locations include the PEM_read_bio_TYPE() functions as well as the decoders introduced in OpenSSL 3.0. The OpenSSL asn1parse command line application is also impacted by this issue.",
+              "Severity": "HIGH",
+              "CweIDs": [
+                "CWE-415"
+              ],
+              "CVSS": {
+                "ghsa": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                },
+                "nvd": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                },
+                "redhat": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                }
+              },
+              "References": [
+                "https://access.redhat.com/errata/RHSA-2023:0946",
+                "https://access.redhat.com/security/cve/CVE-2022-4450",
+                "https://bugzilla.redhat.com/2164440",
+                "https://bugzilla.redhat.com/2164487",
+                "https://bugzilla.redhat.com/2164488",
+                "https://bugzilla.redhat.com/2164492",
+                "https://bugzilla.redhat.com/2164494",
+                "https://bugzilla.redhat.com/2164497",
+                "https://bugzilla.redhat.com/2164499",
+                "https://bugzilla.redhat.com/2164500",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144000",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144003",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144006",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144008",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144010",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144012",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144015",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144017",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144019",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2145170",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2158412",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164440",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164487",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164488",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164492",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164494",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164497",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164499",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164500",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4203",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4304",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4450",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0215",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0216",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0217",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0286",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0401",
+                "https://errata.almalinux.org/9/ALSA-2023-0946.html",
+                "https://errata.rockylinux.org/RLSA-2023:0946",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=63bcf189be73a9cc1264059bed6f57974be74a83",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=bbcf509bd046b34cca19c766bbddc31683d0858b",
+                "https://github.com/advisories/GHSA-v5w6-wcm8-jm4q",
+                "https://linux.oracle.com/cve/CVE-2022-4450.html",
+                "https://linux.oracle.com/errata/ELSA-2023-1405.html",
+                "https://nvd.nist.gov/vuln/detail/CVE-2022-4450",
+                "https://rustsec.org/advisories/RUSTSEC-2023-0010.html",
+                "https://ubuntu.com/security/notices/USN-5844-1",
+                "https://www.cve.org/CVERecord?id=CVE-2022-4450",
+                "https://www.openssl.org/news/secadv/20230207.txt"
+              ],
+              "PublishedDate": "2023-02-08T20:15:00Z",
+              "LastModifiedDate": "2023-02-24T15:15:00Z"
+            },
+            {
+              "VulnerabilityID": "CVE-2023-0215",
+              "PkgID": "libcrypto3@3.0.7-r2",
+              "PkgName": "libcrypto3",
+              "InstalledVersion": "3.0.7-r2",
+              "FixedVersion": "3.0.8-r0",
+              "Layer": {
+                "Digest": "sha256:8921db27df2831fa6eaa85321205a2470c669b855f3ec95d5a3c2b46de0442c9",
+                "DiffID": "sha256:8e012198eea15b2554b07014081c85fec4967a1b9cc4b65bd9a4bce3ae1c0c88"
+              },
+              "SeveritySource": "nvd",
+              "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-0215",
+              "DataSource": {
+                "ID": "alpine",
+                "Name": "Alpine Secdb",
+                "URL": "https://secdb.alpinelinux.org/"
+              },
+              "Title": "use-after-free following BIO_new_NDEF",
+              "Description": "The public API function BIO_new_NDEF is a helper function used for streaming ASN.1 data via a BIO. It is primarily used internally to OpenSSL to support the SMIME, CMS and PKCS7 streaming capabilities, but may also be called directly by end user applications. The function receives a BIO from the caller, prepends a new BIO_f_asn1 filter BIO onto the front of it to form a BIO chain, and then returns the new head of the BIO chain to the caller. Under certain conditions, for example if a CMS recipient public key is invalid, the new filter BIO is freed and the function returns a NULL result indicating a failure. However, in this case, the BIO chain is not properly cleaned up and the BIO passed by the caller still retains internal pointers to the previously freed filter BIO. If the caller then goes on to call BIO_pop() on the BIO then a use-after-free will occur. This will most likely result in a crash. This scenario occurs directly in the internal function B64_write_ASN1() which may cause BIO_new_NDEF() to be called and will subsequently call BIO_pop() on the BIO. This internal function is in turn called by the public API functions PEM_write_bio_ASN1_stream, PEM_write_bio_CMS_stream, PEM_write_bio_PKCS7_stream, SMIME_write_ASN1, SMIME_write_CMS and SMIME_write_PKCS7. Other public API functions that may be impacted by this include i2d_ASN1_bio_stream, BIO_new_CMS, BIO_new_PKCS7, i2d_CMS_bio_stream and i2d_PKCS7_bio_stream. The OpenSSL cms and smime command line applications are similarly affected.",
+              "Severity": "HIGH",
+              "CweIDs": [
+                "CWE-416"
+              ],
+              "CVSS": {
+                "ghsa": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                },
+                "nvd": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                },
+                "redhat": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                }
+              },
+              "References": [
+                "https://access.redhat.com/errata/RHSA-2023:0946",
+                "https://access.redhat.com/security/cve/CVE-2023-0215",
+                "https://bugzilla.redhat.com/2164440",
+                "https://bugzilla.redhat.com/2164487",
+                "https://bugzilla.redhat.com/2164488",
+                "https://bugzilla.redhat.com/2164492",
+                "https://bugzilla.redhat.com/2164494",
+                "https://bugzilla.redhat.com/2164497",
+                "https://bugzilla.redhat.com/2164499",
+                "https://bugzilla.redhat.com/2164500",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144000",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144003",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144006",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144008",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144010",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144012",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144015",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144017",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144019",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2145170",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2158412",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164440",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164487",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164488",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164492",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164494",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164497",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164499",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164500",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4203",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4304",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4450",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0215",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0216",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0217",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0286",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0401",
+                "https://errata.almalinux.org/9/ALSA-2023-0946.html",
+                "https://errata.rockylinux.org/RLSA-2023:0946",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=8818064ce3c3c0f1b740a5aaba2a987e75bfbafd",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=9816136fe31d92ace4037d5da5257f763aeeb4eb",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=c3829dd8825c654652201e16f8a0a0c46ee3f344",
+                "https://github.com/advisories/GHSA-r7jw-wp68-3xch",
+                "https://linux.oracle.com/cve/CVE-2023-0215.html",
+                "https://linux.oracle.com/errata/ELSA-2023-1405.html",
+                "https://nvd.nist.gov/vuln/detail/CVE-2023-0215",
+                "https://rustsec.org/advisories/RUSTSEC-2023-0009.html",
+                "https://ubuntu.com/security/notices/USN-5844-1",
+                "https://ubuntu.com/security/notices/USN-5845-1",
+                "https://ubuntu.com/security/notices/USN-5845-2",
+                "https://www.cve.org/CVERecord?id=CVE-2023-0215",
+                "https://www.openssl.org/news/secadv/20230207.txt"
+              ],
+              "PublishedDate": "2023-02-08T20:15:00Z",
+              "LastModifiedDate": "2023-02-24T15:15:00Z"
+            },
+            {
+              "VulnerabilityID": "CVE-2023-0216",
+              "PkgID": "libcrypto3@3.0.7-r2",
+              "PkgName": "libcrypto3",
+              "InstalledVersion": "3.0.7-r2",
+              "FixedVersion": "3.0.8-r0",
+              "Layer": {
+                "Digest": "sha256:8921db27df2831fa6eaa85321205a2470c669b855f3ec95d5a3c2b46de0442c9",
+                "DiffID": "sha256:8e012198eea15b2554b07014081c85fec4967a1b9cc4b65bd9a4bce3ae1c0c88"
+              },
+              "SeveritySource": "nvd",
+              "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-0216",
+              "DataSource": {
+                "ID": "alpine",
+                "Name": "Alpine Secdb",
+                "URL": "https://secdb.alpinelinux.org/"
+              },
+              "Title": "openssl: invalid pointer dereference in d2i_PKCS7 functions",
+              "Description": "An invalid pointer dereference on read can be triggered when an application tries to load malformed PKCS7 data with the d2i_PKCS7(), d2i_PKCS7_bio() or d2i_PKCS7_fp() functions. The result of the dereference is an application crash which could lead to a denial of service attack. The TLS implementation in OpenSSL does not call this function however third party applications might call these functions on untrusted data.",
+              "Severity": "HIGH",
+              "CweIDs": [
+                "CWE-476"
+              ],
+              "CVSS": {
+                "ghsa": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                },
+                "nvd": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                },
+                "redhat": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                }
+              },
+              "References": [
+                "https://access.redhat.com/errata/RHSA-2023:0946",
+                "https://access.redhat.com/security/cve/CVE-2023-0216",
+                "https://bugzilla.redhat.com/2164440",
+                "https://bugzilla.redhat.com/2164487",
+                "https://bugzilla.redhat.com/2164488",
+                "https://bugzilla.redhat.com/2164492",
+                "https://bugzilla.redhat.com/2164494",
+                "https://bugzilla.redhat.com/2164497",
+                "https://bugzilla.redhat.com/2164499",
+                "https://bugzilla.redhat.com/2164500",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144000",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144003",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144006",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144008",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144010",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144012",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144015",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144017",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144019",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2145170",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2158412",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164440",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164487",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164488",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164492",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164494",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164497",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164499",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164500",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4203",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4304",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4450",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0215",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0216",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0217",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0286",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0401",
+                "https://errata.almalinux.org/9/ALSA-2023-0946.html",
+                "https://errata.rockylinux.org/RLSA-2023:0946",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=934a04f0e775309cadbef0aa6b9692e1b12a76c6",
+                "https://github.com/advisories/GHSA-29xx-hcv2-c4cp",
+                "https://linux.oracle.com/cve/CVE-2023-0216.html",
+                "https://linux.oracle.com/errata/ELSA-2023-12152.html",
+                "https://nvd.nist.gov/vuln/detail/CVE-2023-0216",
+                "https://rustsec.org/advisories/RUSTSEC-2023-0011.html",
+                "https://ubuntu.com/security/notices/USN-5844-1",
+                "https://www.cve.org/CVERecord?id=CVE-2023-0216",
+                "https://www.openssl.org/news/secadv/20230207.txt"
+              ],
+              "PublishedDate": "2023-02-08T20:15:00Z",
+              "LastModifiedDate": "2023-02-24T15:15:00Z"
+            },
+            {
+              "VulnerabilityID": "CVE-2023-0217",
+              "PkgID": "libcrypto3@3.0.7-r2",
+              "PkgName": "libcrypto3",
+              "InstalledVersion": "3.0.7-r2",
+              "FixedVersion": "3.0.8-r0",
+              "Layer": {
+                "Digest": "sha256:8921db27df2831fa6eaa85321205a2470c669b855f3ec95d5a3c2b46de0442c9",
+                "DiffID": "sha256:8e012198eea15b2554b07014081c85fec4967a1b9cc4b65bd9a4bce3ae1c0c88"
+              },
+              "SeveritySource": "nvd",
+              "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-0217",
+              "DataSource": {
+                "ID": "alpine",
+                "Name": "Alpine Secdb",
+                "URL": "https://secdb.alpinelinux.org/"
+              },
+              "Title": "openssl: NULL dereference validating DSA public key",
+              "Description": "An invalid pointer dereference on read can be triggered when an application tries to check a malformed DSA public key by the EVP_PKEY_public_check() function. This will most likely lead to an application crash. This function can be called on public keys supplied from untrusted sources which could allow an attacker to cause a denial of service attack. The TLS implementation in OpenSSL does not call this function but applications might call the function if there are additional security requirements imposed by standards such as FIPS 140-3.",
+              "Severity": "HIGH",
+              "CweIDs": [
+                "CWE-476"
+              ],
+              "CVSS": {
+                "ghsa": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                },
+                "nvd": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                },
+                "redhat": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                }
+              },
+              "References": [
+                "https://access.redhat.com/errata/RHSA-2023:0946",
+                "https://access.redhat.com/security/cve/CVE-2023-0217",
+                "https://bugzilla.redhat.com/2164440",
+                "https://bugzilla.redhat.com/2164487",
+                "https://bugzilla.redhat.com/2164488",
+                "https://bugzilla.redhat.com/2164492",
+                "https://bugzilla.redhat.com/2164494",
+                "https://bugzilla.redhat.com/2164497",
+                "https://bugzilla.redhat.com/2164499",
+                "https://bugzilla.redhat.com/2164500",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144000",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144003",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144006",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144008",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144010",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144012",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144015",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144017",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144019",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2145170",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2158412",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164440",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164487",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164488",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164492",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164494",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164497",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164499",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164500",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4203",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4304",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4450",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0215",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0216",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0217",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0286",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0401",
+                "https://errata.almalinux.org/9/ALSA-2023-0946.html",
+                "https://errata.rockylinux.org/RLSA-2023:0946",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=23985bac83fd50c8e29431009302b5442f985096",
+                "https://github.com/advisories/GHSA-vxrh-cpg7-8vjr",
+                "https://linux.oracle.com/cve/CVE-2023-0217.html",
+                "https://linux.oracle.com/errata/ELSA-2023-12152.html",
+                "https://nvd.nist.gov/vuln/detail/CVE-2023-0217",
+                "https://rustsec.org/advisories/RUSTSEC-2023-0012.html",
+                "https://ubuntu.com/security/notices/USN-5844-1",
+                "https://www.cve.org/CVERecord?id=CVE-2023-0217",
+                "https://www.openssl.org/news/secadv/20230207.txt"
+              ],
+              "PublishedDate": "2023-02-08T20:15:00Z",
+              "LastModifiedDate": "2023-02-24T15:15:00Z"
+            },
+            {
+              "VulnerabilityID": "CVE-2023-0286",
+              "PkgID": "libcrypto3@3.0.7-r2",
+              "PkgName": "libcrypto3",
+              "InstalledVersion": "3.0.7-r2",
+              "FixedVersion": "3.0.8-r0",
+              "Layer": {
+                "Digest": "sha256:8921db27df2831fa6eaa85321205a2470c669b855f3ec95d5a3c2b46de0442c9",
+                "DiffID": "sha256:8e012198eea15b2554b07014081c85fec4967a1b9cc4b65bd9a4bce3ae1c0c88"
+              },
+              "SeveritySource": "nvd",
+              "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-0286",
+              "DataSource": {
+                "ID": "alpine",
+                "Name": "Alpine Secdb",
+                "URL": "https://secdb.alpinelinux.org/"
+              },
+              "Title": "X.400 address type confusion in X.509 GeneralName",
+              "Description": "There is a type confusion vulnerability relating to X.400 address processing inside an X.509 GeneralName. X.400 addresses were parsed as an ASN1_STRING but the public structure definition for GENERAL_NAME incorrectly specified the type of the x400Address field as ASN1_TYPE. This field is subsequently interpreted by the OpenSSL function GENERAL_NAME_cmp as an ASN1_TYPE rather than an ASN1_STRING. When CRL checking is enabled (i.e. the application sets the X509_V_FLAG_CRL_CHECK flag), this vulnerability may allow an attacker to pass arbitrary pointers to a memcmp call, enabling them to read memory contents or enact a denial of service. In most cases, the attack requires the attacker to provide both the certificate chain and CRL, neither of which need to have a valid signature. If the attacker only controls one of these inputs, the other input must already contain an X.400 address as a CRL distribution point, which is uncommon. As such, this vulnerability is most likely to only affect applications which have implemented their own functionality for retrieving CRLs over a network.",
+              "Severity": "HIGH",
+              "CweIDs": [
+                "CWE-843"
+              ],
+              "CVSS": {
+                "ghsa": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:H",
+                  "V3Score": 7.4
+                },
+                "nvd": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:H",
+                  "V3Score": 7.4
+                },
+                "redhat": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:H",
+                  "V3Score": 7.4
+                }
+              },
+              "References": [
+                "https://access.redhat.com/errata/RHSA-2023:0946",
+                "https://access.redhat.com/security/cve/CVE-2023-0286",
+                "https://access.redhat.com/security/cve/cve-2023-0286",
+                "https://bugzilla.redhat.com/2164440",
+                "https://bugzilla.redhat.com/2164487",
+                "https://bugzilla.redhat.com/2164488",
+                "https://bugzilla.redhat.com/2164492",
+                "https://bugzilla.redhat.com/2164494",
+                "https://bugzilla.redhat.com/2164497",
+                "https://bugzilla.redhat.com/2164499",
+                "https://bugzilla.redhat.com/2164500",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144000",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144003",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144006",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144008",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144010",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144012",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144015",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144017",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144019",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2145170",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2158412",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164440",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164487",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164488",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164492",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164494",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164497",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164499",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164500",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4203",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4304",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4450",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0215",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0216",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0217",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0286",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0401",
+                "https://errata.almalinux.org/9/ALSA-2023-0946.html",
+                "https://errata.rockylinux.org/RLSA-2023:0946",
+                "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.6.2-relnotes.txt",
+                "https://ftp.openbsd.org/pub/OpenBSD/patches/7.2/common/018_x509.patch.sig",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=2c6c9d439b484e1ba9830d8454a34fa4f80fdfe9",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=2f7530077e0ef79d98718138716bc51ca0cad658",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=fd2af07dc083a350c959147097003a14a5e8ac4d",
+                "https://github.com/advisories/GHSA-x4qr-2fvf-3mr5",
+                "https://github.com/pyca/cryptography/security/advisories/GHSA-x4qr-2fvf-3mr5",
+                "https://linux.oracle.com/cve/CVE-2023-0286.html",
+                "https://linux.oracle.com/errata/ELSA-2023-1405.html",
+                "https://nvd.nist.gov/vuln/detail/CVE-2023-0286",
+                "https://rustsec.org/advisories/RUSTSEC-2023-0006.html",
+                "https://ubuntu.com/security/notices/USN-5844-1",
+                "https://ubuntu.com/security/notices/USN-5845-1",
+                "https://ubuntu.com/security/notices/USN-5845-2",
+                "https://www.cve.org/CVERecord?id=CVE-2023-0286",
+                "https://www.openssl.org/news/secadv/20230207.txt"
+              ],
+              "PublishedDate": "2023-02-08T20:15:00Z",
+              "LastModifiedDate": "2023-03-27T19:15:00Z"
+            },
+            {
+              "VulnerabilityID": "CVE-2023-0401",
+              "PkgID": "libcrypto3@3.0.7-r2",
+              "PkgName": "libcrypto3",
+              "InstalledVersion": "3.0.7-r2",
+              "FixedVersion": "3.0.8-r0",
+              "Layer": {
+                "Digest": "sha256:8921db27df2831fa6eaa85321205a2470c669b855f3ec95d5a3c2b46de0442c9",
+                "DiffID": "sha256:8e012198eea15b2554b07014081c85fec4967a1b9cc4b65bd9a4bce3ae1c0c88"
+              },
+              "SeveritySource": "nvd",
+              "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-0401",
+              "DataSource": {
+                "ID": "alpine",
+                "Name": "Alpine Secdb",
+                "URL": "https://secdb.alpinelinux.org/"
+              },
+              "Title": "openssl: NULL dereference during PKCS7 data verification",
+              "Description": "A NULL pointer can be dereferenced when signatures are being verified on PKCS7 signed or signedAndEnveloped data. In case the hash algorithm used for the signature is known to the OpenSSL library but the implementation of the hash algorithm is not available the digest initialization will fail. There is a missing check for the return value from the initialization function which later leads to invalid usage of the digest API most likely leading to a crash. The unavailability of an algorithm can be caused by using FIPS enabled configuration of providers or more commonly by not loading the legacy provider. PKCS7 data is processed by the SMIME library calls and also by the time stamp (TS) library calls. The TLS implementation in OpenSSL does not call these functions however third party applications would be affected if they call these functions to verify signatures on untrusted data.",
+              "Severity": "HIGH",
+              "CweIDs": [
+                "CWE-476"
+              ],
+              "CVSS": {
+                "ghsa": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                },
+                "nvd": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                },
+                "redhat": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                }
+              },
+              "References": [
+                "https://access.redhat.com/errata/RHSA-2023:0946",
+                "https://access.redhat.com/security/cve/CVE-2023-0401",
+                "https://bugzilla.redhat.com/2164440",
+                "https://bugzilla.redhat.com/2164487",
+                "https://bugzilla.redhat.com/2164488",
+                "https://bugzilla.redhat.com/2164492",
+                "https://bugzilla.redhat.com/2164494",
+                "https://bugzilla.redhat.com/2164497",
+                "https://bugzilla.redhat.com/2164499",
+                "https://bugzilla.redhat.com/2164500",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144000",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144003",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144006",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144008",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144010",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144012",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144015",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144017",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144019",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2145170",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2158412",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164440",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164487",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164488",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164492",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164494",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164497",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164499",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164500",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4203",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4304",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4450",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0215",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0216",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0217",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0286",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0401",
+                "https://errata.almalinux.org/9/ALSA-2023-0946.html",
+                "https://errata.rockylinux.org/RLSA-2023:0946",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=d3b6dfd70db844c4499bec6ad6601623a565e674",
+                "https://github.com/advisories/GHSA-vrh7-x64v-7vxq",
+                "https://linux.oracle.com/cve/CVE-2023-0401.html",
+                "https://linux.oracle.com/errata/ELSA-2023-12152.html",
+                "https://nvd.nist.gov/vuln/detail/CVE-2023-0401",
+                "https://rustsec.org/advisories/RUSTSEC-2023-0013.html",
+                "https://ubuntu.com/security/notices/USN-5844-1",
+                "https://www.cve.org/CVERecord?id=CVE-2023-0401",
+                "https://www.openssl.org/news/secadv/20230207.txt"
+              ],
+              "PublishedDate": "2023-02-08T20:15:00Z",
+              "LastModifiedDate": "2023-02-24T15:15:00Z"
+            },
+            {
+              "VulnerabilityID": "CVE-2023-0464",
+              "PkgID": "libcrypto3@3.0.7-r2",
+              "PkgName": "libcrypto3",
+              "InstalledVersion": "3.0.7-r2",
+              "FixedVersion": "3.0.8-r1",
+              "Layer": {
+                "Digest": "sha256:8921db27df2831fa6eaa85321205a2470c669b855f3ec95d5a3c2b46de0442c9",
+                "DiffID": "sha256:8e012198eea15b2554b07014081c85fec4967a1b9cc4b65bd9a4bce3ae1c0c88"
+              },
+              "SeveritySource": "nvd",
+              "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-0464",
+              "DataSource": {
+                "ID": "alpine",
+                "Name": "Alpine Secdb",
+                "URL": "https://secdb.alpinelinux.org/"
+              },
+              "Title": "Denial of service by excessive resource usage in verifying X509 policy constraints",
+              "Description": "A security vulnerability has been identified in all supported versions of OpenSSL related to the verification of X.509 certificate chains that include policy constraints. Attackers may be able to exploit this vulnerability by creating a malicious certificate chain that triggers exponential use of computational resources, leading to a denial-of-service (DoS) attack on affected systems. Policy processing is disabled by default but can be enabled by passing the `-policy' argument to the command line utilities or by calling the `X509_VERIFY_PARAM_set1_policies()' function.",
+              "Severity": "HIGH",
+              "CweIDs": [
+                "CWE-295"
+              ],
+              "CVSS": {
+                "nvd": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                },
+                "redhat": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 5.9
+                }
+              },
+              "References": [
+                "https://access.redhat.com/security/cve/CVE-2023-0464",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0464",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=2017771e2db3e2b96f89bbe8766c3209f6a99545",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=2dcd4f1e3115f38cefa43e3efbe9b801c27e642e",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=879f7080d7e141f415c79eaa3a8ac4a3dad0348b",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=959c59c7a0164117e7f8366466a32bb1f8d77ff1",
+                "https://nvd.nist.gov/vuln/detail/CVE-2023-0464",
+                "https://www.cve.org/CVERecord?id=CVE-2023-0464",
+                "https://www.openssl.org/news/secadv/20230322.txt"
+              ],
+              "PublishedDate": "2023-03-22T17:15:00Z",
+              "LastModifiedDate": "2023-03-29T19:37:00Z"
+            },
+            {
+              "VulnerabilityID": "CVE-2022-4203",
+              "PkgID": "libcrypto3@3.0.7-r2",
+              "PkgName": "libcrypto3",
+              "InstalledVersion": "3.0.7-r2",
+              "FixedVersion": "3.0.8-r0",
+              "Layer": {
+                "Digest": "sha256:8921db27df2831fa6eaa85321205a2470c669b855f3ec95d5a3c2b46de0442c9",
+                "DiffID": "sha256:8e012198eea15b2554b07014081c85fec4967a1b9cc4b65bd9a4bce3ae1c0c88"
+              },
+              "SeveritySource": "nvd",
+              "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-4203",
+              "DataSource": {
+                "ID": "alpine",
+                "Name": "Alpine Secdb",
+                "URL": "https://secdb.alpinelinux.org/"
+              },
+              "Title": "openssl: read buffer overflow in X.509 certificate verification",
+              "Description": "A read buffer overrun can be triggered in X.509 certificate verification, specifically in name constraint checking. Note that this occurs after certificate chain signature verification and requires either a CA to have signed the malicious certificate or for the application to continue certificate verification despite failure to construct a path to a trusted issuer. The read buffer overrun might result in a crash which could lead to a denial of service attack. In theory it could also result in the disclosure of private memory contents (such as private keys, or sensitive plaintext) although we are not aware of any working exploit leading to memory contents disclosure as of the time of release of this advisory. In a TLS client, this can be triggered by connecting to a malicious server. In a TLS server, this can be triggered if the server requests client authentication and a malicious client connects.",
+              "Severity": "MEDIUM",
+              "CweIDs": [
+                "CWE-125"
+              ],
+              "CVSS": {
+                "ghsa": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H",
+                  "V3Score": 9.1
+                },
+                "nvd": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 4.9
+                },
+                "redhat": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 4.9
+                }
+              },
+              "References": [
+                "https://access.redhat.com/errata/RHSA-2023:0946",
+                "https://access.redhat.com/security/cve/CVE-2022-4203",
+                "https://bugzilla.redhat.com/2164440",
+                "https://bugzilla.redhat.com/2164487",
+                "https://bugzilla.redhat.com/2164488",
+                "https://bugzilla.redhat.com/2164492",
+                "https://bugzilla.redhat.com/2164494",
+                "https://bugzilla.redhat.com/2164497",
+                "https://bugzilla.redhat.com/2164499",
+                "https://bugzilla.redhat.com/2164500",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144000",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144003",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144006",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144008",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144010",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144012",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144015",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144017",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144019",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2145170",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2158412",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164440",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164487",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164488",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164492",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164494",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164497",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164499",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164500",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4203",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4304",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4450",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0215",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0216",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0217",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0286",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0401",
+                "https://errata.almalinux.org/9/ALSA-2023-0946.html",
+                "https://errata.rockylinux.org/RLSA-2023:0946",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=c927a3492698c254637da836762f9b1f86cffabc",
+                "https://github.com/advisories/GHSA-w67w-mw4j-8qrv",
+                "https://linux.oracle.com/cve/CVE-2022-4203.html",
+                "https://linux.oracle.com/errata/ELSA-2023-12152.html",
+                "https://nvd.nist.gov/vuln/detail/CVE-2022-4203",
+                "https://rustsec.org/advisories/RUSTSEC-2023-0008.html",
+                "https://ubuntu.com/security/notices/USN-5844-1",
+                "https://www.cve.org/CVERecord?id=CVE-2022-4203",
+                "https://www.openssl.org/news/secadv/20230207.txt"
+              ],
+              "PublishedDate": "2023-02-24T15:15:00Z",
+              "LastModifiedDate": "2023-03-09T20:03:00Z"
+            },
+            {
+              "VulnerabilityID": "CVE-2022-4304",
+              "PkgID": "libcrypto3@3.0.7-r2",
+              "PkgName": "libcrypto3",
+              "InstalledVersion": "3.0.7-r2",
+              "FixedVersion": "3.0.8-r0",
+              "Layer": {
+                "Digest": "sha256:8921db27df2831fa6eaa85321205a2470c669b855f3ec95d5a3c2b46de0442c9",
+                "DiffID": "sha256:8e012198eea15b2554b07014081c85fec4967a1b9cc4b65bd9a4bce3ae1c0c88"
+              },
+              "SeveritySource": "nvd",
+              "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-4304",
+              "DataSource": {
+                "ID": "alpine",
+                "Name": "Alpine Secdb",
+                "URL": "https://secdb.alpinelinux.org/"
+              },
+              "Title": "timing attack in RSA Decryption implementation",
+              "Description": "A timing based side channel exists in the OpenSSL RSA Decryption implementation which could be sufficient to recover a plaintext across a network in a Bleichenbacher style attack. To achieve a successful decryption an attacker would have to be able to send a very large number of trial messages for decryption. The vulnerability affects all RSA padding modes: PKCS#1 v1.5, RSA-OEAP and RSASVE. For example, in a TLS connection, RSA is commonly used by a client to send an encrypted pre-master secret to the server. An attacker that had observed a genuine connection between a client and a server could use this flaw to send trial messages to the server and record the time taken to process them. After a sufficiently large number of messages the attacker could recover the pre-master secret used for the original connection and thus be able to decrypt the application data sent over that connection.",
+              "Severity": "MEDIUM",
+              "CVSS": {
+                "ghsa": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N",
+                  "V3Score": 5.9
+                },
+                "nvd": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N",
+                  "V3Score": 5.9
+                },
+                "redhat": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N",
+                  "V3Score": 5.9
+                }
+              },
+              "References": [
+                "https://access.redhat.com/errata/RHSA-2023:0946",
+                "https://access.redhat.com/security/cve/CVE-2022-4304",
+                "https://bugzilla.redhat.com/2164440",
+                "https://bugzilla.redhat.com/2164487",
+                "https://bugzilla.redhat.com/2164488",
+                "https://bugzilla.redhat.com/2164492",
+                "https://bugzilla.redhat.com/2164494",
+                "https://bugzilla.redhat.com/2164497",
+                "https://bugzilla.redhat.com/2164499",
+                "https://bugzilla.redhat.com/2164500",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144000",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144003",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144006",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144008",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144010",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144012",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144015",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144017",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144019",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2145170",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2158412",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164440",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164487",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164488",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164492",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164494",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164497",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164499",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164500",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4203",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4304",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4450",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0215",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0216",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0217",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0286",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0401",
+                "https://errata.almalinux.org/9/ALSA-2023-0946.html",
+                "https://errata.rockylinux.org/RLSA-2023:0946",
+                "https://github.com/advisories/GHSA-p52g-cm5j-mjv4",
+                "https://linux.oracle.com/cve/CVE-2022-4304.html",
+                "https://linux.oracle.com/errata/ELSA-2023-1405.html",
+                "https://nvd.nist.gov/vuln/detail/CVE-2022-4304",
+                "https://rustsec.org/advisories/RUSTSEC-2023-0007.html",
+                "https://ubuntu.com/security/notices/USN-5844-1",
+                "https://www.cve.org/CVERecord?id=CVE-2022-4304",
+                "https://www.openssl.org/news/secadv/20230207.txt"
+              ],
+              "PublishedDate": "2023-02-08T20:15:00Z",
+              "LastModifiedDate": "2023-02-24T17:13:00Z"
+            },
+            {
+              "VulnerabilityID": "CVE-2023-0465",
+              "PkgID": "libcrypto3@3.0.7-r2",
+              "PkgName": "libcrypto3",
+              "InstalledVersion": "3.0.7-r2",
+              "FixedVersion": "3.0.8-r2",
+              "Layer": {
+                "Digest": "sha256:8921db27df2831fa6eaa85321205a2470c669b855f3ec95d5a3c2b46de0442c9",
+                "DiffID": "sha256:8e012198eea15b2554b07014081c85fec4967a1b9cc4b65bd9a4bce3ae1c0c88"
+              },
+              "SeveritySource": "nvd",
+              "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-0465",
+              "DataSource": {
+                "ID": "alpine",
+                "Name": "Alpine Secdb",
+                "URL": "https://secdb.alpinelinux.org/"
+              },
+              "Title": "Invalid certificate policies in leaf certificates are silently ignored",
+              "Description": "Applications that use a non-default option when verifying certificates may be\nvulnerable to an attack from a malicious CA to circumvent certain checks.\n\nInvalid certificate policies in leaf certificates are silently ignored by\nOpenSSL and other certificate policy checks are skipped for that certificate.\nA malicious CA could use this to deliberately assert invalid certificate policies\nin order to circumvent policy checking on the certificate altogether.\n\nPolicy processing is disabled by default but can be enabled by passing\nthe `-policy' argument to the command line utilities or by calling the\n`X509_VERIFY_PARAM_set1_policies()' function.",
+              "Severity": "MEDIUM",
+              "CweIDs": [
+                "CWE-295"
+              ],
+              "CVSS": {
+                "nvd": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+                  "V3Score": 5.3
+                },
+                "redhat": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+                  "V3Score": 5.3
+                }
+              },
+              "References": [
+                "https://access.redhat.com/security/cve/CVE-2023-0465",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0465",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=10325176f3d3e98c6e2b3bf5ab1e3b334de6947a",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=1dd43e0709fece299b15208f36cc7c76209ba0bb",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=b013765abfa80036dc779dd0e50602c57bb3bf95",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=facfb1ab745646e97a1920977ae4a9965ea61d5c",
+                "https://nvd.nist.gov/vuln/detail/CVE-2023-0465",
+                "https://security.netapp.com/advisory/ntap-20230414-0001/",
+                "https://www.cve.org/CVERecord?id=CVE-2023-0465",
+                "https://www.openssl.org/news/secadv/20230328.txt"
+              ],
+              "PublishedDate": "2023-03-28T15:15:00Z",
+              "LastModifiedDate": "2023-04-14T23:15:00Z"
+            },
+            {
+              "VulnerabilityID": "CVE-2023-0466",
+              "PkgID": "libcrypto3@3.0.7-r2",
+              "PkgName": "libcrypto3",
+              "InstalledVersion": "3.0.7-r2",
+              "FixedVersion": "3.0.8-r3",
+              "Layer": {
+                "Digest": "sha256:8921db27df2831fa6eaa85321205a2470c669b855f3ec95d5a3c2b46de0442c9",
+                "DiffID": "sha256:8e012198eea15b2554b07014081c85fec4967a1b9cc4b65bd9a4bce3ae1c0c88"
+              },
+              "SeveritySource": "nvd",
+              "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-0466",
+              "DataSource": {
+                "ID": "alpine",
+                "Name": "Alpine Secdb",
+                "URL": "https://secdb.alpinelinux.org/"
+              },
+              "Title": "Certificate policy check not enabled",
+              "Description": "The function X509_VERIFY_PARAM_add0_policy() is documented to\nimplicitly enable the certificate policy check when doing certificate\nverification. However the implementation of the function does not\nenable the check which allows certificates with invalid or incorrect\npolicies to pass the certificate verification.\n\nAs suddenly enabling the policy check could break existing deployments it was\ndecided to keep the existing behavior of the X509_VERIFY_PARAM_add0_policy()\nfunction.\n\nInstead the applications that require OpenSSL to perform certificate\npolicy check need to use X509_VERIFY_PARAM_set1_policies() or explicitly\nenable the policy check by calling X509_VERIFY_PARAM_set_flags() with\nthe X509_V_FLAG_POLICY_CHECK flag argument.\n\nCertificate policy checks are disabled by default in OpenSSL and are not\ncommonly used by applications.",
+              "Severity": "MEDIUM",
+              "CweIDs": [
+                "CWE-295"
+              ],
+              "CVSS": {
+                "nvd": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+                  "V3Score": 5.3
+                },
+                "redhat": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+                  "V3Score": 5.3
+                }
+              },
+              "References": [
+                "https://access.redhat.com/security/cve/CVE-2023-0466",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0466",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=0d16b7e99aafc0b4a6d729eec65a411a7e025f0a",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=51e8a84ce742db0f6c70510d0159dad8f7825908",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=73398dea26de9899fb4baa94098ad0a61f435c72",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=fc814a30fc4f0bc54fcea7d9a7462f5457aab061",
+                "https://nvd.nist.gov/vuln/detail/CVE-2023-0466",
+                "https://security.netapp.com/advisory/ntap-20230414-0001/",
+                "https://www.cve.org/CVERecord?id=CVE-2023-0466",
+                "https://www.openssl.org/news/secadv/20230328.txt"
+              ],
+              "PublishedDate": "2023-03-28T15:15:00Z",
+              "LastModifiedDate": "2023-04-14T23:15:00Z"
+            },
+            {
+              "VulnerabilityID": "CVE-2022-4450",
+              "PkgID": "libssl3@3.0.7-r2",
+              "PkgName": "libssl3",
+              "InstalledVersion": "3.0.7-r2",
+              "FixedVersion": "3.0.8-r0",
+              "Layer": {
+                "Digest": "sha256:8921db27df2831fa6eaa85321205a2470c669b855f3ec95d5a3c2b46de0442c9",
+                "DiffID": "sha256:8e012198eea15b2554b07014081c85fec4967a1b9cc4b65bd9a4bce3ae1c0c88"
+              },
+              "SeveritySource": "nvd",
+              "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-4450",
+              "DataSource": {
+                "ID": "alpine",
+                "Name": "Alpine Secdb",
+                "URL": "https://secdb.alpinelinux.org/"
+              },
+              "Title": "double free after calling PEM_read_bio_ex",
+              "Description": "The function PEM_read_bio_ex() reads a PEM file from a BIO and parses and decodes the \"name\" (e.g. \"CERTIFICATE\"), any header data and the payload data. If the function succeeds then the \"name_out\", \"header\" and \"data\" arguments are populated with pointers to buffers containing the relevant decoded data. The caller is responsible for freeing those buffers. It is possible to construct a PEM file that results in 0 bytes of payload data. In this case PEM_read_bio_ex() will return a failure code but will populate the header argument with a pointer to a buffer that has already been freed. If the caller also frees this buffer then a double free will occur. This will most likely lead to a crash. This could be exploited by an attacker who has the ability to supply malicious PEM files for parsing to achieve a denial of service attack. The functions PEM_read_bio() and PEM_read() are simple wrappers around PEM_read_bio_ex() and therefore these functions are also directly affected. These functions are also called indirectly by a number of other OpenSSL functions including PEM_X509_INFO_read_bio_ex() and SSL_CTX_use_serverinfo_file() which are also vulnerable. Some OpenSSL internal uses of these functions are not vulnerable because the caller does not free the header argument if PEM_read_bio_ex() returns a failure code. These locations include the PEM_read_bio_TYPE() functions as well as the decoders introduced in OpenSSL 3.0. The OpenSSL asn1parse command line application is also impacted by this issue.",
+              "Severity": "HIGH",
+              "CweIDs": [
+                "CWE-415"
+              ],
+              "CVSS": {
+                "ghsa": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                },
+                "nvd": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                },
+                "redhat": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                }
+              },
+              "References": [
+                "https://access.redhat.com/errata/RHSA-2023:0946",
+                "https://access.redhat.com/security/cve/CVE-2022-4450",
+                "https://bugzilla.redhat.com/2164440",
+                "https://bugzilla.redhat.com/2164487",
+                "https://bugzilla.redhat.com/2164488",
+                "https://bugzilla.redhat.com/2164492",
+                "https://bugzilla.redhat.com/2164494",
+                "https://bugzilla.redhat.com/2164497",
+                "https://bugzilla.redhat.com/2164499",
+                "https://bugzilla.redhat.com/2164500",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144000",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144003",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144006",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144008",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144010",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144012",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144015",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144017",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144019",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2145170",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2158412",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164440",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164487",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164488",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164492",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164494",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164497",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164499",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164500",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4203",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4304",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4450",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0215",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0216",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0217",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0286",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0401",
+                "https://errata.almalinux.org/9/ALSA-2023-0946.html",
+                "https://errata.rockylinux.org/RLSA-2023:0946",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=63bcf189be73a9cc1264059bed6f57974be74a83",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=bbcf509bd046b34cca19c766bbddc31683d0858b",
+                "https://github.com/advisories/GHSA-v5w6-wcm8-jm4q",
+                "https://linux.oracle.com/cve/CVE-2022-4450.html",
+                "https://linux.oracle.com/errata/ELSA-2023-1405.html",
+                "https://nvd.nist.gov/vuln/detail/CVE-2022-4450",
+                "https://rustsec.org/advisories/RUSTSEC-2023-0010.html",
+                "https://ubuntu.com/security/notices/USN-5844-1",
+                "https://www.cve.org/CVERecord?id=CVE-2022-4450",
+                "https://www.openssl.org/news/secadv/20230207.txt"
+              ],
+              "PublishedDate": "2023-02-08T20:15:00Z",
+              "LastModifiedDate": "2023-02-24T15:15:00Z"
+            },
+            {
+              "VulnerabilityID": "CVE-2023-0215",
+              "PkgID": "libssl3@3.0.7-r2",
+              "PkgName": "libssl3",
+              "InstalledVersion": "3.0.7-r2",
+              "FixedVersion": "3.0.8-r0",
+              "Layer": {
+                "Digest": "sha256:8921db27df2831fa6eaa85321205a2470c669b855f3ec95d5a3c2b46de0442c9",
+                "DiffID": "sha256:8e012198eea15b2554b07014081c85fec4967a1b9cc4b65bd9a4bce3ae1c0c88"
+              },
+              "SeveritySource": "nvd",
+              "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-0215",
+              "DataSource": {
+                "ID": "alpine",
+                "Name": "Alpine Secdb",
+                "URL": "https://secdb.alpinelinux.org/"
+              },
+              "Title": "use-after-free following BIO_new_NDEF",
+              "Description": "The public API function BIO_new_NDEF is a helper function used for streaming ASN.1 data via a BIO. It is primarily used internally to OpenSSL to support the SMIME, CMS and PKCS7 streaming capabilities, but may also be called directly by end user applications. The function receives a BIO from the caller, prepends a new BIO_f_asn1 filter BIO onto the front of it to form a BIO chain, and then returns the new head of the BIO chain to the caller. Under certain conditions, for example if a CMS recipient public key is invalid, the new filter BIO is freed and the function returns a NULL result indicating a failure. However, in this case, the BIO chain is not properly cleaned up and the BIO passed by the caller still retains internal pointers to the previously freed filter BIO. If the caller then goes on to call BIO_pop() on the BIO then a use-after-free will occur. This will most likely result in a crash. This scenario occurs directly in the internal function B64_write_ASN1() which may cause BIO_new_NDEF() to be called and will subsequently call BIO_pop() on the BIO. This internal function is in turn called by the public API functions PEM_write_bio_ASN1_stream, PEM_write_bio_CMS_stream, PEM_write_bio_PKCS7_stream, SMIME_write_ASN1, SMIME_write_CMS and SMIME_write_PKCS7. Other public API functions that may be impacted by this include i2d_ASN1_bio_stream, BIO_new_CMS, BIO_new_PKCS7, i2d_CMS_bio_stream and i2d_PKCS7_bio_stream. The OpenSSL cms and smime command line applications are similarly affected.",
+              "Severity": "HIGH",
+              "CweIDs": [
+                "CWE-416"
+              ],
+              "CVSS": {
+                "ghsa": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                },
+                "nvd": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                },
+                "redhat": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                }
+              },
+              "References": [
+                "https://access.redhat.com/errata/RHSA-2023:0946",
+                "https://access.redhat.com/security/cve/CVE-2023-0215",
+                "https://bugzilla.redhat.com/2164440",
+                "https://bugzilla.redhat.com/2164487",
+                "https://bugzilla.redhat.com/2164488",
+                "https://bugzilla.redhat.com/2164492",
+                "https://bugzilla.redhat.com/2164494",
+                "https://bugzilla.redhat.com/2164497",
+                "https://bugzilla.redhat.com/2164499",
+                "https://bugzilla.redhat.com/2164500",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144000",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144003",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144006",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144008",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144010",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144012",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144015",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144017",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144019",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2145170",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2158412",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164440",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164487",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164488",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164492",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164494",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164497",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164499",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164500",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4203",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4304",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4450",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0215",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0216",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0217",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0286",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0401",
+                "https://errata.almalinux.org/9/ALSA-2023-0946.html",
+                "https://errata.rockylinux.org/RLSA-2023:0946",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=8818064ce3c3c0f1b740a5aaba2a987e75bfbafd",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=9816136fe31d92ace4037d5da5257f763aeeb4eb",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=c3829dd8825c654652201e16f8a0a0c46ee3f344",
+                "https://github.com/advisories/GHSA-r7jw-wp68-3xch",
+                "https://linux.oracle.com/cve/CVE-2023-0215.html",
+                "https://linux.oracle.com/errata/ELSA-2023-1405.html",
+                "https://nvd.nist.gov/vuln/detail/CVE-2023-0215",
+                "https://rustsec.org/advisories/RUSTSEC-2023-0009.html",
+                "https://ubuntu.com/security/notices/USN-5844-1",
+                "https://ubuntu.com/security/notices/USN-5845-1",
+                "https://ubuntu.com/security/notices/USN-5845-2",
+                "https://www.cve.org/CVERecord?id=CVE-2023-0215",
+                "https://www.openssl.org/news/secadv/20230207.txt"
+              ],
+              "PublishedDate": "2023-02-08T20:15:00Z",
+              "LastModifiedDate": "2023-02-24T15:15:00Z"
+            },
+            {
+              "VulnerabilityID": "CVE-2023-0216",
+              "PkgID": "libssl3@3.0.7-r2",
+              "PkgName": "libssl3",
+              "InstalledVersion": "3.0.7-r2",
+              "FixedVersion": "3.0.8-r0",
+              "Layer": {
+                "Digest": "sha256:8921db27df2831fa6eaa85321205a2470c669b855f3ec95d5a3c2b46de0442c9",
+                "DiffID": "sha256:8e012198eea15b2554b07014081c85fec4967a1b9cc4b65bd9a4bce3ae1c0c88"
+              },
+              "SeveritySource": "nvd",
+              "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-0216",
+              "DataSource": {
+                "ID": "alpine",
+                "Name": "Alpine Secdb",
+                "URL": "https://secdb.alpinelinux.org/"
+              },
+              "Title": "openssl: invalid pointer dereference in d2i_PKCS7 functions",
+              "Description": "An invalid pointer dereference on read can be triggered when an application tries to load malformed PKCS7 data with the d2i_PKCS7(), d2i_PKCS7_bio() or d2i_PKCS7_fp() functions. The result of the dereference is an application crash which could lead to a denial of service attack. The TLS implementation in OpenSSL does not call this function however third party applications might call these functions on untrusted data.",
+              "Severity": "HIGH",
+              "CweIDs": [
+                "CWE-476"
+              ],
+              "CVSS": {
+                "ghsa": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                },
+                "nvd": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                },
+                "redhat": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                }
+              },
+              "References": [
+                "https://access.redhat.com/errata/RHSA-2023:0946",
+                "https://access.redhat.com/security/cve/CVE-2023-0216",
+                "https://bugzilla.redhat.com/2164440",
+                "https://bugzilla.redhat.com/2164487",
+                "https://bugzilla.redhat.com/2164488",
+                "https://bugzilla.redhat.com/2164492",
+                "https://bugzilla.redhat.com/2164494",
+                "https://bugzilla.redhat.com/2164497",
+                "https://bugzilla.redhat.com/2164499",
+                "https://bugzilla.redhat.com/2164500",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144000",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144003",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144006",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144008",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144010",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144012",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144015",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144017",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144019",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2145170",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2158412",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164440",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164487",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164488",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164492",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164494",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164497",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164499",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164500",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4203",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4304",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4450",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0215",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0216",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0217",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0286",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0401",
+                "https://errata.almalinux.org/9/ALSA-2023-0946.html",
+                "https://errata.rockylinux.org/RLSA-2023:0946",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=934a04f0e775309cadbef0aa6b9692e1b12a76c6",
+                "https://github.com/advisories/GHSA-29xx-hcv2-c4cp",
+                "https://linux.oracle.com/cve/CVE-2023-0216.html",
+                "https://linux.oracle.com/errata/ELSA-2023-12152.html",
+                "https://nvd.nist.gov/vuln/detail/CVE-2023-0216",
+                "https://rustsec.org/advisories/RUSTSEC-2023-0011.html",
+                "https://ubuntu.com/security/notices/USN-5844-1",
+                "https://www.cve.org/CVERecord?id=CVE-2023-0216",
+                "https://www.openssl.org/news/secadv/20230207.txt"
+              ],
+              "PublishedDate": "2023-02-08T20:15:00Z",
+              "LastModifiedDate": "2023-02-24T15:15:00Z"
+            },
+            {
+              "VulnerabilityID": "CVE-2023-0217",
+              "PkgID": "libssl3@3.0.7-r2",
+              "PkgName": "libssl3",
+              "InstalledVersion": "3.0.7-r2",
+              "FixedVersion": "3.0.8-r0",
+              "Layer": {
+                "Digest": "sha256:8921db27df2831fa6eaa85321205a2470c669b855f3ec95d5a3c2b46de0442c9",
+                "DiffID": "sha256:8e012198eea15b2554b07014081c85fec4967a1b9cc4b65bd9a4bce3ae1c0c88"
+              },
+              "SeveritySource": "nvd",
+              "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-0217",
+              "DataSource": {
+                "ID": "alpine",
+                "Name": "Alpine Secdb",
+                "URL": "https://secdb.alpinelinux.org/"
+              },
+              "Title": "openssl: NULL dereference validating DSA public key",
+              "Description": "An invalid pointer dereference on read can be triggered when an application tries to check a malformed DSA public key by the EVP_PKEY_public_check() function. This will most likely lead to an application crash. This function can be called on public keys supplied from untrusted sources which could allow an attacker to cause a denial of service attack. The TLS implementation in OpenSSL does not call this function but applications might call the function if there are additional security requirements imposed by standards such as FIPS 140-3.",
+              "Severity": "HIGH",
+              "CweIDs": [
+                "CWE-476"
+              ],
+              "CVSS": {
+                "ghsa": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                },
+                "nvd": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                },
+                "redhat": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                }
+              },
+              "References": [
+                "https://access.redhat.com/errata/RHSA-2023:0946",
+                "https://access.redhat.com/security/cve/CVE-2023-0217",
+                "https://bugzilla.redhat.com/2164440",
+                "https://bugzilla.redhat.com/2164487",
+                "https://bugzilla.redhat.com/2164488",
+                "https://bugzilla.redhat.com/2164492",
+                "https://bugzilla.redhat.com/2164494",
+                "https://bugzilla.redhat.com/2164497",
+                "https://bugzilla.redhat.com/2164499",
+                "https://bugzilla.redhat.com/2164500",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144000",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144003",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144006",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144008",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144010",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144012",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144015",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144017",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144019",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2145170",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2158412",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164440",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164487",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164488",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164492",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164494",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164497",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164499",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164500",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4203",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4304",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4450",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0215",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0216",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0217",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0286",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0401",
+                "https://errata.almalinux.org/9/ALSA-2023-0946.html",
+                "https://errata.rockylinux.org/RLSA-2023:0946",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=23985bac83fd50c8e29431009302b5442f985096",
+                "https://github.com/advisories/GHSA-vxrh-cpg7-8vjr",
+                "https://linux.oracle.com/cve/CVE-2023-0217.html",
+                "https://linux.oracle.com/errata/ELSA-2023-12152.html",
+                "https://nvd.nist.gov/vuln/detail/CVE-2023-0217",
+                "https://rustsec.org/advisories/RUSTSEC-2023-0012.html",
+                "https://ubuntu.com/security/notices/USN-5844-1",
+                "https://www.cve.org/CVERecord?id=CVE-2023-0217",
+                "https://www.openssl.org/news/secadv/20230207.txt"
+              ],
+              "PublishedDate": "2023-02-08T20:15:00Z",
+              "LastModifiedDate": "2023-02-24T15:15:00Z"
+            },
+            {
+              "VulnerabilityID": "CVE-2023-0286",
+              "PkgID": "libssl3@3.0.7-r2",
+              "PkgName": "libssl3",
+              "InstalledVersion": "3.0.7-r2",
+              "FixedVersion": "3.0.8-r0",
+              "Layer": {
+                "Digest": "sha256:8921db27df2831fa6eaa85321205a2470c669b855f3ec95d5a3c2b46de0442c9",
+                "DiffID": "sha256:8e012198eea15b2554b07014081c85fec4967a1b9cc4b65bd9a4bce3ae1c0c88"
+              },
+              "SeveritySource": "nvd",
+              "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-0286",
+              "DataSource": {
+                "ID": "alpine",
+                "Name": "Alpine Secdb",
+                "URL": "https://secdb.alpinelinux.org/"
+              },
+              "Title": "X.400 address type confusion in X.509 GeneralName",
+              "Description": "There is a type confusion vulnerability relating to X.400 address processing inside an X.509 GeneralName. X.400 addresses were parsed as an ASN1_STRING but the public structure definition for GENERAL_NAME incorrectly specified the type of the x400Address field as ASN1_TYPE. This field is subsequently interpreted by the OpenSSL function GENERAL_NAME_cmp as an ASN1_TYPE rather than an ASN1_STRING. When CRL checking is enabled (i.e. the application sets the X509_V_FLAG_CRL_CHECK flag), this vulnerability may allow an attacker to pass arbitrary pointers to a memcmp call, enabling them to read memory contents or enact a denial of service. In most cases, the attack requires the attacker to provide both the certificate chain and CRL, neither of which need to have a valid signature. If the attacker only controls one of these inputs, the other input must already contain an X.400 address as a CRL distribution point, which is uncommon. As such, this vulnerability is most likely to only affect applications which have implemented their own functionality for retrieving CRLs over a network.",
+              "Severity": "HIGH",
+              "CweIDs": [
+                "CWE-843"
+              ],
+              "CVSS": {
+                "ghsa": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:H",
+                  "V3Score": 7.4
+                },
+                "nvd": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:H",
+                  "V3Score": 7.4
+                },
+                "redhat": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:H",
+                  "V3Score": 7.4
+                }
+              },
+              "References": [
+                "https://access.redhat.com/errata/RHSA-2023:0946",
+                "https://access.redhat.com/security/cve/CVE-2023-0286",
+                "https://access.redhat.com/security/cve/cve-2023-0286",
+                "https://bugzilla.redhat.com/2164440",
+                "https://bugzilla.redhat.com/2164487",
+                "https://bugzilla.redhat.com/2164488",
+                "https://bugzilla.redhat.com/2164492",
+                "https://bugzilla.redhat.com/2164494",
+                "https://bugzilla.redhat.com/2164497",
+                "https://bugzilla.redhat.com/2164499",
+                "https://bugzilla.redhat.com/2164500",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144000",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144003",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144006",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144008",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144010",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144012",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144015",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144017",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144019",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2145170",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2158412",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164440",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164487",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164488",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164492",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164494",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164497",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164499",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164500",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4203",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4304",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4450",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0215",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0216",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0217",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0286",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0401",
+                "https://errata.almalinux.org/9/ALSA-2023-0946.html",
+                "https://errata.rockylinux.org/RLSA-2023:0946",
+                "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.6.2-relnotes.txt",
+                "https://ftp.openbsd.org/pub/OpenBSD/patches/7.2/common/018_x509.patch.sig",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=2c6c9d439b484e1ba9830d8454a34fa4f80fdfe9",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=2f7530077e0ef79d98718138716bc51ca0cad658",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=fd2af07dc083a350c959147097003a14a5e8ac4d",
+                "https://github.com/advisories/GHSA-x4qr-2fvf-3mr5",
+                "https://github.com/pyca/cryptography/security/advisories/GHSA-x4qr-2fvf-3mr5",
+                "https://linux.oracle.com/cve/CVE-2023-0286.html",
+                "https://linux.oracle.com/errata/ELSA-2023-1405.html",
+                "https://nvd.nist.gov/vuln/detail/CVE-2023-0286",
+                "https://rustsec.org/advisories/RUSTSEC-2023-0006.html",
+                "https://ubuntu.com/security/notices/USN-5844-1",
+                "https://ubuntu.com/security/notices/USN-5845-1",
+                "https://ubuntu.com/security/notices/USN-5845-2",
+                "https://www.cve.org/CVERecord?id=CVE-2023-0286",
+                "https://www.openssl.org/news/secadv/20230207.txt"
+              ],
+              "PublishedDate": "2023-02-08T20:15:00Z",
+              "LastModifiedDate": "2023-03-27T19:15:00Z"
+            },
+            {
+              "VulnerabilityID": "CVE-2023-0401",
+              "PkgID": "libssl3@3.0.7-r2",
+              "PkgName": "libssl3",
+              "InstalledVersion": "3.0.7-r2",
+              "FixedVersion": "3.0.8-r0",
+              "Layer": {
+                "Digest": "sha256:8921db27df2831fa6eaa85321205a2470c669b855f3ec95d5a3c2b46de0442c9",
+                "DiffID": "sha256:8e012198eea15b2554b07014081c85fec4967a1b9cc4b65bd9a4bce3ae1c0c88"
+              },
+              "SeveritySource": "nvd",
+              "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-0401",
+              "DataSource": {
+                "ID": "alpine",
+                "Name": "Alpine Secdb",
+                "URL": "https://secdb.alpinelinux.org/"
+              },
+              "Title": "openssl: NULL dereference during PKCS7 data verification",
+              "Description": "A NULL pointer can be dereferenced when signatures are being verified on PKCS7 signed or signedAndEnveloped data. In case the hash algorithm used for the signature is known to the OpenSSL library but the implementation of the hash algorithm is not available the digest initialization will fail. There is a missing check for the return value from the initialization function which later leads to invalid usage of the digest API most likely leading to a crash. The unavailability of an algorithm can be caused by using FIPS enabled configuration of providers or more commonly by not loading the legacy provider. PKCS7 data is processed by the SMIME library calls and also by the time stamp (TS) library calls. The TLS implementation in OpenSSL does not call these functions however third party applications would be affected if they call these functions to verify signatures on untrusted data.",
+              "Severity": "HIGH",
+              "CweIDs": [
+                "CWE-476"
+              ],
+              "CVSS": {
+                "ghsa": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                },
+                "nvd": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                },
+                "redhat": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                }
+              },
+              "References": [
+                "https://access.redhat.com/errata/RHSA-2023:0946",
+                "https://access.redhat.com/security/cve/CVE-2023-0401",
+                "https://bugzilla.redhat.com/2164440",
+                "https://bugzilla.redhat.com/2164487",
+                "https://bugzilla.redhat.com/2164488",
+                "https://bugzilla.redhat.com/2164492",
+                "https://bugzilla.redhat.com/2164494",
+                "https://bugzilla.redhat.com/2164497",
+                "https://bugzilla.redhat.com/2164499",
+                "https://bugzilla.redhat.com/2164500",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144000",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144003",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144006",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144008",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144010",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144012",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144015",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144017",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144019",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2145170",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2158412",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164440",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164487",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164488",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164492",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164494",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164497",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164499",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164500",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4203",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4304",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4450",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0215",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0216",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0217",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0286",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0401",
+                "https://errata.almalinux.org/9/ALSA-2023-0946.html",
+                "https://errata.rockylinux.org/RLSA-2023:0946",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=d3b6dfd70db844c4499bec6ad6601623a565e674",
+                "https://github.com/advisories/GHSA-vrh7-x64v-7vxq",
+                "https://linux.oracle.com/cve/CVE-2023-0401.html",
+                "https://linux.oracle.com/errata/ELSA-2023-12152.html",
+                "https://nvd.nist.gov/vuln/detail/CVE-2023-0401",
+                "https://rustsec.org/advisories/RUSTSEC-2023-0013.html",
+                "https://ubuntu.com/security/notices/USN-5844-1",
+                "https://www.cve.org/CVERecord?id=CVE-2023-0401",
+                "https://www.openssl.org/news/secadv/20230207.txt"
+              ],
+              "PublishedDate": "2023-02-08T20:15:00Z",
+              "LastModifiedDate": "2023-02-24T15:15:00Z"
+            },
+            {
+              "VulnerabilityID": "CVE-2023-0464",
+              "PkgID": "libssl3@3.0.7-r2",
+              "PkgName": "libssl3",
+              "InstalledVersion": "3.0.7-r2",
+              "FixedVersion": "3.0.8-r1",
+              "Layer": {
+                "Digest": "sha256:8921db27df2831fa6eaa85321205a2470c669b855f3ec95d5a3c2b46de0442c9",
+                "DiffID": "sha256:8e012198eea15b2554b07014081c85fec4967a1b9cc4b65bd9a4bce3ae1c0c88"
+              },
+              "SeveritySource": "nvd",
+              "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-0464",
+              "DataSource": {
+                "ID": "alpine",
+                "Name": "Alpine Secdb",
+                "URL": "https://secdb.alpinelinux.org/"
+              },
+              "Title": "Denial of service by excessive resource usage in verifying X509 policy constraints",
+              "Description": "A security vulnerability has been identified in all supported versions of OpenSSL related to the verification of X.509 certificate chains that include policy constraints. Attackers may be able to exploit this vulnerability by creating a malicious certificate chain that triggers exponential use of computational resources, leading to a denial-of-service (DoS) attack on affected systems. Policy processing is disabled by default but can be enabled by passing the `-policy' argument to the command line utilities or by calling the `X509_VERIFY_PARAM_set1_policies()' function.",
+              "Severity": "HIGH",
+              "CweIDs": [
+                "CWE-295"
+              ],
+              "CVSS": {
+                "nvd": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 7.5
+                },
+                "redhat": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 5.9
+                }
+              },
+              "References": [
+                "https://access.redhat.com/security/cve/CVE-2023-0464",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0464",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=2017771e2db3e2b96f89bbe8766c3209f6a99545",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=2dcd4f1e3115f38cefa43e3efbe9b801c27e642e",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=879f7080d7e141f415c79eaa3a8ac4a3dad0348b",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=959c59c7a0164117e7f8366466a32bb1f8d77ff1",
+                "https://nvd.nist.gov/vuln/detail/CVE-2023-0464",
+                "https://www.cve.org/CVERecord?id=CVE-2023-0464",
+                "https://www.openssl.org/news/secadv/20230322.txt"
+              ],
+              "PublishedDate": "2023-03-22T17:15:00Z",
+              "LastModifiedDate": "2023-03-29T19:37:00Z"
+            },
+            {
+              "VulnerabilityID": "CVE-2022-4203",
+              "PkgID": "libssl3@3.0.7-r2",
+              "PkgName": "libssl3",
+              "InstalledVersion": "3.0.7-r2",
+              "FixedVersion": "3.0.8-r0",
+              "Layer": {
+                "Digest": "sha256:8921db27df2831fa6eaa85321205a2470c669b855f3ec95d5a3c2b46de0442c9",
+                "DiffID": "sha256:8e012198eea15b2554b07014081c85fec4967a1b9cc4b65bd9a4bce3ae1c0c88"
+              },
+              "SeveritySource": "nvd",
+              "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-4203",
+              "DataSource": {
+                "ID": "alpine",
+                "Name": "Alpine Secdb",
+                "URL": "https://secdb.alpinelinux.org/"
+              },
+              "Title": "openssl: read buffer overflow in X.509 certificate verification",
+              "Description": "A read buffer overrun can be triggered in X.509 certificate verification, specifically in name constraint checking. Note that this occurs after certificate chain signature verification and requires either a CA to have signed the malicious certificate or for the application to continue certificate verification despite failure to construct a path to a trusted issuer. The read buffer overrun might result in a crash which could lead to a denial of service attack. In theory it could also result in the disclosure of private memory contents (such as private keys, or sensitive plaintext) although we are not aware of any working exploit leading to memory contents disclosure as of the time of release of this advisory. In a TLS client, this can be triggered by connecting to a malicious server. In a TLS server, this can be triggered if the server requests client authentication and a malicious client connects.",
+              "Severity": "MEDIUM",
+              "CweIDs": [
+                "CWE-125"
+              ],
+              "CVSS": {
+                "ghsa": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H",
+                  "V3Score": 9.1
+                },
+                "nvd": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 4.9
+                },
+                "redhat": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:N/A:H",
+                  "V3Score": 4.9
+                }
+              },
+              "References": [
+                "https://access.redhat.com/errata/RHSA-2023:0946",
+                "https://access.redhat.com/security/cve/CVE-2022-4203",
+                "https://bugzilla.redhat.com/2164440",
+                "https://bugzilla.redhat.com/2164487",
+                "https://bugzilla.redhat.com/2164488",
+                "https://bugzilla.redhat.com/2164492",
+                "https://bugzilla.redhat.com/2164494",
+                "https://bugzilla.redhat.com/2164497",
+                "https://bugzilla.redhat.com/2164499",
+                "https://bugzilla.redhat.com/2164500",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144000",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144003",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144006",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144008",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144010",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144012",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144015",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144017",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144019",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2145170",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2158412",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164440",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164487",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164488",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164492",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164494",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164497",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164499",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164500",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4203",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4304",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4450",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0215",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0216",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0217",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0286",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0401",
+                "https://errata.almalinux.org/9/ALSA-2023-0946.html",
+                "https://errata.rockylinux.org/RLSA-2023:0946",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=c927a3492698c254637da836762f9b1f86cffabc",
+                "https://github.com/advisories/GHSA-w67w-mw4j-8qrv",
+                "https://linux.oracle.com/cve/CVE-2022-4203.html",
+                "https://linux.oracle.com/errata/ELSA-2023-12152.html",
+                "https://nvd.nist.gov/vuln/detail/CVE-2022-4203",
+                "https://rustsec.org/advisories/RUSTSEC-2023-0008.html",
+                "https://ubuntu.com/security/notices/USN-5844-1",
+                "https://www.cve.org/CVERecord?id=CVE-2022-4203",
+                "https://www.openssl.org/news/secadv/20230207.txt"
+              ],
+              "PublishedDate": "2023-02-24T15:15:00Z",
+              "LastModifiedDate": "2023-03-09T20:03:00Z"
+            },
+            {
+              "VulnerabilityID": "CVE-2022-4304",
+              "PkgID": "libssl3@3.0.7-r2",
+              "PkgName": "libssl3",
+              "InstalledVersion": "3.0.7-r2",
+              "FixedVersion": "3.0.8-r0",
+              "Layer": {
+                "Digest": "sha256:8921db27df2831fa6eaa85321205a2470c669b855f3ec95d5a3c2b46de0442c9",
+                "DiffID": "sha256:8e012198eea15b2554b07014081c85fec4967a1b9cc4b65bd9a4bce3ae1c0c88"
+              },
+              "SeveritySource": "nvd",
+              "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-4304",
+              "DataSource": {
+                "ID": "alpine",
+                "Name": "Alpine Secdb",
+                "URL": "https://secdb.alpinelinux.org/"
+              },
+              "Title": "timing attack in RSA Decryption implementation",
+              "Description": "A timing based side channel exists in the OpenSSL RSA Decryption implementation which could be sufficient to recover a plaintext across a network in a Bleichenbacher style attack. To achieve a successful decryption an attacker would have to be able to send a very large number of trial messages for decryption. The vulnerability affects all RSA padding modes: PKCS#1 v1.5, RSA-OEAP and RSASVE. For example, in a TLS connection, RSA is commonly used by a client to send an encrypted pre-master secret to the server. An attacker that had observed a genuine connection between a client and a server could use this flaw to send trial messages to the server and record the time taken to process them. After a sufficiently large number of messages the attacker could recover the pre-master secret used for the original connection and thus be able to decrypt the application data sent over that connection.",
+              "Severity": "MEDIUM",
+              "CVSS": {
+                "ghsa": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N",
+                  "V3Score": 5.9
+                },
+                "nvd": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N",
+                  "V3Score": 5.9
+                },
+                "redhat": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N",
+                  "V3Score": 5.9
+                }
+              },
+              "References": [
+                "https://access.redhat.com/errata/RHSA-2023:0946",
+                "https://access.redhat.com/security/cve/CVE-2022-4304",
+                "https://bugzilla.redhat.com/2164440",
+                "https://bugzilla.redhat.com/2164487",
+                "https://bugzilla.redhat.com/2164488",
+                "https://bugzilla.redhat.com/2164492",
+                "https://bugzilla.redhat.com/2164494",
+                "https://bugzilla.redhat.com/2164497",
+                "https://bugzilla.redhat.com/2164499",
+                "https://bugzilla.redhat.com/2164500",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144000",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144003",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144006",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144008",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144010",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144012",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144015",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144017",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2144019",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2145170",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2158412",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164440",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164487",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164488",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164492",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164494",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164497",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164499",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=2164500",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4203",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4304",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-4450",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0215",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0216",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0217",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0286",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0401",
+                "https://errata.almalinux.org/9/ALSA-2023-0946.html",
+                "https://errata.rockylinux.org/RLSA-2023:0946",
+                "https://github.com/advisories/GHSA-p52g-cm5j-mjv4",
+                "https://linux.oracle.com/cve/CVE-2022-4304.html",
+                "https://linux.oracle.com/errata/ELSA-2023-1405.html",
+                "https://nvd.nist.gov/vuln/detail/CVE-2022-4304",
+                "https://rustsec.org/advisories/RUSTSEC-2023-0007.html",
+                "https://ubuntu.com/security/notices/USN-5844-1",
+                "https://www.cve.org/CVERecord?id=CVE-2022-4304",
+                "https://www.openssl.org/news/secadv/20230207.txt"
+              ],
+              "PublishedDate": "2023-02-08T20:15:00Z",
+              "LastModifiedDate": "2023-02-24T17:13:00Z"
+            },
+            {
+              "VulnerabilityID": "CVE-2023-0465",
+              "PkgID": "libssl3@3.0.7-r2",
+              "PkgName": "libssl3",
+              "InstalledVersion": "3.0.7-r2",
+              "FixedVersion": "3.0.8-r2",
+              "Layer": {
+                "Digest": "sha256:8921db27df2831fa6eaa85321205a2470c669b855f3ec95d5a3c2b46de0442c9",
+                "DiffID": "sha256:8e012198eea15b2554b07014081c85fec4967a1b9cc4b65bd9a4bce3ae1c0c88"
+              },
+              "SeveritySource": "nvd",
+              "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-0465",
+              "DataSource": {
+                "ID": "alpine",
+                "Name": "Alpine Secdb",
+                "URL": "https://secdb.alpinelinux.org/"
+              },
+              "Title": "Invalid certificate policies in leaf certificates are silently ignored",
+              "Description": "Applications that use a non-default option when verifying certificates may be\nvulnerable to an attack from a malicious CA to circumvent certain checks.\n\nInvalid certificate policies in leaf certificates are silently ignored by\nOpenSSL and other certificate policy checks are skipped for that certificate.\nA malicious CA could use this to deliberately assert invalid certificate policies\nin order to circumvent policy checking on the certificate altogether.\n\nPolicy processing is disabled by default but can be enabled by passing\nthe `-policy' argument to the command line utilities or by calling the\n`X509_VERIFY_PARAM_set1_policies()' function.",
+              "Severity": "MEDIUM",
+              "CweIDs": [
+                "CWE-295"
+              ],
+              "CVSS": {
+                "nvd": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+                  "V3Score": 5.3
+                },
+                "redhat": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+                  "V3Score": 5.3
+                }
+              },
+              "References": [
+                "https://access.redhat.com/security/cve/CVE-2023-0465",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0465",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=10325176f3d3e98c6e2b3bf5ab1e3b334de6947a",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=1dd43e0709fece299b15208f36cc7c76209ba0bb",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=b013765abfa80036dc779dd0e50602c57bb3bf95",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=facfb1ab745646e97a1920977ae4a9965ea61d5c",
+                "https://nvd.nist.gov/vuln/detail/CVE-2023-0465",
+                "https://security.netapp.com/advisory/ntap-20230414-0001/",
+                "https://www.cve.org/CVERecord?id=CVE-2023-0465",
+                "https://www.openssl.org/news/secadv/20230328.txt"
+              ],
+              "PublishedDate": "2023-03-28T15:15:00Z",
+              "LastModifiedDate": "2023-04-14T23:15:00Z"
+            },
+            {
+              "VulnerabilityID": "CVE-2023-0466",
+              "PkgID": "libssl3@3.0.7-r2",
+              "PkgName": "libssl3",
+              "InstalledVersion": "3.0.7-r2",
+              "FixedVersion": "3.0.8-r3",
+              "Layer": {
+                "Digest": "sha256:8921db27df2831fa6eaa85321205a2470c669b855f3ec95d5a3c2b46de0442c9",
+                "DiffID": "sha256:8e012198eea15b2554b07014081c85fec4967a1b9cc4b65bd9a4bce3ae1c0c88"
+              },
+              "SeveritySource": "nvd",
+              "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-0466",
+              "DataSource": {
+                "ID": "alpine",
+                "Name": "Alpine Secdb",
+                "URL": "https://secdb.alpinelinux.org/"
+              },
+              "Title": "Certificate policy check not enabled",
+              "Description": "The function X509_VERIFY_PARAM_add0_policy() is documented to\nimplicitly enable the certificate policy check when doing certificate\nverification. However the implementation of the function does not\nenable the check which allows certificates with invalid or incorrect\npolicies to pass the certificate verification.\n\nAs suddenly enabling the policy check could break existing deployments it was\ndecided to keep the existing behavior of the X509_VERIFY_PARAM_add0_policy()\nfunction.\n\nInstead the applications that require OpenSSL to perform certificate\npolicy check need to use X509_VERIFY_PARAM_set1_policies() or explicitly\nenable the policy check by calling X509_VERIFY_PARAM_set_flags() with\nthe X509_V_FLAG_POLICY_CHECK flag argument.\n\nCertificate policy checks are disabled by default in OpenSSL and are not\ncommonly used by applications.",
+              "Severity": "MEDIUM",
+              "CweIDs": [
+                "CWE-295"
+              ],
+              "CVSS": {
+                "nvd": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+                  "V3Score": 5.3
+                },
+                "redhat": {
+                  "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+                  "V3Score": 5.3
+                }
+              },
+              "References": [
+                "https://access.redhat.com/security/cve/CVE-2023-0466",
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0466",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=0d16b7e99aafc0b4a6d729eec65a411a7e025f0a",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=51e8a84ce742db0f6c70510d0159dad8f7825908",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=73398dea26de9899fb4baa94098ad0a61f435c72",
+                "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=fc814a30fc4f0bc54fcea7d9a7462f5457aab061",
+                "https://nvd.nist.gov/vuln/detail/CVE-2023-0466",
+                "https://security.netapp.com/advisory/ntap-20230414-0001/",
+                "https://www.cve.org/CVERecord?id=CVE-2023-0466",
+                "https://www.openssl.org/news/secadv/20230328.txt"
+              ],
+              "PublishedDate": "2023-03-28T15:15:00Z",
+              "LastModifiedDate": "2023-04-14T23:15:00Z"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "scanStartedOn": "2023-04-16T08:44:24.645989-07:00",
+    "scanFinishedOn": "2023-04-16T08:44:24.645989-07:00"
+  }
+}

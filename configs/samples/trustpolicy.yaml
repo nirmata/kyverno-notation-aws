@@ -1,0 +1,17 @@
+apiVersion: notation.nirmata.io/v1alpha1
+kind: TrustPolicy
+metadata:
+  name: trustpolicy-sample
+spec:
+  version: '1.0'
+  trustPolicies:
+  - name: aws-signer-tp
+    registryScopes:
+    - "*"
+    signatureVerification:
+      level: strict
+      override: {}
+    trustStores:
+    - signingAuthority:aws-signer-ts
+    trustedIdentities:
+    - "arn:aws:signer:${aws_region}:${aws_account_id}:/signing-profiles/notationtest"

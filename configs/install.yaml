@@ -1,0 +1,293 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kyverno-notation-aws
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: selfsigned-issuer
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: my-selfsigned-ca
+  namespace: kyverno-notation-aws
+spec:
+  isCA: true
+  commonName: my-selfsigned-ca
+  secretName: root-secret
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: selfsigned-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: my-ca-issuer
+  namespace: kyverno-notation-aws
+spec:
+  ca:
+    secretName: root-secret
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kyverno-notation-aws-cert
+  namespace: kyverno-notation-aws
+spec:
+  secretName: kyverno-notation-aws-tls
+  duration: 2160h # 90d
+  renewBefore: 360h # 15d
+  subject:
+    organizations:
+      - nirmata
+  # The use of the common name field has been deprecated since 2000 and is
+  # discouraged from being used.
+  commonName: kyverno-notation-aws
+  isCA: false
+  privateKey:
+    algorithm: RSA
+    encoding: PKCS1
+    size: 2048
+  usages:
+    - server auth
+    - client auth
+  # At least one of a DNS Name, URI, or IP address is required.
+  dnsNames:
+    - svc.kyverno-notation-aws
+  # Issuer references are always required.
+  issuerRef:
+    name: my-ca-issuer
+    # We can reference ClusterIssuers by changing the kind here.
+    # The default value is Issuer (i.e. a locally namespaced Issuer)
+    kind: Issuer
+    # This is optional since cert-manager will default to this value however
+    # if you are using an external issuer, change this to that issuer group.
+    group: cert-manager.io
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kyverno-notation-aws
+  namespace: kyverno-notation-aws
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::${aws_account_id}:role/kyverno-notation-aws
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kyverno-notation-aws-clusterrole
+rules:
+- apiGroups:
+  - notation.nirmata.io
+  resources:
+  - trustpolicies
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - notation.nirmata.io
+  resources:
+  - trustpolicies/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - notation.nirmata.io
+  resources:
+  - truststores
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - notation.nirmata.io
+  resources:
+  - truststores/finalizers
+  verbs:
+  - update
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kyverno-notation-aws-clusterrolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kyverno-notation-aws-clusterrole
+subjects:
+- kind: ServiceAccount
+  name: kyverno-notation-aws
+  namespace: kyverno-notation-aws
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: kyverno-notation-aws-role
+  namespace: kyverno-notation-aws
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - "secrets"
+  - "configmaps"
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: kyverno-notation-aws-rolebinding
+  namespace: kyverno-notation-aws
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: kyverno-notation-aws-role
+subjects:
+- kind: ServiceAccount
+  name: kyverno-notation-aws
+  namespace: kyverno-notation-aws
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: kyverno-notation-aws
+  name: kyverno-notation-aws
+  namespace: kyverno-notation-aws
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: kyverno-notation-aws
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: kyverno-notation-aws
+    spec:
+      securityContext:
+        runAsNonRoot: true
+      containers:
+      - image: ghcr.io/nirmata/kyverno-notation-aws:v1-alpha1
+        imagePullPolicy: Always
+        name: kyverno-notation-aws
+        args:
+        # - --debug
+        # USE IF IRSA IS NOT CONFIGURED
+        #  - --imagePullSecrets=regcred
+        resources:
+          limits:
+            memory: 512Mi
+          requests:
+            memory: 32Mi
+            cpu: 100m
+        securityContext:
+          runAsUser: 2000
+          runAsGroup: 3000
+          allowPrivilegeEscalation: false
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+              - ALL
+        env:
+        - name: NOTATION_DIR
+          value: /notation
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace  
+        # USE IF IRSA IS NOT CONFIGURED
+        # - name: AWS_ACCESS_KEY_ID
+        #   value: ${AWS_ACCESS_KEY_ID}
+        # - name: AWS_SECRET_ACCESS_KEY
+        #   value: ${AWS_SECRET_ACCESS_KEY}
+        - name: AWS_REGION
+          value: us-west-2
+        volumeMounts:
+          - name: notation
+            mountPath: /notation
+          - name: certs
+            mountPath: /certs
+      - image: ghcr.io/nirmata/kube-notation:v1-alpha1
+        imagePullPolicy: Always
+        name: kube-notation
+        env:
+        - name: NOTATION_DIR
+          value: /notation
+        securityContext:
+          runAsUser: 2000
+          runAsGroup: 3000
+          allowPrivilegeEscalation: false
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+              - ALL          
+        resources:
+          limits:
+            memory: 512Mi
+          requests:
+            memory: 32Mi
+            cpu: 100m
+        volumeMounts:
+          - name: notation
+            mountPath: /notation            
+      volumes:
+        - name: notation
+          emptyDir: {}
+        - name: certs
+          secret:
+            defaultMode: 420
+            secretName: kyverno-notation-aws-tls
+      serviceAccountName: kyverno-notation-aws
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: kyverno-notation-aws
+  name: svc
+  namespace: kyverno-notation-aws
+spec:
+  ports:
+  - port: 443
+    name: https
+    protocol: TCP
+    targetPort: 9443
+  selector:
+    app: kyverno-notation-aws
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: notation-plugin-config
+  namespace: kyverno-notation-aws
+data:
+  debug: "false"
+  signer-endpoint-url: https://wallaby-gamma.us-west-2.amazonaws.com

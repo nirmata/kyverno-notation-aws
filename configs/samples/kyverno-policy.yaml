@@ -1,0 +1,60 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: check-images     
+spec:
+  validationFailureAction: Enforce
+  webhookTimeoutSeconds: 30
+  rules:
+  - name: call-aws-signer-extension
+    match:
+      any:
+      - resources:
+          namespaces:
+          - test-notation
+          kinds:
+          - Pod
+    context:
+    - name: result
+      apiCall:
+        method: POST
+        data:
+        - key: images
+          value: "{{ request.object.spec.[ephemeralContainers, initContainers, containers][].image }}"
+        service:
+          url: https://svc.kyverno-notation-aws/checkimages
+          caBundle: |-
+            -----BEGIN CERTIFICATE-----
+            MIICiTCCAjGgAwIBAgIRALR6yVF/5DkPu6ZMUrUZaIgwCgYIKoZIzj0EAwIwGzEZ
+            MBcGA1UEAxMQbXktc2VsZnNpZ25lZC1jYTAeFw0yMzA1MDEwMTA3MTBaFw0yMzA3
+            MzAwMTA3MTBaMDExEDAOBgNVBAoTB25pcm1hdGExHTAbBgNVBAMTFGt5dmVybm8t
+            bm90YXRpb24tYXdzMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAt5iL
+            fiLtxh6ox03Gw3wOTOhQGEfzfZBpBul9WgHJaojgSYcrgzNm+ZG2Jcc6VBXiQm5i
+            fVPJhVfXkEhgBp9lsdrC+QzAeMmQ6UYKiqPHq8UTtZ2PiXDIt73sQhmxGhKwzquG
+            Pgf+1iIaFFcqzfuOjOg61x43Umg6E3AqTxRt5m9llmTXY0kYcJHPUGuxfw3MZlD4
+            gMdQDe+yTEspLRotqMvToJTTqJrvDvlkjr5G0vHlFZFwXu1Zd2NnKk9cjAgBcxlL
+            YHmT1AE6tzTspswjBfnMlIAhDu8iOyVu9QVq8xSZdjcefA/qZeJrzDFil+uWCfeN
+            CKebxgol6caooRohZwIDAQABo3UwczAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYB
+            BQUHAwIwDAYDVR0TAQH/BAIwADAfBgNVHSMEGDAWgBS965wHGMrcvcyJQPiNQRvE
+            m1TfhjAjBgNVHREEHDAaghhzdmMua3l2ZXJuby1ub3RhdGlvbi1hd3MwCgYIKoZI
+            zj0EAwIDRgAwQwIfIgBg6T/4u/Xs12yb4mJGGypp9mG/JlZVwK30YcWBnAIgVtJF
+            5P2QTT5upEqCpI4GoHE2dz7zzAGS9vtvb+/PKT8=
+            -----END CERTIFICATE-----
+            -----BEGIN CERTIFICATE-----
+            MIIBdzCCARygAwIBAgIQcxvxf0fOuIjvNHRnbW9nmTAKBggqhkjOPQQDAjAbMRkw
+            FwYDVQQDExBteS1zZWxmc2lnbmVkLWNhMB4XDTIzMDUwMTAxMDcwNVoXDTIzMDcz
+            MDAxMDcwNVowGzEZMBcGA1UEAxMQbXktc2VsZnNpZ25lZC1jYTBZMBMGByqGSM49
+            AgEGCCqGSM49AwEHA0IABG9CwGP3zAVe5kkBlBil1cNZ1r2urVgs1HMZnQ8pN5DP
+            ToZ2Yk41pTEdTIu5h8pqkCmkURfFAI/7O2ZDdfidIkejQjBAMA4GA1UdDwEB/wQE
+            AwICpDAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBS965wHGMrcvcyJQPiNQRvE
+            m1TfhjAKBggqhkjOPQQDAgNJADBGAiEAn4Fiut8xZBitAk69AIQomIoktLCBklao
+            Me8KGurGA00CIQC6H+0s9b4wKDesHW4Uw1KO3Xm7+61CfMilstT3ozhECw==
+            -----END CERTIFICATE-----
+    validate:
+      message: "not allowed"
+      deny:
+        conditions:
+          all:
+          - key: "{{ result.verified }}"
+            operator: EQUALS
+            value: false
