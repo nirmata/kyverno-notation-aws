@@ -7,13 +7,13 @@ Kyverno extension service for Notation and the AWS signer
 1. Create a signing profile:
 
 ```sh
-aws signer put-signing-profile --profile-name notation-test --platform-id Notary-v2-OCI-SHA384-ECDSA --signature-validity-period 'value=12, type=MONTHS' --endpoint-url https://wallaby-gamma.us-west-2.amazonaws.com
+aws signer put-signing-profile --profile-name notation-test --platform-id Notary-v2-OCI-SHA384-ECDSA --signature-validity-period 'value=12, type=MONTHS'
 ```
 
 2. Get the signing profile ARN
 
 ```sh
- aws signer get-signing-profile --profile-name notationtest --endpoint-url https://wallaby-gamma.us-west-2.amazonaws.com/
+ aws signer get-signing-profile --profile-name notationtest
 {
     "profileName": "notationtest",
     "profileVersion": "FpVhlaR6yz",
@@ -28,6 +28,12 @@ aws signer put-signing-profile --profile-name notation-test --platform-id Notary
     "arn": "arn:aws:signer:${aws_region}:${aws_account_id}:/signing-profiles/notationtest",
     "tags": {}
 }
+```
+
+3. Sign the image using `notation` and the AWS signer:
+
+```sh
+notation sign 844333597536.dkr.ecr.us-east-1.amazonaws.com/net-monitor:v1 --key notationtest --signature-manifest image
 ```
 
 # Install
@@ -97,14 +103,6 @@ a. Setup a custom policy `notation-signer-policy` with the following permissions
             "Sid": "VisualEditor0",
             "Effect": "Allow",
             "Action": [
-                "signer:ListProfilePermissions",
-                "signer:GetSigningProfile",
-                "signer:ListSigningJobs",
-                "signer:ListSigningPlatforms",
-                "signer:ListSigningProfiles",
-                "signer:DescribeSigningJob",
-                "signer:ListTagsForResource",
-                "signer:GetSigningPlatform",
                 "signer:GetRevocationStatus"
             ],
             "Resource": "*"
@@ -112,8 +110,6 @@ a. Setup a custom policy `notation-signer-policy` with the following permissions
     ]
 }
 ```
-
-NOTE: for production usage, replace the wildcard resource with a specific ARN.
 
 b. Setup a IRSA role `kyverno-notation-aws` and attach two policies to it:
 * the `notation-signer-policy` 

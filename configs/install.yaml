@@ -79,7 +79,7 @@ metadata:
   name: kyverno-notation-aws
   namespace: kyverno-notation-aws
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::${aws_account_id}:role/kyverno-notation-aws
+    eks.amazonaws.com/role-arn: arn:aws:iam::844333597536:role/kyverno-notation-aws
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -290,4 +290,3 @@ metadata:
   namespace: kyverno-notation-aws
 data:
   debug: "false"
-  signer-endpoint-url: https://wallaby-gamma.us-west-2.amazonaws.com
