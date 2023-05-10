@@ -30,13 +30,16 @@ func main() {
 	flag.BoolVar(&flagAllowInsecureRegistry, "allowInsecureRegistry", false, "Whether to allow insecure connections to registries. Not recommended.")
 
 	var flagECRRegion string
-	flag.StringVar(&flagECRRegion, "ecr-region", "us-east-1", "ECR region for authentication")
+	flag.StringVar(&flagECRRegion, "ecrRegion", "us-east-1", "ECR region for authentication")
 
 	var flagNotationPluginConfigMap string
-	flag.StringVar(&flagNotationPluginConfigMap, "plugin-configmap", "notation-plugin-config", "ConfigMap with notation plugin configuration")
+	flag.StringVar(&flagNotationPluginConfigMap, "pluginConfigMap", "notation-plugin-config", "ConfigMap with notation plugin configuration")
 
 	var flagEnableDebug bool
 	flag.BoolVar(&flagEnableDebug, "debug", false, "Enable debug logging")
+
+	var flagMaxSignatureAtempts int
+	flag.IntVar(&flagMaxSignatureAtempts, "maxSignatureAttempts", 30, "Maximum number of signature envelopes that will be processed for verification")
 
 	flag.Parse()
 	logger, err := zap.NewDevelopment()
@@ -63,6 +66,7 @@ func main() {
 			withImagePullSecrets(flagImagePullSecrets),
 			withInsecureRegistry(flagAllowInsecureRegistry),
 			withPluginConfig(flagNotationPluginConfigMap),
+			withMaxSignatureAttempts(flagMaxSignatureAtempts),
 			withEnableDebug(flagEnableDebug))
 		return err
 	}

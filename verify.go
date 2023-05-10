@@ -25,18 +25,19 @@ import (
 )
 
 type verifier struct {
-	logger           *zap.SugaredLogger
-	kubeClient       *kubernetes.Clientset
-	notationVerifier notation.Verifier
-	informerFactory  kubeinformers.SharedInformerFactory
-	secretLister     corev1listers.SecretNamespaceLister
-	configMapLister  corev1listers.ConfigMapNamespaceLister
-	imagePullSecrets string
-	ecrRegion        string
-	insecureRegistry bool
-	pluginConfigMap  string
-	debug            bool
-	stopCh           chan struct{}
+	logger               *zap.SugaredLogger
+	kubeClient           *kubernetes.Clientset
+	notationVerifier     notation.Verifier
+	informerFactory      kubeinformers.SharedInformerFactory
+	secretLister         corev1listers.SecretNamespaceLister
+	configMapLister      corev1listers.ConfigMapNamespaceLister
+	imagePullSecrets     string
+	ecrRegion            string
+	insecureRegistry     bool
+	pluginConfigMap      string
+	maxSignatureAttempts int
+	debug                bool
+	stopCh               chan struct{}
 }
 
 type verifierOptsFunc func(*verifier)
@@ -62,6 +63,12 @@ func withInsecureRegistry(insecureRegistry bool) verifierOptsFunc {
 func withPluginConfig(pluginConfigMap string) verifierOptsFunc {
 	return func(v *verifier) {
 		v.pluginConfigMap = pluginConfigMap
+	}
+}
+
+func withMaxSignatureAttempts(maxSignatureAttempts int) verifierOptsFunc {
+	return func(v *verifier) {
+		v.maxSignatureAttempts = maxSignatureAttempts
 	}
 }
 
@@ -161,7 +168,7 @@ func (v *verifier) verifyImage(ctx context.Context, image string) (string, error
 
 	opts := notation.RemoteVerifyOptions{
 		ArtifactReference:    reference.String(),
-		MaxSignatureAttempts: 10,
+		MaxSignatureAttempts: v.maxSignatureAttempts,
 		PluginConfig:         pluginConfig,
 	}
 

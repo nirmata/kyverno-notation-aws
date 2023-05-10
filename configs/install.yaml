@@ -193,13 +193,14 @@ spec:
       securityContext:
         runAsNonRoot: true
       containers:
-      - image: ghcr.io/nirmata/kyverno-notation-aws:v1-alpha1
+      - image: ghcr.io/nirmata/kyverno-notation-aws:v1-alpha2
         imagePullPolicy: Always
         name: kyverno-notation-aws
         args:
+        - --ecrRegion=us-west-2
         # - --debug
         # USE IF IRSA IS NOT CONFIGURED
-        #  - --imagePullSecrets=regcred
+        # - --imagePullSecrets=regcred
         resources:
           limits:
             memory: 512Mi

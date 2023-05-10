@@ -14,4 +14,4 @@ spec:
     trustStores:
     - signingAuthority:aws-signer-ts
     trustedIdentities:
-    - "arn:aws:signer:${aws_region}:${aws_account_id}:/signing-profiles/notationtest"
+    - "arn:aws:signer:${REGION}:${ACCOUNT}:/signing-profiles/kyverno_demo"

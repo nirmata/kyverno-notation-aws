@@ -7,17 +7,17 @@ Kyverno extension service for Notation and the AWS signer
 1. Create a signing profile:
 
 ```sh
-aws signer put-signing-profile --profile-name notation-test --platform-id Notary-v2-OCI-SHA384-ECDSA --signature-validity-period 'value=12, type=MONTHS'
+aws signer put-signing-profile --profile-name kyverno_demo --platform-id Notary-v2-OCI-SHA384-ECDSA --signature-validity-period 'value=12, type=MONTHS'
 ```
 
 2. Get the signing profile ARN
 
 ```sh
- aws signer get-signing-profile --profile-name notationtest
+ aws signer get-signing-profile --profile-name kyverno_demo
 {
-    "profileName": "notationtest",
-    "profileVersion": "FpVhlaR6yz",
-    "profileVersionArn": "arn:aws:signer:${aws_region}:${aws_account_id}:/signing-profiles/notationtest/FpVhlaR6yz",
+    "profileName": "kyverno_demo",
+    "profileVersion": "2oCN6RHYVI",
+    "profileVersionArn": "arn:aws:signer:${REGION}:${ACCOUNT}:/signing-profiles/kyverno_demo/2oCN6RHYVI",
     "platformId": "Notary-v2-OCI-SHA384-ECDSA",
     "platformDisplayName": "Notary v2 for Container Registries",
     "signatureValidityPeriod": {
@@ -25,15 +25,21 @@ aws signer put-signing-profile --profile-name notation-test --platform-id Notary
         "type": "MONTHS"
     },
     "status": "Active",
-    "arn": "arn:aws:signer:${aws_region}:${aws_account_id}:/signing-profiles/notationtest",
+    "arn": "arn:aws:signer:${REGION}:${ACCOUNT}:/signing-profiles/kyverno_demo",
     "tags": {}
 }
+```
+
+3. Configure the signer in notation
+
+```sh
+notation key add --id arn:aws:signer:${REGION}:${ACCOUNT}:/signing-profiles/kyverno_demo --plugin com.amazonaws.signer.notation.plugin kyverno_demo
 ```
 
 3. Sign the image using `notation` and the AWS signer:
 
 ```sh
-notation sign 844333597536.dkr.ecr.us-east-1.amazonaws.com/net-monitor:v1 --key notationtest --signature-manifest image
+notation sign 844333597536.dkr.ecr.us-east-1.amazonaws.com/kyverno-demo:v1 --key kyverno_demo --signature-manifest image
 ```
 
 # Install
@@ -66,11 +72,11 @@ kubectl apply -f configs/crds/
 kubectl apply -f configs/samples/truststore.yaml
 ```
 
-Update the the `${aws_region}` and `${aws_account_id}` in the [trustpolicy.yaml](configs/samples/trustpolicy.yaml) and then install in your cluster:
+Update the the `${REGION}` and `${ACCOUNT}` in the [trustpolicy.yaml](configs/samples/trustpolicy.yaml) and then install in your cluster:
 
 ```yaml
     trustedIdentities:
-    - "arn:aws:signer:${aws_region}:${aws_account_id}:/signing-profiles/notationtest"
+    - "arn:aws:signer:${REGION}:${ACCOUNT}:/signing-profiles/kyverno_demo"
 ```
 
 ```sh
@@ -156,7 +162,7 @@ kubectl create ns test-notation
 Run a signed image:
 
 ```sh
-kubectl -n test-notation run test --image=844333597536.dkr.ecr.us-east-1.amazonaws.com/net-monitor:v1 --dry-run=server
+kubectl -n test-notation run test --image=844333597536.dkr.ecr.us-west-2.amazonaws.com/kyverno-demo:v1 --dry-run=server
 pod/test created (server dry run)
 ```
 
