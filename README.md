@@ -38,7 +38,7 @@ notation key add --id arn:aws:signer:${REGION}:${ACCOUNT}:/signing-profiles/kyve
 
 3. Sign the image using `notation` and the AWS signer:
 
-(you may need to login to ECR first: `aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${REGISTRY}`)
+(you may need to login to ECR first: `aws ecr get-login-password --region ${REGION} | notation login --username AWS --password-stdin ${REGISTRY}`)
 
 ```sh
 notation sign 844333597536.dkr.ecr.us-east-1.amazonaws.com/kyverno-demo:v1 --key kyvernodemo --signature-manifest image
