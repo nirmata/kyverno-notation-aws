@@ -102,7 +102,7 @@ func newVerifier(logger *zap.SugaredLogger, opts ...verifierOptsFunc) (*verifier
 	}
 
 	v.logger.Infow("initialized", "namespace", namespace, "secrets", v.imagePullSecrets,
-		"ecrRegion", "insecureRegistry", v.insecureRegistry)
+		"insecureRegistry", v.insecureRegistry)
 
 	v.stopCh = make(chan struct{})
 	go v.informerFactory.Start(v.stopCh)

@@ -196,8 +196,7 @@ spec:
       - image: ghcr.io/nirmata/kyverno-notation-aws:v1-rc1
         imagePullPolicy: Always
         name: kyverno-notation-aws
-        args:
-        - --ecrRegion=us-west-2
+        # args:
         # - --debug
         # USE IF IRSA IS NOT CONFIGURED
         # - --imagePullSecrets=regcred

@@ -7,17 +7,17 @@ Kyverno extension service for Notation and the AWS signer
 1. Create a signing profile:
 
 ```sh
-aws signer put-signing-profile --profile-name kyverno_demo --platform-id Notation-OCI-SHA384-ECDSA --signature-validity-period 'value=12, type=MONTHS'
+aws signer put-signing-profile --profile-name kyvernodemo --platform-id Notation-OCI-SHA384-ECDSA --signature-validity-period 'value=12, type=MONTHS'
 ```
 
 2. Get the signing profile ARN
 
 ```sh
- aws signer get-signing-profile --profile-name kyverno_demo
+ aws signer get-signing-profile --profile-name kyvernodemo
 {
-    "profileName": "kyverno_demo",
+    "profileName": "kyvernodemo",
     "profileVersion": "2oCN6RHYVI",
-    "profileVersionArn": "arn:aws:signer:${REGION}:${ACCOUNT}:/signing-profiles/kyverno_demo/2oCN6RHYVI",
+    "profileVersionArn": "arn:aws:signer:${REGION}:${ACCOUNT}:/signing-profiles/kyvernodemo/2oCN6RHYVI",
     "platformId": "Notation-OCI-SHA384-ECDSA",
     "platformDisplayName": "Notary v2 for Container Registries",
     "signatureValidityPeriod": {
@@ -25,7 +25,7 @@ aws signer put-signing-profile --profile-name kyverno_demo --platform-id Notatio
         "type": "MONTHS"
     },
     "status": "Active",
-    "arn": "arn:aws:signer:${REGION}:${ACCOUNT}:/signing-profiles/kyverno_demo",
+    "arn": "arn:aws:signer:${REGION}:${ACCOUNT}:/signing-profiles/kyvernodemo",
     "tags": {}
 }
 ```
@@ -33,13 +33,15 @@ aws signer put-signing-profile --profile-name kyverno_demo --platform-id Notatio
 3. Configure the signer in notation
 
 ```sh
-notation key add --id arn:aws:signer:${REGION}:${ACCOUNT}:/signing-profiles/kyverno_demo --plugin com.amazonaws.signer.notation.plugin kyverno_demo
+notation key add --id arn:aws:signer:${REGION}:${ACCOUNT}:/signing-profiles/kyvernodemo --plugin com.amazonaws.signer.notation.plugin kyvernodemo
 ```
 
 3. Sign the image using `notation` and the AWS signer:
 
+(you may need to login to ECR first: `aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${REGISTRY}`)
+
 ```sh
-notation sign 844333597536.dkr.ecr.us-east-1.amazonaws.com/kyverno-demo:v1 --key kyverno_demo --signature-manifest image
+notation sign 844333597536.dkr.ecr.us-east-1.amazonaws.com/kyverno-demo:v1 --key kyvernodemo --signature-manifest image
 ```
 
 # Install
@@ -76,7 +78,7 @@ Update the the `${REGION}` and `${ACCOUNT}` in the [trustpolicy.yaml](configs/sa
 
 ```yaml
     trustedIdentities:
-    - "arn:aws:signer:${REGION}:${ACCOUNT}:/signing-profiles/kyverno_demo"
+    - "arn:aws:signer:${REGION}:${ACCOUNT}:/signing-profiles/kyvernodemo"
 ```
 
 ```sh
@@ -169,14 +171,15 @@ pod/test created (server dry run)
 Attempt to run an unsigned image:
 
 ```sh
-kubectl -n test-notation run test --image=844333597536.dkr.ecr.us-east-1.amazonaws.com/net-monitor:v1-unsigned
+kubectl -n test-notation run test --image=844333597536.dkr.ecr.us-west-2.amazonaws.com/kyverno-demo:v1-unsigned
+
 Error from server: admission webhook "validate.kyverno.svc-fail" denied the request:
 
 policy Pod/test-notation/test for resource error:
 
 check-images:
   call-aws-signer-extension: |
-    failed to load context: failed to execute APICall: HTTP 500 Internal Server Error: failed to verify image 844333597536.dkr.ecr.us-east-1.amazonaws.com/net-monitor:v1-unsigned: no signature is associated with "844333597536.dkr.ecr.us-east-1.amazonaws.com/net-monitor@sha256:f04288efc7e65a84be74d4fc63e235ac3c6c603cf832e442e0bd3f240b10a91b", make sure the image was signed successfully
+    failed to check deny preconditions: failed to substitute variables in deny conditions: failed to resolve result.verified at path /all/0/key: failed to execute APICall: HTTP 500 Internal Server Error: failed to verify image 844333597536.dkr.ecr.us-west-2.amazonaws.com/kyverno-demo:v1-unsigned: no signature is associated with "844333597536.dkr.ecr.us-west-2.amazonaws.com/kyverno-demo@sha256:74a98f0e4d750c9052f092a7f7a72de7b20f94f176a490088f7a744c76c53ea5", make sure the artifact was signed successfully
 ```
 
 # Troubleshooting
