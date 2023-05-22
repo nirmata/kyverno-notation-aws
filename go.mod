@@ -8,15 +8,15 @@ require (
 	github.com/cenkalti/backoff/v4 v4.2.0
 	github.com/google/go-containerregistry v0.14.0
 	github.com/google/go-containerregistry/pkg/authn/kubernetes v0.0.0-20230403180904-b8d1c0a1df12
-	github.com/notaryproject/notation-core-go v1.0.0-rc.2
-	github.com/notaryproject/notation-go v1.0.0-rc.3
+	github.com/notaryproject/notation-core-go v1.0.0-rc.3
+	github.com/notaryproject/notation-go v1.0.0-rc.5
 	github.com/opencontainers/image-spec v1.1.0-rc2
 	github.com/pkg/errors v0.9.1
 	go.uber.org/multierr v1.11.0
 	go.uber.org/zap v1.24.0
 	k8s.io/api v0.26.3
 	k8s.io/client-go v0.26.3
-	oras.land/oras-go/v2 v2.0.2
+	oras.land/oras-go/v2 v2.1.0
 	sigs.k8s.io/controller-runtime v0.14.6
 )
 
@@ -84,13 +84,13 @@ require (
 	github.com/x448/float16 v0.8.4 // indirect
 	go.uber.org/atomic v1.10.0 // indirect
 	go.uber.org/goleak v1.2.1 // indirect
-	golang.org/x/crypto v0.8.0 // indirect
+	golang.org/x/crypto v0.9.0 // indirect
 	golang.org/x/mod v0.10.0 // indirect
-	golang.org/x/net v0.9.0 // indirect
+	golang.org/x/net v0.10.0 // indirect
 	golang.org/x/oauth2 v0.7.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
-	golang.org/x/sys v0.7.0 // indirect
-	golang.org/x/term v0.7.0 // indirect
+	golang.org/x/sys v0.8.0 // indirect
+	golang.org/x/term v0.8.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.2.0 // indirect

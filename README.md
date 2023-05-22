@@ -7,7 +7,7 @@ Kyverno extension service for Notation and the AWS signer
 1. Create a signing profile:
 
 ```sh
-aws signer put-signing-profile --profile-name kyverno_demo --platform-id Notary-v2-OCI-SHA384-ECDSA --signature-validity-period 'value=12, type=MONTHS'
+aws signer put-signing-profile --profile-name kyverno_demo --platform-id Notation-OCI-SHA384-ECDSA --signature-validity-period 'value=12, type=MONTHS'
 ```
 
 2. Get the signing profile ARN
@@ -18,7 +18,7 @@ aws signer put-signing-profile --profile-name kyverno_demo --platform-id Notary-
     "profileName": "kyverno_demo",
     "profileVersion": "2oCN6RHYVI",
     "profileVersionArn": "arn:aws:signer:${REGION}:${ACCOUNT}:/signing-profiles/kyverno_demo/2oCN6RHYVI",
-    "platformId": "Notary-v2-OCI-SHA384-ECDSA",
+    "platformId": "Notation-OCI-SHA384-ECDSA",
     "platformDisplayName": "Notary v2 for Container Registries",
     "signatureValidityPeriod": {
         "value": 12,

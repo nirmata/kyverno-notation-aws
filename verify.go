@@ -32,7 +32,6 @@ type verifier struct {
 	secretLister         corev1listers.SecretNamespaceLister
 	configMapLister      corev1listers.ConfigMapNamespaceLister
 	imagePullSecrets     string
-	ecrRegion            string
 	insecureRegistry     bool
 	pluginConfigMap      string
 	maxSignatureAttempts int
@@ -41,12 +40,6 @@ type verifier struct {
 }
 
 type verifierOptsFunc func(*verifier)
-
-func withECRregion(region string) verifierOptsFunc {
-	return func(v *verifier) {
-		v.ecrRegion = region
-	}
-}
 
 func withImagePullSecrets(secrets string) verifierOptsFunc {
 	return func(v *verifier) {
@@ -109,7 +102,7 @@ func newVerifier(logger *zap.SugaredLogger, opts ...verifierOptsFunc) (*verifier
 	}
 
 	v.logger.Infow("initialized", "namespace", namespace, "secrets", v.imagePullSecrets,
-		"ecrRegion", v.ecrRegion, "insecureRegistry", v.insecureRegistry)
+		"ecrRegion", "insecureRegistry", v.insecureRegistry)
 
 	v.stopCh = make(chan struct{})
 	go v.informerFactory.Start(v.stopCh)
@@ -166,7 +159,7 @@ func (v *verifier) verifyImage(ctx context.Context, image string) (string, error
 		}
 	}
 
-	opts := notation.RemoteVerifyOptions{
+	opts := notation.VerifyOptions{
 		ArtifactReference:    reference.String(),
 		MaxSignatureAttempts: v.maxSignatureAttempts,
 		PluginConfig:         pluginConfig,

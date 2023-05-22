@@ -29,9 +29,6 @@ func main() {
 	var flagAllowInsecureRegistry bool
 	flag.BoolVar(&flagAllowInsecureRegistry, "allowInsecureRegistry", false, "Whether to allow insecure connections to registries. Not recommended.")
 
-	var flagECRRegion string
-	flag.StringVar(&flagECRRegion, "ecrRegion", "us-east-1", "ECR region for authentication")
-
 	var flagNotationPluginConfigMap string
 	flag.StringVar(&flagNotationPluginConfigMap, "pluginConfigMap", "notation-plugin-config", "ConfigMap with notation plugin configuration")
 
@@ -62,7 +59,6 @@ func main() {
 	var verifier *verifier
 	initVerifier := func() error {
 		verifier, err = newVerifier(slog,
-			withECRregion(flagECRRegion),
 			withImagePullSecrets(flagImagePullSecrets),
 			withInsecureRegistry(flagAllowInsecureRegistry),
 			withPluginConfig(flagNotationPluginConfigMap),

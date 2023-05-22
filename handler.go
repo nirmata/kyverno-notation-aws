@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"io"
 	"log"
 	"net/http"
 )
@@ -18,8 +19,11 @@ func (v *verifier) handleCheckImages(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var requestData RequestData
-	err := json.NewDecoder(r.Body).Decode(&requestData)
+	//err := json.NewDecoder(r.Body).Decode(&requestData)
+	raw, _ := io.ReadAll(r.Body)
+	err := json.Unmarshal(raw, &requestData)
 	if err != nil {
+		v.logger.Infof("failed to decode %s: %v", string(raw), err)
 		http.Error(w, err.Error(), http.StatusNotAcceptable)
 		return
 	}

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -20,7 +21,24 @@ func (v *verifier) getAuthConfig(ctx context.Context, ref registry.Reference) (a
 		return v.getAuthFromSecret(ctx, ref)
 	}
 
-	return v.getAuthFromIRSA(ctx, v.ecrRegion)
+	ecrRegion, err := getRegion(ref)
+	if err == nil {
+		v.logger.Infof("using region: %s", ecrRegion)
+	} else {
+		ecrRegion = os.Getenv("AWS_REGION")
+		v.logger.Infof("using default region '%s': %v", ecrRegion, err)
+	}
+
+	return v.getAuthFromIRSA(ctx, ecrRegion)
+}
+
+func getRegion(ref registry.Reference) (string, error) {
+	toks := strings.Split(ref.Registry, ".")
+	if len(toks) >= 6 {
+		return toks[3], nil
+	}
+
+	return "", fmt.Errorf("failed to extract region from %s", ref.Registry)
 }
 
 func (v *verifier) getAuthFromIRSA(ctx context.Context, awsEcrRegion string) (authn.AuthConfig, error) {
