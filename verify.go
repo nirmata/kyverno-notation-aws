@@ -116,21 +116,43 @@ func (v *verifier) stop() {
 	v.stopCh <- struct{}{}
 }
 
-func (v *verifier) verifyImages(ctx context.Context, images []string) ([]byte, error) {
-	digests := map[string]string{}
-	for _, image := range images {
-		digest, err := v.verifyImage(ctx, image)
+func (v *verifier) verifyImages(ctx context.Context, images *ImageInfos) ([]byte, error) {
+	for name, image := range images.Containers {
+		digest, err := v.verifyImage(ctx, image.String())
 		if err != nil {
 			v.logger.Errorf("verification failed for image %s: %v", image, err)
 			return nil, errors.Wrapf(err, "failed to verify image %s", image)
 		}
 
-		digests[image] = digest
+		image.Digest = digest
+		images.Containers[name] = image
+	}
+
+	for name, image := range images.InitContainers {
+		digest, err := v.verifyImage(ctx, image.String())
+		if err != nil {
+			v.logger.Errorf("verification failed for image %s: %v", image, err)
+			return nil, errors.Wrapf(err, "failed to verify image %s", image)
+		}
+
+		image.Digest = digest
+		images.InitContainers[name] = image
+	}
+
+	for name, image := range images.EphemeralContainers {
+		digest, err := v.verifyImage(ctx, image.String())
+		if err != nil {
+			v.logger.Errorf("verification failed for image %s: %v", image, err)
+			return nil, errors.Wrapf(err, "failed to verify image %s", image)
+		}
+
+		image.Digest = digest
+		images.EphemeralContainers[name] = image
 	}
 
 	results := map[string]interface{}{}
 	results["verified"] = true
-	results["digests"] = digests
+	results["images"] = images
 
 	data, err := json.MarshalIndent(results, "  ", "  ")
 	if err != nil {

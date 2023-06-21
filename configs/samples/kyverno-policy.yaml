@@ -20,7 +20,7 @@ spec:
         method: POST
         data:
         - key: images
-          value: "{{ request.object.spec.[ephemeralContainers, initContainers, containers][].image }}"
+          value: "{{ images }}"
         service:
           url: https://svc.kyverno-notation-aws/checkimages
           caBundle: |-
@@ -58,3 +58,11 @@ spec:
           - key: "{{ result.verified }}"
             operator: EQUALS
             value: false
+    mutate:
+      foreach:
+      - list: "request.object.spec.containers"
+        patchStrategicMerge:
+          spec:
+            containers:
+            - name: "{{ element.name }}"           
+              image: '{{result.images.containers."{{element.name}}".registry}/{{result.images.containers."{{element.name}}".path}}@{{result.images.containers."{{element.name}}".digest}}'
