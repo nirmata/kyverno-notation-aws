@@ -15,7 +15,7 @@ spec:
           kinds:
           - Pod
     context:
-    - name: result
+    - name: response
       apiCall:
         method: POST
         data:
@@ -55,14 +55,13 @@ spec:
       deny:
         conditions:
           all:
-          - key: "{{ result.verified }}"
+          - key: "{{ response.verified }}"
             operator: EQUALS
             value: false
     mutate:
       foreach:
-      - list: "request.object.spec.containers"
-        patchStrategicMerge:
-          spec:
-            containers:
-            - name: "{{ element.name }}"           
-              image: '{{result.images.containers."{{element.name}}".registry}/{{result.images.containers."{{element.name}}".path}}@{{result.images.containers."{{element.name}}".digest}}'
+      - list: "response.results"
+        patchesJson6902: |-
+            - path: {{ element.path }}
+              op: replace
+              value: {{ element.image }}

@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-type ImageInfo struct {
+type Image struct {
 	// Registry is the URL address of the image registry e.g. `docker.io`
 	Registry string `json:"registry,omitempty"`
 
@@ -19,7 +19,7 @@ type ImageInfo struct {
 	Digest string `json:"digest,omitempty"`
 }
 
-func (i *ImageInfo) String() string {
+func (i *Image) String() string {
 	var image string
 	if i.Registry != "" {
 		image = fmt.Sprintf("%s/%s", i.Registry, i.Path)
@@ -33,12 +33,19 @@ func (i *ImageInfo) String() string {
 	}
 }
 
-func (i *ImageInfo) ReferenceWithTag() string {
+func (i *Image) ReferenceWithTag() string {
 	if i.Registry != "" {
 		return fmt.Sprintf("%s/%s:%s", i.Registry, i.Path, i.Tag)
 	} else {
 		return fmt.Sprintf("%s:%s", i.Path, i.Tag)
 	}
+}
+
+type ImageInfo struct {
+	Image
+
+	// Pointer is the path to the image object in the resource
+	Pointer string `json:"jsonPointer"`
 }
 
 type ImageInfos struct {
@@ -50,4 +57,30 @@ type ImageInfos struct {
 
 	// EphemeralContainers is a map of ephemeral containers image data from the AdmissionReview request, key is the container name
 	EphemeralContainers map[string]ImageInfo `json:"ephemeralContainers,omitempty"`
+}
+
+type Result struct {
+	// Name of the container
+	Name string `json:"name"`
+
+	// Path to the image object in the resource
+	Path string `json:"path"`
+
+	// Updated image with the digest
+	Image string `json:"image"`
+}
+
+type RequestData struct {
+	Images ImageInfos
+}
+
+type ResponseData struct {
+	// Allow is true when all the images are verified.
+	Allow bool `json:"allow"`
+
+	// Message contains an optional custom message to send as a response.
+	Message string `json:"message,omitempty"`
+
+	// Results contains the list of containers in JSONPatch format
+	Results []Result `json:"results"`
 }

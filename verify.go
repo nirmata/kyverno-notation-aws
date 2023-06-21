@@ -117,7 +117,12 @@ func (v *verifier) stop() {
 }
 
 func (v *verifier) verifyImages(ctx context.Context, images *ImageInfos) ([]byte, error) {
-	for name, image := range images.Containers {
+	response := ResponseData{
+		Allow:   false,
+		Results: make([]Result, 0),
+	}
+
+	for _, image := range images.Containers {
 		digest, err := v.verifyImage(ctx, image.String())
 		if err != nil {
 			v.logger.Errorf("verification failed for image %s: %v", image, err)
@@ -125,10 +130,14 @@ func (v *verifier) verifyImages(ctx context.Context, images *ImageInfos) ([]byte
 		}
 
 		image.Digest = digest
-		images.Containers[name] = image
+		response.Results = append(response.Results, Result{
+			Name:  image.Name,
+			Path:  image.Pointer,
+			Image: image.String(),
+		})
 	}
 
-	for name, image := range images.InitContainers {
+	for _, image := range images.InitContainers {
 		digest, err := v.verifyImage(ctx, image.String())
 		if err != nil {
 			v.logger.Errorf("verification failed for image %s: %v", image, err)
@@ -136,10 +145,14 @@ func (v *verifier) verifyImages(ctx context.Context, images *ImageInfos) ([]byte
 		}
 
 		image.Digest = digest
-		images.InitContainers[name] = image
+		response.Results = append(response.Results, Result{
+			Name:  image.Name,
+			Path:  image.Pointer,
+			Image: image.String(),
+		})
 	}
 
-	for name, image := range images.EphemeralContainers {
+	for _, image := range images.EphemeralContainers {
 		digest, err := v.verifyImage(ctx, image.String())
 		if err != nil {
 			v.logger.Errorf("verification failed for image %s: %v", image, err)
@@ -147,16 +160,16 @@ func (v *verifier) verifyImages(ctx context.Context, images *ImageInfos) ([]byte
 		}
 
 		image.Digest = digest
-		images.EphemeralContainers[name] = image
+		response.Results = append(response.Results, Result{
+			Name:  image.Name,
+			Path:  image.Pointer,
+			Image: image.String(),
+		})
 	}
 
-	results := map[string]interface{}{}
-	results["verified"] = true
-	results["images"] = images
-
-	data, err := json.MarshalIndent(results, "  ", "  ")
+	data, err := json.MarshalIndent(response, "  ", "  ")
 	if err != nil {
-		return nil, errors.Wrapf(err, "failed to marshal results")
+		return nil, errors.Wrapf(err, "failed to marshal response")
 	}
 
 	return data, nil
