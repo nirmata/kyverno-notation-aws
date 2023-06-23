@@ -71,7 +71,7 @@ type Result struct {
 }
 
 type RequestData struct {
-	Images ImageInfos
+	ImageInfos
 }
 
 type ResponseData struct {
