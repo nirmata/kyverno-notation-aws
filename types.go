@@ -67,7 +67,7 @@ type RequestData struct {
 }
 
 type ResponseData struct {
-	// Vverifiederified is true when all the images are verified.
+	// Verified is true when all the images are verified.
 	Verified bool `json:"verified"`
 
 	// Message contains an optional custom message to send as a response.
