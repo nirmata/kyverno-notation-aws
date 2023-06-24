@@ -55,7 +55,7 @@ spec:
       deny:
         conditions:
           all:
-          - key: "{{ response.allow }}"
+          - key: "{{ response.verified }}"
             operator: EQUALS
             value: false
     mutate:

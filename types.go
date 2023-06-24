@@ -33,14 +33,6 @@ func (i *Image) String() string {
 	}
 }
 
-func (i *Image) ReferenceWithTag() string {
-	if i.Registry != "" {
-		return fmt.Sprintf("%s/%s:%s", i.Registry, i.Path, i.Tag)
-	} else {
-		return fmt.Sprintf("%s:%s", i.Path, i.Tag)
-	}
-}
-
 type ImageInfo struct {
 	Image
 
@@ -75,8 +67,8 @@ type RequestData struct {
 }
 
 type ResponseData struct {
-	// Allow is true when all the images are verified.
-	Allow bool `json:"allow"`
+	// Vverifiederified is true when all the images are verified.
+	Verified bool `json:"verified"`
 
 	// Message contains an optional custom message to send as a response.
 	Message string `json:"message,omitempty"`

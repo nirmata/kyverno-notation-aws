@@ -118,8 +118,8 @@ func (v *verifier) stop() {
 
 func (v *verifier) verifyImages(ctx context.Context, images *RequestData) ([]byte, error) {
 	response := ResponseData{
-		Allow:   false,
-		Results: make([]Result, 0),
+		Verified: false,
+		Results:  make([]Result, 0),
 	}
 
 	for _, image := range images.Containers {
@@ -166,6 +166,9 @@ func (v *verifier) verifyImages(ctx context.Context, images *RequestData) ([]byt
 			Image: image.String(),
 		})
 	}
+
+	response.Verified = true
+	v.logger.Infof("verified %d containers %d initContainers %d ephemeralContainers", images.Containers, images.InitContainers, images.EphemeralContainers)
 
 	data, err := json.MarshalIndent(response, "  ", "  ")
 	if err != nil {
