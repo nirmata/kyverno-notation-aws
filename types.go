@@ -1,40 +1,11 @@
 package main
 
-import "fmt"
-
-type Image struct {
-	// Registry is the URL address of the image registry e.g. `docker.io`
-	Registry string `json:"registry,omitempty"`
-
-	// Name is the image name portion e.g. `busybox`
-	Name string `json:"name"`
-
-	// Path is the repository path and image name e.g. `some-repository/busybox`
-	Path string `json:"path"`
-
-	// Tag is the image tag e.g. `v2`
-	Tag string `json:"tag,omitempty"`
-
-	// Digest is the image digest portion e.g. `sha256:128c6e3534b842a2eec139999b8ce8aa9a2af9907e2b9269550809d18cd832a3`
-	Digest string `json:"digest,omitempty"`
-}
-
-func (i *Image) String() string {
-	var image string
-	if i.Registry != "" {
-		image = fmt.Sprintf("%s/%s", i.Registry, i.Path)
-	} else {
-		image = i.Path
-	}
-	if i.Digest != "" {
-		return fmt.Sprintf("%s@%s", image, i.Digest)
-	} else {
-		return fmt.Sprintf("%s:%s", image, i.Tag)
-	}
-}
+import (
+	imageutils "github.com/kyverno/kyverno/pkg/utils/image"
+)
 
 type ImageInfo struct {
-	Image
+	imageutils.ImageInfo
 
 	// Pointer is the path to the image object in the resource
 	Pointer string `json:"jsonPointer"`
