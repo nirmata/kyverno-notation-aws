@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"io"
-	"log"
 	"net/http"
 )
 
@@ -24,18 +23,11 @@ func (v *verifier) handleCheckImages(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var data []byte = make([]byte, 0)
-	if len(requestData.Containers) == 0 &&
-		len(requestData.InitContainers) == 0 &&
-		len(requestData.EphemeralContainers) == 0 {
-		log.Printf("missing images in %v", requestData)
-	} else {
-		ctx := context.Background()
-		data, err = v.verifyImages(ctx, &requestData)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
+	ctx := context.Background()
+	data, err := v.verifyImages(ctx, &requestData)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
 	w.WriteHeader(http.StatusOK)
