@@ -34,7 +34,7 @@ type Result struct {
 }
 
 type RequestData struct {
-	ImageInfos
+	Images ImageInfos `json:"images"`
 }
 
 type ResponseData struct {

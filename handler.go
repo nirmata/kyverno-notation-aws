@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"reflect"
 )
 
 func (v *verifier) handleCheckImages(w http.ResponseWriter, r *http.Request) {
@@ -23,11 +24,16 @@ func (v *verifier) handleCheckImages(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ctx := context.Background()
-	data, err := v.verifyImages(ctx, &requestData)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	data := make([]byte, 0)
+	if reflect.ValueOf(requestData.Images).IsZero() {
+		v.logger.Infof("images variable not found")
+	} else {
+		ctx := context.Background()
+		data, err = v.verifyImages(ctx, &requestData.Images)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 
 	w.WriteHeader(http.StatusOK)

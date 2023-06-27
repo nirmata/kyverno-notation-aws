@@ -116,7 +116,7 @@ func (v *verifier) stop() {
 	v.stopCh <- struct{}{}
 }
 
-func (v *verifier) verifyImages(ctx context.Context, images *RequestData) ([]byte, error) {
+func (v *verifier) verifyImages(ctx context.Context, images *ImageInfos) ([]byte, error) {
 	response := ResponseData{
 		Verified: false,
 		Results:  make([]Result, 0),
