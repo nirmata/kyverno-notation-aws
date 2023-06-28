@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"os"
+	"regexp"
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -16,12 +17,18 @@ import (
 	"oras.land/oras-go/v2/registry"
 )
 
+const (
+	ecrPublicName = "public.ecr.aws"
+)
+
+var ecrPattern = regexp.MustCompile(`(^[a-zA-Z0-9][a-zA-Z0-9-_]*)\.dkr\.ecr(-fips)?\.([a-zA-Z0-9][a-zA-Z0-9-_]*)\.amazonaws\.com(\.cn)?$`)
+
 func (v *verifier) getAuthConfig(ctx context.Context, ref registry.Reference) (authn.AuthConfig, error) {
 	if v.imagePullSecrets != "" {
 		return v.getAuthFromSecret(ctx, ref)
 	}
 
-	ecrRegion, err := getRegion(ref)
+	ecrRegion, err := getRegion(ref.Registry)
 	if err == nil {
 		v.logger.Infof("using region: %s", ecrRegion)
 	} else {
@@ -32,13 +39,19 @@ func (v *verifier) getAuthConfig(ctx context.Context, ref registry.Reference) (a
 	return v.getAuthFromIRSA(ctx, ecrRegion)
 }
 
-func getRegion(ref registry.Reference) (string, error) {
-	toks := strings.Split(ref.Registry, ".")
-	if len(toks) >= 6 {
-		return toks[3], nil
+func getRegion(registry string) (string, error) {
+	if registry == ecrPublicName {
+		return "", nil
+	}
+	matches := ecrPattern.FindStringSubmatch(registry)
+	if len(matches) == 0 {
+		return "", fmt.Errorf("kyverno-notation-aws plugin can only be used with Amazon Elastic Container Registry")
+	} else if len(matches) < 3 {
+		return "", fmt.Errorf("%q is not a valid repository URI for Amazon Elastic Container Registry", registry)
 	}
 
-	return "", fmt.Errorf("failed to extract region from %s", ref.Registry)
+	ecrRegion := matches[3]
+	return ecrRegion, nil
 }
 
 func (v *verifier) getAuthFromIRSA(ctx context.Context, awsEcrRegion string) (authn.AuthConfig, error) {
