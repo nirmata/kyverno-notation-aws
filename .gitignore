@@ -16,3 +16,7 @@
 
 signer-pre-prod-root.pem
 notation-com.amazonaws.signer.notation.plugin_linux_amd64
+
+.DS_Store
+.tools
+coverage.txt
