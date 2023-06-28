@@ -35,3 +35,6 @@ runs:
     - shell: bash
       run: |
         go mod download
+    - shell: bash
+      run: |
+        GOCACHE=~/.cache/kyverno/tools make install-tools
