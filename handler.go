@@ -24,18 +24,19 @@ func (v *verifier) handleCheckImages(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := make([]byte, 0)
 	if reflect.ValueOf(requestData.Images).IsZero() {
 		v.logger.Infof("images variable not found")
+		http.Error(w, "missing required parameter 'images'", http.StatusNotAcceptable)
+		return
 	} else {
 		ctx := context.Background()
-		data, err = v.verifyImages(ctx, &requestData.Images)
+		data, err := v.verifyImages(ctx, &requestData.Images)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-	}
 
-	w.WriteHeader(http.StatusOK)
-	w.Write(data)
+		w.WriteHeader(http.StatusOK)
+		w.Write(data)
+	}
 }
