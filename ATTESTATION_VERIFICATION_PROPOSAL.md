@@ -193,7 +193,32 @@ We can use the same logic as used in notary implementation for kyverno.
 Note: We should convert the `attestationType` array recieved to a `map[string]bool` to reduce time complexity while matching artifacts
 ## Verifying Artifacts
 
-Since, the flow for verification of images and attestations are really similar as the signature is attached to the digest of image and attestation in the exact same way, we can just reuse the `verifyImage(ctx context.Context, image string)` method used for image verification by passing it the url of the attestation that we recieved above. 
+Since, the flow for verification of images and attestations are really similar as the signature is attached to the digest of image and attestation in the exact same way.
+
+Referrers list for the entire image
+```bash
+$ oras discover ghcr.io/kyverno/test-verify-image:signed -o tree
+ghcr.io/kyverno/test-verify-image:signed
+├── application/vnd.cncf.notary.signature
+│   └── sha256:7f870420d92765b42cec0f71ee8e25bf39b692f64d95d6f6607e9e6e54300265
+├── vulnerability-scan
+│   └── sha256:f89cb7a0748c63a674d157ca84d725ff3ac09cc2d4aee9d0ec4315e0fe92a5fd
+│       └── application/vnd.cncf.notary.signature
+│           └── sha256:ec45844601244aa08ac750f44def3fd48ddacb736d26b83dde9f5d8ac646c2f3
+└── sbom/cyclone-dx
+    └── sha256:8cad9bd6de426683424a204697dd48b55abcd6bb6b4930ad9d8ade99ae165414
+        └── application/vnd.cncf.notary.signature
+            └── sha256:61f3e42f017b72f4277c78a7a42ff2ad8f872811324cd984830dfaeb4030c322
+```
+
+Referrers list for an referrers of the image (`sbom/cyclone-dx` in this case)
+```bash
+$ oras discover ghcr.io/kyverno/test-verify-image@sha256:8cad9bd6de426683424a204697dd48b55abcd6bb6b4930ad9d8ade99ae165414 -o tree
+ghcr.io/kyverno/test-verify-image@sha256:8cad9bd6de426683424a204697dd48b55abcd6bb6b4930ad9d8ade99ae165414
+└── application/vnd.cncf.notary.signature
+    └── sha256:61f3e42f017b72f4277c78a7a42ff2ad8f872811324cd984830dfaeb4030c322
+```
+What matters is that the ref URL has the right digest pointing at the right object. We can just reuse the `verifyImage(ctx context.Context, image string)` method used for image verification by passing it the url of the attestation that we recieved above. 
 
 ## Fetching payloads
 We can use the gcr crane package for this
