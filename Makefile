@@ -5,6 +5,7 @@
 TOOLS_DIR                          := $(PWD)/.tools
 GO_ACC                             := $(TOOLS_DIR)/go-acc
 GO_ACC_VERSION                     := latest
+TOOLS                              := $(GO_ACC)
 
 $(GO_ACC):
 	@echo Install go-acc... >&2
