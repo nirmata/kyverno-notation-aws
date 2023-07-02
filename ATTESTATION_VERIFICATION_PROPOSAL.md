@@ -90,7 +90,7 @@ Current Response Format:
 ```
 It returns a verified `boolean` that indicated whether verification was successful or not, `message` which is an optional field, and `results` which is a list of JSONPatch compatible objects containing entries for every image.
 
-We should add an array to the `requestData` called `attestationType` as follows
+We should add an array to the `requestData` called `attestations` as follows
 ```json
 {
   "images": {
@@ -113,10 +113,20 @@ We should add an array to the `requestData` called `attestationType` as follows
       }
     }
   },
-  "attestationType": [
-    "application/vnd.cyclonedx",
-    "sbom/cyclone-dx",
-    "application/sarif+json"
+  "attestations": [
+    {
+      "imageReference": "*",
+      "type": [
+        "sbom/cyclone-dx",
+        "application/sarif+json"
+      ]
+    },
+    {
+      "imageReference": "844333597536.dkr.ecr.us-west-2.amazonaws.com/kyverno-demo:*",
+      "type": [
+        "application/vnd.cyclonedx"
+      ]
+    }
   ]
 }
 ```
@@ -129,16 +139,21 @@ context:
     data:
     - key: images
       value: "{{ images }}"
-    - key: attestationType
-      value: |-
-        - application/vnd.cyclonedx
-        - sbom/cyclone-dx
-        - application/sarif+json
+    - key: attestations
+      value:
+        - imageReference: "*"
+          type: |-
+            - sbom/cyclone-dx
+            - application/sarif+json
+        - imageReference: "844333597536.dkr.ecr.us-west-2.amazonaws.com/kyverno-demo:*"
+          type: |-
+            - application/vnd.cyclonedx
     service:
       url: https://svc.kyverno-notation-aws/checkimages
       caBundle: |-
 ...
 ```
+`imageReference` is an regular expression that will be matched with every image in the `images` variable to check which image does this apply to, then we will check and verify the attestation, if the attestation is not found the verification will fail, othervise it will be returned in the `attestations` array.
 Here is a gist showing the entire policy: https://gist.github.com/Vishal-Chdhry/ec90442cf892c4d7db169ff45918615d
 
 For every image we will check whether it has any or all of the attestations attached to it. When the attestations is found, we will return the following:
@@ -146,20 +161,20 @@ For every image we will check whether it has any or all of the attestations atta
 {
   "verified": true,
   "message": "...",
-  "results": [
+  "images": [
       {
          "name": "container1",
          "path":  "/spec/containers/0",
          "image":  "ghcr.io/kyverno/test-verify-image@sha256:b31bfb4d0213f254d361e0079deaaebefa4f82ba7aa76ef82e90b4935ad5b105",
-         "attestations": [
-          {
-            "type": "sbom/cyclone-dx",
-            "digest": "sha256:b31bfb4d0213f254d361e0079deaaebefa4f82ba7aa76ef82e90b4935ad5b105",
-            "payload": "the entire SBOM"
-          }
-         ]
       } 
-  ]
+  ],
+   "attestations": [
+      {
+        "type": "sbom/cyclone-dx",
+        "payload": "the entire SBOM",
+        "image":  "ghcr.io/kyverno/test-verify-image@sha256:b31bfb4d0213f254d361e0079deaaebefa4f82ba7aa76ef82e90b4935ad5b105"
+      }
+    ]
 }
 ``` 
 
@@ -168,16 +183,13 @@ For validation using this result, the policy should look like this
 validate:
   message: "not allowed"
   foreach:
-    - list: response.results
+    - list: response.attestations[?type= 'sbom/cyclone-dx'].payload
       deny:
         conditions:
-          any:
-          - key: application/vnd.cyclonedx # To shortcircuit the check if the type is not present in the image
-            operator: AnyNotIn
-            value: "{{ element.attestation.type[] }}"
-          - key: "{{ response.results.attestation[?type = 'application/vnd.cyclonedx'].acomponents[].licenses[].expression }}"
-            operator: AllNotIn
-            value: ["GPL-2.0", "GPL-3.0"]
+          - all:
+            - key: "{{ element.components[].licenses[].expression }}"
+              operator: AllNotIn
+              value: ["GPL-2.0", "GPL-3.0"]
 ```
 
 Here is a gist showing the entire policy: https://gist.github.com/Vishal-Chdhry/ec90442cf892c4d7db169ff45918615d
@@ -188,9 +200,9 @@ Here is a gist showing the entire policy: https://gist.github.com/Vishal-Chdhry/
 ## Fetching Artifacts
 We can use the same logic as used in notary implementation for kyverno.
 1. Use `Referrers` method in [remote pkg](https://pkg.go.dev/github.com/google/go-containerregistry/pkg/v1/remote#Referrers) to get a list of all the referrers in the image.
-2. Match the list to the list of `attestationType` to filter all the desired attestations.
+2. Match the list to the list of `attestations` to filter all the desired attestations.
 
-Note: We should convert the `attestationType` array recieved to a `map[string]bool` to reduce time complexity while matching artifacts
+Note: We should use `remote.Reuse` to reduce fetching time
 ## Verifying Artifacts
 
 Since, the flow for verification of images and attestations are really similar as the signature is attached to the digest of image and attestation in the exact same way.
