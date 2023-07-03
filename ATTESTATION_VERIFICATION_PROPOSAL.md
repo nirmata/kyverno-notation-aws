@@ -168,13 +168,13 @@ For every image we will check whether it has any or all of the attestations atta
          "image":  "ghcr.io/kyverno/test-verify-image@sha256:b31bfb4d0213f254d361e0079deaaebefa4f82ba7aa76ef82e90b4935ad5b105",
       } 
   ],
-   "attestations": [
+  "attestations": [
       {
         "type": "sbom/cyclone-dx",
         "payload": "the entire SBOM",
         "image":  "ghcr.io/kyverno/test-verify-image@sha256:b31bfb4d0213f254d361e0079deaaebefa4f82ba7aa76ef82e90b4935ad5b105"
       }
-    ]
+  ]
 }
 ``` 
 
