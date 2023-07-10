@@ -112,7 +112,7 @@ else
 KO_TAGS             := $(GIT_SHA),$(subst /,-,$(VERSION))
 endif
 
-
+.PHONY: ko-build-kyverno-notation-aws
 ko-build-kyverno-notation-aws: $(KO) ## Build kyverno-notation-aws local image (with ko)
 	@echo Build kyverno-notation-aws local image with ko... >&2
 	@LD_FLAGS=$(LD_FLAGS) KO_DOCKER_REPO=$(KO_REGISTRY) \
@@ -123,7 +123,7 @@ ko-build-kyverno-notation-aws: $(KO) ## Build kyverno-notation-aws local image (
 ################
 
 REGISTRY_USERNAME   ?= dummy
-PLATFORMS           := all
+PLATFORMS           := linux/arm64
 
 .PHONY: ko-login
 ko-login: $(KO)
