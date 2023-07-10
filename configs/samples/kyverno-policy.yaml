@@ -20,7 +20,7 @@ spec:
         method: POST
         data:
         - key: images
-          value: "{{ images }}"
+          value: "{{images}}"
         service:
           url: https://svc.kyverno-notation-aws/checkimages
           caBundle: |-
@@ -58,10 +58,10 @@ spec:
           - key: "{{ response.verified }}"
             operator: EQUALS
             value: false
-    mutate:
-      foreach:
-      - list: "response.results"
-        patchesJson6902: |-
-            - path: {{ element.path }}
-              op: replace
-              value: {{ element.image }}
+    # mutate:
+    #   foreach:
+    #   - list: "response.results"
+    #     patchesJson6902: |-
+    #         - path: {{ element.path }}
+    #           op: replace
+    #           value: {{ element.image }}
