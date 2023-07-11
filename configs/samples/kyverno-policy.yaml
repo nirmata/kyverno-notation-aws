@@ -51,18 +51,18 @@ spec:
             ZzAbiSUwCgYIKoZIzj0EAwIDRwAwRAIgU3O7Qnk9PGCV4aXgZAXp0h4Iz2O7XUnP
             Ufv4SgD7neECIHLb+BDvRFPJ77FpfIYxBO70AHB7Kp0nWKCqyv3FK4aT
             -----END CERTIFICATE-----
-    # validate:
-    #   message: "not allowed"
-    #   deny:
-    #     conditions:
-    #       all:
-    #       - key: "{{ response.verified }}"
-    #         operator: EQUALS
-    #         value: false
-    mutate:
-      foreach:
-      - list: "response.results"
-        patchesJson6902: |-
-            - path: {{ element.path }}
-              op: replace
-              value: {{ element.image }}
+    validate:
+      message: "{{ response.message }}"
+      deny:
+        conditions:
+          all:
+          - key: "{{ response.verified }}"
+            operator: EQUALS
+            value: false
+    # mutate:
+    #   foreach:
+    #   - list: "response.results"
+    #     patchesJson6902: |-
+    #         - path: {{ element.path }}
+    #           op: replace
+    #           value: {{ element.image }}
