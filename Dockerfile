@@ -15,10 +15,9 @@ RUN apk update && \
     unzip -o ${SIGNER_BINARY_FILE}
 
 # Build Go binary
-RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o kyverno-notation-aws .
+RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="-w -s" -o kyverno-notation-aws .
 
 FROM amd64/alpine:3.18
-RUN apk add tree
 WORKDIR /
 
 # Notation home
