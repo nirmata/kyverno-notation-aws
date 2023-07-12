@@ -1,5 +1,5 @@
 ARG BUILD_PLATFORM="linux/amd64"
-ARG BUILDER_IMAGE="golang:1.19"
+ARG BUILDER_IMAGE="golang:1.20.6-alpine3.18"
 
 FROM --platform=$BUILD_PLATFORM $BUILDER_IMAGE as builder
 
@@ -10,15 +10,15 @@ COPY . ./
 ARG SIGNER_BINARY_LINK="https://d2hvyiie56hcat.cloudfront.net/linux/amd64/plugin/latest/notation-aws-signer-plugin.zip"
 ARG SIGNER_BINARY_FILE="notation-aws-signer-plugin.zip"
 RUN wget -O ${SIGNER_BINARY_FILE} ${SIGNER_BINARY_LINK} 
-RUN apt-get -y update && \
-    apt-get -y install unzip && \
+RUN apk update && \
+    apk add unzip && \
     unzip -o ${SIGNER_BINARY_FILE}
 
 # Build Go binary
 RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o kyverno-notation-aws .
 
-FROM amd64/amazonlinux:2.0.20230207.0
-RUN yum install tree -y
+FROM amd64/alpine:3.18
+RUN apk add tree
 WORKDIR /
 
 # Notation home
