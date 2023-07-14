@@ -46,7 +46,7 @@ runs:
   using: composite
   steps:
     - shell: bash
-      id: ko-publish
+      id: docker-publish
       env:
         REGISTRY: ${{ inputs.registry }}
         REPO: ${{ inputs.repository }}

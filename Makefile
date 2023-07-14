@@ -80,6 +80,14 @@ else
 LD_FLAGS       := "-s -w"
 endif
 
+ifndef VERSION
+IMAGE_TAGS             := $(GIT_SHA)
+else ifeq ($(VERSION),main)
+IMAGE_TAGS             := $(GIT_SHA),latest
+else
+IMAGE_TAGS             := $(GIT_SHA),$(subst /,-,$(VERSION))
+endif
+
 .PHONY: fmt
 fmt: ## Run go fmt
 	@echo Go fmt... >&2
@@ -95,8 +103,8 @@ build:
 
 docker:
 	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o kyverno-notation-aws .
-	docker buildx build --platform linux/arm64/v8 -t ghcr.io/nirmata/kyverno-notation-aws:v1-rc2 .
-	docker push ghcr.io/nirmata/kyverno-notation-aws:v1-rc2
+	docker buildx build --platform linux/arm64/v8 -t ghcr.io/nirmata/kyverno-notation-aws:$(IMAGE_TAGS) .
+	docker push ghcr.io/nirmata/kyverno-notation-aws:$(IMAGE_TAGS)
 
 #############
 # BUILD (KO)#

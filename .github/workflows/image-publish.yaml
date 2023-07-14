@@ -44,7 +44,7 @@ jobs:
         id: publish-kyverno-notation-aws
         uses: ./.github/actions/publish-image
         with:
-          makefile-target: ko-publish-kyverno-notation-aws
+          makefile-target: docker
           registry: ghcr.io
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
