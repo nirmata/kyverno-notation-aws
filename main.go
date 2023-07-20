@@ -61,11 +61,6 @@ func main() {
 		errKN <- kubenotation.Start(zapr.NewLogger(logger), metricsAddr, probeAddr, enableLeaderElection)
 	}()
 
-	if err := <-errKN; err != nil {
-		slog.Errorf("failed to initialize crds: %s", err.Error())
-		os.Exit(-1)
-	}
-
 	if !flagLocal {
 		knvSetup.SetupLocal(slog)
 	}
@@ -98,6 +93,8 @@ func main() {
 		slog.Infof("HTTP server error: %v", err)
 	case err := <-errsTLS:
 		slog.Infof("TLS server error: %v", err)
+	case err := <-errKN:
+		slog.Infof("failed to initialize crds: %v", err)
 	}
 
 	verifier.Stop()
