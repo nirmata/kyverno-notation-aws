@@ -234,30 +234,6 @@ spec:
             mountPath: /notation
           - name: certs
             mountPath: /certs
-      - image: ghcr.io/nirmata/kube-notation:v1-alpha1
-        imagePullPolicy: Always
-        name: kube-notation
-        env:
-        - name: NOTATION_DIR
-          value: /notation
-        securityContext:
-          runAsUser: 2000
-          runAsGroup: 3000
-          allowPrivilegeEscalation: false
-          seccompProfile:
-            type: RuntimeDefault
-          capabilities:
-            drop:
-              - ALL          
-        resources:
-          limits:
-            memory: 512Mi
-          requests:
-            memory: 32Mi
-            cpu: 100m
-        volumeMounts:
-          - name: notation
-            mountPath: /notation            
       volumes:
         - name: notation
           emptyDir: {}
