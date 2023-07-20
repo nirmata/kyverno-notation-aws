@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/go-logr/zapr"
+	kubenotation "github.com/nirmata/kubenotation"
 	knvSetup "github.com/nirmata/kyverno-notation-verifier/setup"
 	knvVerifier "github.com/nirmata/kyverno-notation-verifier/verifier"
 	_ "github.com/notaryproject/notation-core-go/signature/cose"
@@ -35,6 +37,17 @@ func main() {
 	var flagMaxSignatureAtempts int
 	flag.IntVar(&flagMaxSignatureAtempts, "maxSignatureAttempts", 30, "Maximum number of signature envelopes that will be processed for verification")
 
+	var metricsAddr string
+	flag.StringVar(&metricsAddr, "metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
+
+	var probeAddr string
+	flag.StringVar(&probeAddr, "health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
+
+	var enableLeaderElection bool
+	flag.BoolVar(&enableLeaderElection, "leader-elect", false,
+		"Enable leader election for controller manager. "+
+			"Enabling this will ensure there is only one active controller manager.")
+
 	flag.Parse()
 	logger, err := zap.NewDevelopment()
 	if err != nil {
@@ -42,6 +55,17 @@ func main() {
 	}
 
 	slog := logger.Sugar().WithOptions(zap.AddStacktrace(zap.DPanicLevel))
+
+	errKN := make(chan error, 1)
+	go func() {
+		errKN <- kubenotation.Start(zapr.NewLogger(logger), metricsAddr, probeAddr, enableLeaderElection)
+	}()
+
+	if err := <-errKN; err != nil {
+		slog.Errorf("failed to initialize crds: %s", err.Error())
+		os.Exit(-1)
+	}
+
 	if !flagLocal {
 		knvSetup.SetupLocal(slog)
 	}
