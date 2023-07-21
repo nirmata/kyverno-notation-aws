@@ -20,8 +20,6 @@ RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="-w -s" -o kyverno-n
 FROM gcr.io/distroless/static:nonroot
 WORKDIR /
 
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-
 # Notation home
 ENV PLUGINS_DIR=/plugins
 
