@@ -210,6 +210,8 @@ github.com/nirmata/kubenotation v0.1.0 h1:XXcGkPY4O6vRjw3LbYNpR++XS/rGshISDWuljL
 github.com/nirmata/kubenotation v0.1.0/go.mod h1:4OkBf8RAtdw9dDWcnogMF3A82cnFunLr3ckDZnZNNVE=
 github.com/nirmata/kubenotation v0.1.1 h1:aoY4gQF50SgTYK47YrE8eyC4MpBVLGDzn4IMclsiiFk=
 github.com/nirmata/kubenotation v0.1.1/go.mod h1:4OkBf8RAtdw9dDWcnogMF3A82cnFunLr3ckDZnZNNVE=
+github.com/nirmata/kubenotation v0.1.2 h1:M7i7oRK0S/xmbcoIDG4meLHpDHCSXTYr5RZZh8Levn0=
+github.com/nirmata/kubenotation v0.1.2/go.mod h1:4OkBf8RAtdw9dDWcnogMF3A82cnFunLr3ckDZnZNNVE=
 github.com/nirmata/kyverno-notation-verifier v0.3.3 h1:hMKaKEOrC/yMd5j/0TBstFGD1Y+picEeF6wQGncRCr0=
 github.com/nirmata/kyverno-notation-verifier v0.3.3/go.mod h1:NuW0wH4IKDVgjaZ+cn/EIPy6TjmdPlG7tzKY1+pQBvY=
 github.com/notaryproject/notation-core-go v1.0.0-rc.4 h1:gzo4JzKRMLGoOeOhPXxoudjL79Mi9X6flS8qJbRtZ+k=

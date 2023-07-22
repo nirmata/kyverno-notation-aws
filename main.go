@@ -56,8 +56,9 @@ func main() {
 
 	slog := logger.Sugar().WithOptions(zap.AddStacktrace(zap.DPanicLevel))
 
+	errsKN := make(chan error, 1)
 	go func() {
-		kubenotation.Start(zapr.NewLogger(logger), metricsAddr, probeAddr, enableLeaderElection)
+		errsKN <- kubenotation.Start(zapr.NewLogger(logger), metricsAddr, probeAddr, enableLeaderElection)
 	}()
 
 	if !flagLocal {
@@ -92,6 +93,8 @@ func main() {
 		slog.Infof("HTTP server error: %v", err)
 	case err := <-errsTLS:
 		slog.Infof("TLS server error: %v", err)
+	case err := <-errsKN:
+		slog.Infof("failed to initialize crds: %v", err)
 	}
 
 	verifier.Stop()
