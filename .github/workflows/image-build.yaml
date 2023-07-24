@@ -21,7 +21,7 @@ jobs:
         uses: ./.github/actions/setup-build-env
         with:
           build-cache-key: build-images
-      - name: docker build
+      - name: docker build-build
         run: VERSION=${{ github.ref_name }} make docker
       - name: Trivy Scan Image
         uses: aquasecurity/trivy-action@41f05d9ecffa2ed3f1580af306000f734b733e54 # v0.11.2
