@@ -8,6 +8,7 @@ REPO                 ?= nirmata
 IMAGE                ?= kyverno-notation-aws
 GOOS                 ?= $(shell go env GOOS)
 GOARCH               ?= $(shell go env GOARCH)
+CGO_ENABLED          ?= 0
 REPO_IMAGE           := $(REGISTRY)/$(REPO)/$(IMAGE)
 
 
@@ -47,7 +48,17 @@ CODE_COVERAGE_FILE_TXT  := $(CODE_COVERAGE_FILE).txt
 CODE_COVERAGE_FILE_HTML := $(CODE_COVERAGE_FILE).html
 
 .PHONY: test
-test: test-clean test-unit ## Clean tests cache then run unit tests
+test: fmt vet test-clean test-unit ## Clean tests cache then run unit tests
+
+.PHONY: fmt
+fmt: ## Run go fmt
+	@echo Go fmt... >&2
+	@go fmt ./...
+
+.PHONY: vet
+vet: ## Run go vet
+	@echo Go vet... >&2
+	@go vet ./...
 
 .PHONY: test-clean
 test-clean: ## Clean tests cache
@@ -70,41 +81,32 @@ code-cov-report: test-clean ## Generate code coverage report
 # BUILD (LOCAL)#
 ################
 
-
-CMD_DIR        := cmd
-KYVERNO_DIR    := $(CMD_DIR)/kyverno
-PACKAGE        ?= github.com/nirmata/kyverno-notation-aws
+CMD_DIR           := cmd
+KYVERNO_DIR       := $(CMD_DIR)/kyverno
+IMAGE_TAG_SHA     := $(GIT_SHA)
+IMAGE_TAG_LATEST  := latest
+PACKAGE           ?= github.com/nirmata/kyverno-notation-aws
 ifdef VERSION
-LD_FLAGS       := "-s -w -X $(PACKAGE)/pkg/version.BuildVersion=$(VERSION)"
+LD_FLAGS          := "-s -w -X $(PACKAGE)/pkg/version.BuildVersion=$(VERSION)"
 else
-LD_FLAGS       := "-s -w"
+LD_FLAGS          := "-s -w"
 endif
-
-ifndef VERSION
-IMAGE_TAGS             := $(GIT_SHA)
-else ifeq ($(VERSION),main)
-IMAGE_TAGS             := $(GIT_SHA),latest
-else
-IMAGE_TAGS             := $(GIT_SHA),$(subst /,-,$(VERSION))
-endif
-
-.PHONY: fmt
-fmt: ## Run go fmt
-	@echo Go fmt... >&2
-	@go fmt ./...
-
-.PHONY: vet
-vet: ## Run go vet
-	@echo Go vet... >&2
-	@go vet ./...
 
 build:
 	go build -o kyverno-notation-aws
 
+#################
+# BUILD (DOCKER)#
+#################
+
 docker:
-	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o kyverno-notation-aws .
-	docker buildx build --platform linux/arm64/v8 -t ghcr.io/nirmata/kyverno-notation-aws:$(IMAGE_TAGS) .
-	docker push ghcr.io/nirmata/kyverno-notation-aws:$(IMAGE_TAGS)
+	@echo Build kyverno-notation-aws image with docker... >&2
+	GOOS=$(GOOS) GOARCH=$(GOARCH) CGO_ENABLED=0 LD_FLAGS=$(LD_FLAGS) go build -o kyverno-notation-aws .
+	docker buildx build --platform linux/arm64/v8 -t $(REPO_IMAGE):$(IMAGE_TAG_SHA) .
+	docker tag $(REPO_IMAGE):$(IMAGE_TAG_SHA) $(REPO_IMAGE):$(IMAGE_TAG_LATEST)
+#	docker push ghcr.io/nirmata/kyverno-notation-aws:$(IMAGE_TAG_SHA)
+#	docker push ghcr.io/nirmata/kyverno-notation-aws:$(IMAGE_TAG_LATEST)
+
 
 #############
 # BUILD (KO)#
