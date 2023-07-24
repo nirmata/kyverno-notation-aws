@@ -34,8 +34,7 @@ jobs:
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          # username: ${{ github.actor }}
-          username: nirmata
+          username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Run Trivy vulnerability scanner in repo mode
         uses: aquasecurity/trivy-action@41f05d9ecffa2ed3f1580af306000f734b733e54 # v0.11.2
@@ -73,7 +72,7 @@ jobs:
     # NOTE: The container generator workflow is not officially released as GA.
     uses: slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@v1.7.0
     with:
-      image: ghcr.io/${{ github.repository_owner }}/kyverno
+      image: ghcr.io/${{ github.repository_owner }}/kyverno-notation-aws
       digest: "${{ needs.publish-images.outputs.image-digest }}"
       registry-username: ${{ github.actor }}
     secrets:
