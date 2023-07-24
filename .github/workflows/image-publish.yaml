@@ -2,11 +2,7 @@ name: Publish images
 
 permissions: {}
 
-## TODO(shuting): remove
 on:
-  pull_request:
-    branches:
-      - 'main'
   push:
     branches:
       - 'main'
