@@ -54,6 +54,7 @@ runs:
         COSIGN_REPOSITORY: ${{ inputs.sbom-repository }}
       run: |
         set -e
+        make ${{ inputs.makefile-target }}
         echo "digest=$(docker images | grep nirmata | awk 'NR==1{print $2}')" >> $GITHUB_OUTPUT
     - uses: CycloneDX/gh-gomod-generate-sbom@d4aee0cf5133055dbd98899978246c10c18c440f # v1.1.0
       with:
