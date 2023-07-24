@@ -1,3 +1,17 @@
+############
+# DEFAULTS #
+############
+
+GIT_SHA              := $(shell git rev-parse HEAD)
+REGISTRY             ?= ghcr.io
+REPO                 ?= nirmata
+IMAGE                ?= kyverno-notation-aws
+GOOS                 ?= $(shell go env GOOS)
+GOARCH               ?= $(shell go env GOARCH)
+CGO_ENABLED          ?= 0
+REPO_IMAGE           := $(REGISTRY)/$(REPO)/$(IMAGE)
+
+
 #########
 # TOOLS #
 #########
@@ -5,11 +19,17 @@
 TOOLS_DIR                          := $(PWD)/.tools
 GO_ACC                             := $(TOOLS_DIR)/go-acc
 GO_ACC_VERSION                     := latest
-TOOLS                              := $(GO_ACC)
+KO                                 := $(TOOLS_DIR)/ko
+KO_VERSION                         := main #e93dbee8540f28c45ec9a2b8aec5ef8e43123966
+TOOLS                              := $(GO_ACC) $(KO)
 
 $(GO_ACC):
 	@echo Install go-acc... >&2
 	@GOBIN=$(TOOLS_DIR) go install github.com/ory/go-acc@$(GO_ACC_VERSION)
+
+$(KO):
+	@echo Install ko... >&2
+	@GOBIN=$(TOOLS_DIR) go install github.com/google/ko@$(KO_VERSION)
 
 .PHONY: install-tools
 install-tools: $(TOOLS) ## Install tools
@@ -28,7 +48,17 @@ CODE_COVERAGE_FILE_TXT  := $(CODE_COVERAGE_FILE).txt
 CODE_COVERAGE_FILE_HTML := $(CODE_COVERAGE_FILE).html
 
 .PHONY: test
-test: test-clean test-unit ## Clean tests cache then run unit tests
+test: fmt vet test-clean test-unit ## Clean tests cache then run unit tests
+
+.PHONY: fmt
+fmt: ## Run go fmt
+	@echo Go fmt... >&2
+	@go fmt ./...
+
+.PHONY: vet
+vet: ## Run go vet
+	@echo Go vet... >&2
+	@go vet ./...
 
 .PHONY: test-clean
 test-clean: ## Clean tests cache
@@ -47,14 +77,38 @@ code-cov-report: test-clean ## Generate code coverage report
 	@go tool cover -func=coverage.out -o $(CODE_COVERAGE_FILE_TXT)
 	@go tool cover -html=coverage.out -o $(CODE_COVERAGE_FILE_HTML)
 
-#########
-# BUILD #
-#########
+################
+# BUILD (LOCAL)#
+################
+
+CMD_DIR           := cmd
+KYVERNO_DIR       := $(CMD_DIR)/kyverno
+IMAGE_TAG_SHA     := $(GIT_SHA)
+IMAGE_TAG_LATEST  := latest
+PACKAGE           ?= github.com/nirmata/kyverno-notation-aws
+ifdef VERSION
+LD_FLAGS          := "-s -w -X $(PACKAGE)/pkg/version.BuildVersion=$(VERSION)"
+else
+LD_FLAGS          := "-s -w"
+endif
 
 build:
 	go build -o kyverno-notation-aws
 
-docker:
-	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o kyverno-notation-aws .
-	docker buildx build --platform linux/arm64/v8 -t ghcr.io/nirmata/kyverno-notation-aws:v1-rc2 .
-	docker push ghcr.io/nirmata/kyverno-notation-aws:v1-rc2
+#################
+# BUILD (DOCKER)#
+#################
+
+docker-build:
+	@echo Build kyverno-notation-aws image with docker... >&2
+	GOOS=$(GOOS) GOARCH=$(GOARCH) CGO_ENABLED=0 LD_FLAGS=$(LD_FLAGS) go build -o kyverno-notation-aws .
+	docker buildx build --platform linux/arm64/v8 -t $(REPO_IMAGE):$(IMAGE_TAG_LATEST) --load .
+	docker tag $(REPO_IMAGE):$(IMAGE_TAG_LATEST) $(REPO_IMAGE):$(IMAGE_TAG_SHA)
+
+docker-publish:
+	@echo Build kyverno-notation-aws image with docker... >&2
+	GOOS=$(GOOS) GOARCH=$(GOARCH) CGO_ENABLED=0 LD_FLAGS=$(LD_FLAGS) go build -o kyverno-notation-aws .
+	docker buildx build --platform linux/arm64/v8 -t $(REPO_IMAGE):$(IMAGE_TAG_LATEST) --load .
+	docker tag $(REPO_IMAGE):$(IMAGE_TAG_LATEST) $(REPO_IMAGE):$(IMAGE_TAG_SHA)
+	docker push ghcr.io/nirmata/kyverno-notation-aws:$(IMAGE_TAG_SHA)
+	docker push ghcr.io/nirmata/kyverno-notation-aws:$(IMAGE_TAG_LATEST)
