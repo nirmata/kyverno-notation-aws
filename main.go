@@ -6,15 +6,12 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/cenkalti/backoff/v4"
+	knvSetup "github.com/nirmata/kyverno-notation-verifier/setup"
+	knvVerifier "github.com/nirmata/kyverno-notation-verifier/verifier"
 	_ "github.com/notaryproject/notation-core-go/signature/cose"
 	_ "github.com/notaryproject/notation-core-go/signature/jws"
-	"github.com/notaryproject/notation-go/dir"
 	"go.uber.org/zap"
 )
-
-var certFile = "/certs/tls.crt"
-var keyFile = "/certs/tls.key"
 
 func main() {
 	var flagLocal bool
@@ -46,33 +43,19 @@ func main() {
 
 	slog := logger.Sugar().WithOptions(zap.AddStacktrace(zap.DPanicLevel))
 	if !flagLocal {
-		if err := installPlugins(); err != nil {
-			log.Fatalf("failed to install plugins: %v", err)
-		}
-
-		installDir := os.Getenv("NOTATION_DIR")
-		dir.UserConfigDir = installDir
-		dir.UserLibexecDir = installDir
-		slog.Infow("configuring notation", "dir.UserConfigDir", dir.UserConfigDir, "dir.UserLibexecDir", dir.UserLibexecDir)
+		knvSetup.SetupLocal(slog)
 	}
 
-	var verifier *verifier
-	initVerifier := func() error {
-		verifier, err = newVerifier(slog,
-			withImagePullSecrets(flagImagePullSecrets),
-			withInsecureRegistry(flagAllowInsecureRegistry),
-			withPluginConfig(flagNotationPluginConfigMap),
-			withMaxSignatureAttempts(flagMaxSignatureAtempts),
-			withEnableDebug(flagEnableDebug))
-		return err
-	}
-
-	if err := backoff.Retry(initVerifier, backoff.NewExponentialBackOff()); err != nil {
-		slog.Fatalf("initialization error: %v", err)
-	}
+	verifier := knvVerifier.NewVerifier(slog,
+		knvVerifier.WithImagePullSecrets(flagImagePullSecrets),
+		knvVerifier.WithInsecureRegistry(flagAllowInsecureRegistry),
+		knvVerifier.WithPluginConfig(flagNotationPluginConfigMap),
+		knvVerifier.WithMaxSignatureAttempts(flagMaxSignatureAtempts),
+		knvVerifier.WithEnableDebug(flagEnableDebug),
+		knvVerifier.WithProviderAuthConfigResolver(getAuthFromIRSA))
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/checkimages", verifier.handleCheckImages)
+	mux.HandleFunc("/checkimages", verifier.HandleCheckImages)
 	errsHTTP := make(chan error, 1)
 	go func() {
 		errsHTTP <- http.ListenAndServe(":9080", mux)
@@ -81,7 +64,7 @@ func main() {
 	errsTLS := make(chan error, 1)
 	if !flagNoTLS {
 		go func() {
-			errsTLS <- http.ListenAndServeTLS(":9443", certFile, keyFile, mux)
+			errsTLS <- http.ListenAndServeTLS(":9443", knvVerifier.CertFile, knvVerifier.KeyFile, mux)
 		}()
 	}
 
@@ -93,6 +76,6 @@ func main() {
 		slog.Infof("TLS server error: %v", err)
 	}
 
-	verifier.stop()
+	verifier.Stop()
 	os.Exit(-1)
 }

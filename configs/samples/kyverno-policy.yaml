@@ -5,6 +5,7 @@ metadata:
 spec:
   validationFailureAction: Enforce
   webhookTimeoutSeconds: 30
+  schemaValidation: false
   rules:
   - name: call-aws-signer-extension
     match:
@@ -15,12 +16,12 @@ spec:
           kinds:
           - Pod
     context:
-    - name: result
+    - name: response
       apiCall:
         method: POST
         data:
         - key: images
-          value: "{{ request.object.spec.[ephemeralContainers, initContainers, containers][].image }}"
+          value: "{{images}}"
         service:
           url: https://svc.kyverno-notation-aws/checkimages
           caBundle: |-
@@ -51,10 +52,17 @@ spec:
             Ufv4SgD7neECIHLb+BDvRFPJ77FpfIYxBO70AHB7Kp0nWKCqyv3FK4aT
             -----END CERTIFICATE-----
     validate:
-      message: "not allowed"
+      message: "{{ response.message }}"
       deny:
         conditions:
           all:
-          - key: "{{ result.verified }}"
+          - key: "{{ response.verified }}"
             operator: EQUALS
             value: false
+    # mutate:
+    #   foreach:
+    #   - list: "response.results"
+    #     patchesJson6902: |-
+    #         - path: {{ element.path }}
+    #           op: replace
+    #           value: {{ element.image }}
