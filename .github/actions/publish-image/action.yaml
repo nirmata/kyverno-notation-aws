@@ -73,16 +73,16 @@ runs:
           -a "repo=${{ github.repository }}" \
           -a "workflow=${{ github.workflow }}" \
           -a "ref=${{ github.sha }}" \
-          ${{ steps.ko-publish.outputs.digest }}
+          ${{ steps.docker-publish.outputs.digest }}
     - shell: bash
       env:
         COSIGN_REPOSITORY: ${{ inputs.sbom-repository }}
       run: |
-        cosign attach sbom --sbom ./${{ inputs.sbom-name }}-bom.cdx.json --type cyclonedx ${{ steps.ko-publish.outputs.digest }}
+        cosign attach sbom --sbom ./${{ inputs.sbom-name }}-bom.cdx.json --type cyclonedx ${{ steps.docker-publish.outputs.digest }}
     - shell: bash
       id: digest
       run: |
-        echo "The image generated is: ${{ steps.ko-publish.outputs.digest }}"
-        DIGEST=$(echo ${{ steps.ko-publish.outputs.digest }} | cut -d '@' -f2)
+        echo "The image generated is: ${{ steps.docker-publish.outputs.digest }}"
+        DIGEST=$(echo ${{ steps.docker-publish.outputs.digest }} | cut -d '@' -f2)
         echo "Digest from image is: $DIGEST"
         echo "digest=$DIGEST" >> $GITHUB_OUTPUT
