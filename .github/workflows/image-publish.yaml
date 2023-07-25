@@ -54,8 +54,8 @@ jobs:
           version: ${{ github.ref_name }}
           sign-image: true
           sbom-name: kyverno-notation-aws
-          sbom-repository: ghcr.io/${{ github.repository_owner }}/sbom
-          signature-repository: ghcr.io/${{ github.repository_owner }}/signatures
+          sbom-repository: ghcr.io/${{ github.repository }}/sbom
+          signature-repository: ghcr.io/${{ github.repository }}/signatures
           main-path: ./
 
 
