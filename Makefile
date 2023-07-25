@@ -103,12 +103,11 @@ docker-build:
 	@echo Build kyverno-notation-aws image with docker... >&2
 	GOOS=$(GOOS) GOARCH=$(GOARCH) CGO_ENABLED=0 LD_FLAGS=$(LD_FLAGS) go build -o kyverno-notation-aws .
 	docker buildx build --platform linux/arm64/v8 -t $(REPO_IMAGE):$(IMAGE_TAG_LATEST) --load .
-	docker tag $(REPO_IMAGE):$(IMAGE_TAG_LATEST) $(REPO_IMAGE):$(IMAGE_TAG_SHA)
 
 docker-publish:
 	@echo Build kyverno-notation-aws image with docker... >&2
 	GOOS=$(GOOS) GOARCH=$(GOARCH) CGO_ENABLED=0 LD_FLAGS=$(LD_FLAGS) go build -o kyverno-notation-aws .
 	docker buildx build --platform linux/arm64/v8 -t $(REPO_IMAGE):$(IMAGE_TAG_LATEST) --load .
 	docker tag $(REPO_IMAGE):$(IMAGE_TAG_LATEST) $(REPO_IMAGE):$(IMAGE_TAG_SHA)
-	docker push ghcr.io/nirmata/kyverno-notation-aws:$(IMAGE_TAG_SHA)
-	docker push ghcr.io/nirmata/kyverno-notation-aws:$(IMAGE_TAG_LATEST)
+	docker push $(REPO_IMAGE):$(IMAGE_TAG_SHA)
+	docker push $(REPO_IMAGE):$(IMAGE_TAG_LATEST)
