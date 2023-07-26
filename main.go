@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/go-logr/zapr"
-k	kubenotation "github.com/nirmata/kyverno-notation-verifier/kubenotation"
+	"github.com/nirmata/kyverno-notation-verifier/kubenotation"
 	knvSetup "github.com/nirmata/kyverno-notation-verifier/setup"
 	knvVerifier "github.com/nirmata/kyverno-notation-verifier/verifier"
 	_ "github.com/notaryproject/notation-core-go/signature/cose"
