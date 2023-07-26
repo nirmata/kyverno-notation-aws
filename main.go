@@ -7,12 +7,13 @@ import (
 	"os"
 
 	"github.com/go-logr/zapr"
-	kubenotation "github.com/nirmata/kubenotation"
+k	kubenotation "github.com/nirmata/kyverno-notation-verifier/kubenotation"
 	knvSetup "github.com/nirmata/kyverno-notation-verifier/setup"
 	knvVerifier "github.com/nirmata/kyverno-notation-verifier/verifier"
 	_ "github.com/notaryproject/notation-core-go/signature/cose"
 	_ "github.com/notaryproject/notation-core-go/signature/jws"
 	"go.uber.org/zap"
+	ctrl "sigs.k8s.io/controller-runtime"
 )
 
 func main() {
@@ -56,10 +57,20 @@ func main() {
 
 	slog := logger.Sugar().WithOptions(zap.AddStacktrace(zap.DPanicLevel))
 
-	errsKN := make(chan error, 1)
+	crdSetup, err := kubenotation.Setup(zapr.NewLogger(logger), metricsAddr, probeAddr, enableLeaderElection)
+	if err != nil {
+		log.Fatalf("failed to initialize crds: %v", err)
+	}
+
+	crdManager := *crdSetup.CRDManager
+	crdChangeChan := *crdSetup.CRDChangeInformer
+
+	slog.Info("Starting CRD Manager")
+	errsMgr := make(chan error, 1)
 	go func() {
-		errsKN <- kubenotation.Start(zapr.NewLogger(logger), metricsAddr, probeAddr, enableLeaderElection)
+		errsMgr <- crdManager.Start(ctrl.SetupSignalHandler())
 	}()
+	slog.Info("CRD Manager Started")
 
 	if !flagLocal {
 		knvSetup.SetupLocal(slog)
@@ -87,16 +98,30 @@ func main() {
 		}()
 	}
 
-	slog.Info("Listening...")
-	select {
-	case err := <-errsHTTP:
-		slog.Infof("HTTP server error: %v", err)
-	case err := <-errsTLS:
-		slog.Infof("TLS server error: %v", err)
-	case err := <-errsKN:
-		slog.Infof("failed to initialize crds: %v", err)
-	}
+	slog.Info("Listening for requests...")
+	for {
+		select {
+		case crdChanged := <-crdChangeChan:
+			slog.Infof("CRD Changed, updating notation verifier %v", crdChanged)
+			err := verifier.UpdateNotationVerfier()
+			if err != nil {
+				slog.Infof("failed to update verifier, reverting update err: %v", err)
+			}
+			slog.Infof("Notation verifier updated %v", crdChanged)
+		case err := <-errsHTTP:
+			slog.Infof("HTTP server error: %v", err)
+			verifier.Stop()
+			os.Exit(-1)
 
-	verifier.Stop()
-	os.Exit(-1)
+		case err := <-errsTLS:
+			slog.Infof("TLS server error: %v", err)
+			verifier.Stop()
+			os.Exit(-1)
+
+		case err := <-errsMgr:
+			slog.Infof("problem running manager: %v", err)
+			verifier.Stop()
+			os.Exit(-1)
+		}
+	}
 }
