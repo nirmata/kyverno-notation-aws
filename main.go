@@ -9,6 +9,7 @@ import (
 	"github.com/go-logr/zapr"
 	"github.com/nirmata/kyverno-notation-verifier/kubenotation"
 	knvSetup "github.com/nirmata/kyverno-notation-verifier/setup"
+	knvTypes "github.com/nirmata/kyverno-notation-verifier/types"
 	knvVerifier "github.com/nirmata/kyverno-notation-verifier/verifier"
 	_ "github.com/notaryproject/notation-core-go/signature/cose"
 	_ "github.com/notaryproject/notation-core-go/signature/jws"
@@ -94,7 +95,7 @@ func main() {
 	errsTLS := make(chan error, 1)
 	if !flagNoTLS {
 		go func() {
-			errsTLS <- http.ListenAndServeTLS(":9443", knvVerifier.CertFile, knvVerifier.KeyFile, mux)
+			errsTLS <- http.ListenAndServeTLS(":9443", knvTypes.CertFile, knvTypes.KeyFile, mux)
 		}()
 	}
 
