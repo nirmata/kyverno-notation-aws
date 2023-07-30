@@ -22,6 +22,8 @@ spec:
         data:
         - key: images
           value: "{{images}}"
+        - key: trustPolicy
+          value: aws-signer-trust-policy-fail
         service:
           url: https://svc.kyverno-notation-aws/checkimages
           caBundle: |-
