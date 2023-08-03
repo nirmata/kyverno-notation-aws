@@ -17,10 +17,8 @@ RUN apk update && \
 # Build Go binary
 RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="-w -s" -o kyverno-notation-aws .
 
-FROM scratch
+FROM gcr.io/distroless/static:nonroot
 WORKDIR /
-
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 # Notation home
 ENV PLUGINS_DIR=/plugins

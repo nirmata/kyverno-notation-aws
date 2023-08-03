@@ -206,12 +206,8 @@ github.com/monochromegane/go-gitignore v0.0.0-20200626010858-205db1a8cc00 h1:n6/
 github.com/monochromegane/go-gitignore v0.0.0-20200626010858-205db1a8cc00/go.mod h1:Pm3mSP3c5uWn86xMLZ5Sa7JB9GsEZySvHYXCTK4E9q4=
 github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 h1:C3w9PqII01/Oq1c1nUAm88MOHcQC9l5mIlSMApZMrHA=
 github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822/go.mod h1:+n7T8mK8HuQTcFwEeznm/DIxMOiR9yIdICNftLE1DvQ=
-github.com/nirmata/kyverno-notation-verifier v0.3.1 h1:iiR8raD5wgVO+B2VZfiJ+YrzsMg4kZgpMhd/1kMaDh4=
-github.com/nirmata/kyverno-notation-verifier v0.3.1/go.mod h1:NuW0wH4IKDVgjaZ+cn/EIPy6TjmdPlG7tzKY1+pQBvY=
-github.com/nirmata/kyverno-notation-verifier v0.3.2 h1:Cl8P50Ygqm5kO3dmthDmRmaeaqwsNPseafTrqB9KcWk=
-github.com/nirmata/kyverno-notation-verifier v0.3.2/go.mod h1:NuW0wH4IKDVgjaZ+cn/EIPy6TjmdPlG7tzKY1+pQBvY=
-github.com/nirmata/kyverno-notation-verifier v0.3.3 h1:hMKaKEOrC/yMd5j/0TBstFGD1Y+picEeF6wQGncRCr0=
-github.com/nirmata/kyverno-notation-verifier v0.3.3/go.mod h1:NuW0wH4IKDVgjaZ+cn/EIPy6TjmdPlG7tzKY1+pQBvY=
+github.com/nirmata/kyverno-notation-verifier v0.6.1 h1:3hLRy5r7k75rX0oaMe9Gk5AvVcH1NgIsfsV5oyiDn7c=
+github.com/nirmata/kyverno-notation-verifier v0.6.1/go.mod h1:mZXcz1doavjZbr25M/RZ4quugSeOSNfqmYsGTdXY/hQ=
 github.com/notaryproject/notation-core-go v1.0.0-rc.4 h1:gzo4JzKRMLGoOeOhPXxoudjL79Mi9X6flS8qJbRtZ+k=
 github.com/notaryproject/notation-core-go v1.0.0-rc.4/go.mod h1:PEHrnhW0mEIVpyYdXqAJoJAaUgfz757tqxB3LG4qcag=
 github.com/notaryproject/notation-go v1.0.0-rc.6 h1:Wu9PiCzf2v75iBsKanJTgd91jgvpTzMX5kvnKjximi4=

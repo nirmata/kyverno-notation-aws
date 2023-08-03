@@ -4,6 +4,7 @@ metadata:
   name: trustpolicy-sample
 spec:
   version: '1.0'
+  trustPolicyName: aws-signer-trust-policy
   trustPolicies:
   - name: aws-signer-tp
     registryScopes:
@@ -13,5 +14,24 @@ spec:
       override: {}
     trustStores:
     - signingAuthority:aws-signer-ts
+    trustedIdentities:
+    - "arn:aws:signer:us-west-2:844333597536:/signing-profiles/kyvernodemo"
+---
+apiVersion: notation.nirmata.io/v1alpha1
+kind: TrustPolicy
+metadata:
+  name: trustpolicy-sample-fail
+spec:
+  version: '1.0'
+  trustPolicyName: aws-signer-trust-policy-fail
+  trustPolicies:
+  - name: aws-signer-tp
+    registryScopes:
+    - "*"
+    signatureVerification:
+      level: strict
+      override: {}
+    trustStores:
+    - signingAuthority:aws-signer-ts-fail
     trustedIdentities:
     - "arn:aws:signer:us-west-2:844333597536:/signing-profiles/kyvernodemo"

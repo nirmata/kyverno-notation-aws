@@ -5,13 +5,15 @@ go 1.19
 require (
 	github.com/aws/aws-sdk-go-v2/config v1.18.21
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.18.7
+	github.com/go-logr/zapr v1.2.4
 	github.com/google/go-containerregistry v0.14.0
-	github.com/nirmata/kyverno-notation-verifier v0.3.3
+	github.com/nirmata/kyverno-notation-verifier v0.6.1
 	github.com/notaryproject/notation-core-go v1.0.0-rc.4
 	github.com/pkg/errors v0.9.1
 	go.uber.org/zap v1.24.0
 	gotest.tools v2.2.0+incompatible
 	oras.land/oras-go/v2 v2.2.0
+	sigs.k8s.io/controller-runtime v0.15.0-alpha.1
 )
 
 require (
@@ -47,7 +49,6 @@ require (
 	github.com/go-errors/errors v1.4.2 // indirect
 	github.com/go-ldap/ldap/v3 v3.4.4 // indirect
 	github.com/go-logr/logr v1.2.4 // indirect
-	github.com/go-logr/zapr v1.2.4 // indirect
 	github.com/go-openapi/jsonpointer v0.19.6 // indirect
 	github.com/go-openapi/jsonreference v0.20.2 // indirect
 	github.com/go-openapi/swag v0.22.4 // indirect
@@ -119,7 +120,6 @@ require (
 	k8s.io/klog/v2 v2.100.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20230327201221-f5883ff37f0c // indirect
 	k8s.io/utils v0.0.0-20230505201702-9f6742963106 // indirect
-	sigs.k8s.io/controller-runtime v0.15.0-alpha.1 // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
 	sigs.k8s.io/kustomize/api v0.13.2 // indirect
 	sigs.k8s.io/kustomize/kyaml v0.14.1 // indirect
