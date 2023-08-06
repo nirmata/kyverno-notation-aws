@@ -24,34 +24,44 @@ spec:
           value: "{{images}}"
         - key: trustPolicy
           value: aws-signer-trust-policy
+        - key: attestations
+          value: 
+          - imageReference: "*"
+            type: 
+            - name: sbom/example
+              conditions:
+                all:
+                - key: creationInfo.licenseListVersion
+                  operator: Equals
+                  value: "3.17"
         service:
           url: https://svc.kyverno-notation-aws/checkimages
           caBundle: |-
             -----BEGIN CERTIFICATE-----
-            MIICizCCAjGgAwIBAgIRAIUEJcm7TtwJEtRtsI2yUcMwCgYIKoZIzj0EAwIwGzEZ
-            MBcGA1UEAxMQbXktc2VsZnNpZ25lZC1jYTAeFw0yMzA1MTAwNTI5MzBaFw0yMzA4
-            MDgwNTI5MzBaMDExEDAOBgNVBAoTB25pcm1hdGExHTAbBgNVBAMTFGt5dmVybm8t
-            bm90YXRpb24tYXdzMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxrSr
-            VXUbuQbF4rhh0/jqDE6agtXqS9jko6vHTEZUF2Y9f0LdSycEdCocIKZmPerWER7l
-            VUmMFPQLSGOZrCIM22L9+EXDyL7q2PN3koDxKOyqVOod8j3hKdRL+KIiZuUeD4zD
-            cos+AFxA1XAM/220JKfPSUpBL0DAP299Baqjs/Ae5wU5wT4qZVa1I3pcV2uicPvE
-            RSZO3ZT+y1nYBWtTTzzXP3f9ou8IHweCl57Sk16mbFFZ+TrCSekewYchzn88z7lq
-            L+56LtBUjcJozypLGEWM+kc4S5wBNYUaFPGiCHIrdQ5ScmfnY7mDvO8u47E+xw13
-            bz7NUAlT73rBqBv6hQIDAQABo3UwczAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYB
-            BQUHAwIwDAYDVR0TAQH/BAIwADAfBgNVHSMEGDAWgBRXZIp2KalD6pjRfPua2kFn
-            MBuJJTAjBgNVHREEHDAaghhzdmMua3l2ZXJuby1ub3RhdGlvbi1hd3MwCgYIKoZI
-            zj0EAwIDSAAwRQIhAKob5SV/N56VqP8VPdHqCAULRj92qhWwW3hb7fzaGxnHAiBP
-            3c8K2Vrxx2KRsjnWwn1vUMz7UyM2Tmib1C4YM3f+xg==
+            MIICijCCAjCgAwIBAgIQdEOXGQG0lzp0ZTpzZHE6tjAKBggqhkjOPQQDAjAbMRkw
+            FwYDVQQDExBteS1zZWxmc2lnbmVkLWNhMB4XDTIzMDgwNDE4MTQwN1oXDTIzMTEw
+            MjE4MTQwN1owMTEQMA4GA1UEChMHbmlybWF0YTEdMBsGA1UEAxMUa3l2ZXJuby1u
+            b3RhdGlvbi1hd3MwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDOiJhK
+            gmtGOHqkyQZP+fTBBhXwMW+TWGAoKcmd6s7hEOU6QhRAYejq9zS1Kn2TOkjl/ozQ
+            6GTPFEnhR9vbPpjRLRC7mAIzGE4hHFd5CPhE8aQ1iJnjreI2ZBpKgtopsUc3prKz
+            0K72y1ILNkh/T0O7dlwx8euPbNeb8lM3tZ/5x1wCQeMff+fqGojH7G59SuPBDO50
+            ThbZrSyEaakyduDL7R8mg0aHCnYirlmJqHtKUYuIbl7snRu/vpWtlh7/g/uAPexL
+            4zvzO/RJJIRlUes1lNuVL2DeBggg43w6RC18uHox+RsY1XgQxxAPLWxFk6Eb+9Sr
+            CmTcnLHNbZH7ukJlAgMBAAGjdTBzMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEF
+            BQcDAjAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFMSCIyrIr+FKVgjBkgBU5S8l
+            f8zWMCMGA1UdEQQcMBqCGHN2Yy5reXZlcm5vLW5vdGF0aW9uLWF3czAKBggqhkjO
+            PQQDAgNIADBFAiEAndKOWVth4KoTDlqY6W2S5yweZMH0V1K2Fw1lOxLjUp8CIAf3
+            Pw2FMvZu8r6DFMR+5XeEP1GAxDt5KPBFLBToAoUQ
             -----END CERTIFICATE-----
             -----BEGIN CERTIFICATE-----
-            MIIBdjCCAR2gAwIBAgIRAP1VDXD3R744lE7t/I5MK44wCgYIKoZIzj0EAwIwGzEZ
-            MBcGA1UEAxMQbXktc2VsZnNpZ25lZC1jYTAeFw0yMzA1MTAwNTI5MjVaFw0yMzA4
-            MDgwNTI5MjVaMBsxGTAXBgNVBAMTEG15LXNlbGZzaWduZWQtY2EwWTATBgcqhkjO
-            PQIBBggqhkjOPQMBBwNCAAQrFCRBF8PjKPcT/lrXmyP474fNuhlhGFAlLaoTSUuP
-            S3VK2O7hWrlJ/AhCccY8EPBi/DdFEaCB2+hTo00clmvfo0IwQDAOBgNVHQ8BAf8E
-            BAMCAqQwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUV2SKdimpQ+qY0Xz7mtpB
-            ZzAbiSUwCgYIKoZIzj0EAwIDRwAwRAIgU3O7Qnk9PGCV4aXgZAXp0h4Iz2O7XUnP
-            Ufv4SgD7neECIHLb+BDvRFPJ77FpfIYxBO70AHB7Kp0nWKCqyv3FK4aT
+            MIIBdjCCAR2gAwIBAgIRAJA63rRTLfec7JNxOIHjWbwwCgYIKoZIzj0EAwIwGzEZ
+            MBcGA1UEAxMQbXktc2VsZnNpZ25lZC1jYTAeFw0yMzA4MDQxODE0MDJaFw0yMzEx
+            MDIxODE0MDJaMBsxGTAXBgNVBAMTEG15LXNlbGZzaWduZWQtY2EwWTATBgcqhkjO
+            PQIBBggqhkjOPQMBBwNCAAScMrNHKzn6NhpUzdVMgBlAUNvNgoTxgcO7S+mV73ig
+            AfLM38FED9VQprVPQ0JF3D44YmnhhsmyNT4Dk8g6ysTgo0IwQDAOBgNVHQ8BAf8E
+            BAMCAqQwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUxIIjKsiv4UpWCMGSAFTl
+            LyV/zNYwCgYIKoZIzj0EAwIDRwAwRAIgGQGPg6+7Qppz51fgobNW4X3C56K5ylZl
+            Q4Lpo93g2UACIAtq0MnkQ8ebPop13RMFrh9Hj/bGV1hz2i5QEu6QTetb
             -----END CERTIFICATE-----
     validate:
       message: "{{ response.message }}"

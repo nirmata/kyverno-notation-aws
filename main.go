@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/go-logr/zapr"
 	"github.com/nirmata/kyverno-notation-verifier/kubenotation"
@@ -50,6 +51,15 @@ func main() {
 		"Enable leader election for controller manager. "+
 			"Enabling this will ensure there is only one active controller manager.")
 
+	var cacheEnabled bool
+	flag.BoolVar(&cacheEnabled, "cacheEnabled", false, "Whether to use a TTL cache for storing verified images, default is false")
+
+	var cacheMaxSize int64
+	flag.Int64Var(&cacheMaxSize, "cacheMaxSize", 1000, "Max size limit for the TTL cache, default is 1000.")
+
+	var cacheTTLDuration int64
+	flag.Int64Var(&cacheTTLDuration, "cacheTTLDuration", int64(1*time.Hour), "Max TTL value for a cache in seconds, default is 1 hour.")
+
 	flag.Parse()
 	logger, err := zap.NewDevelopment()
 	if err != nil {
@@ -83,7 +93,10 @@ func main() {
 		knvVerifier.WithPluginConfig(flagNotationPluginConfigMap),
 		knvVerifier.WithMaxSignatureAttempts(flagMaxSignatureAtempts),
 		knvVerifier.WithEnableDebug(flagEnableDebug),
-		knvVerifier.WithProviderAuthConfigResolver(getAuthFromIRSA))
+		knvVerifier.WithProviderAuthConfigResolver(getAuthFromIRSA),
+		knvVerifier.WithCacheEnabled(cacheEnabled),
+		knvVerifier.WithMaxCacheSize(cacheMaxSize),
+		knvVerifier.WithMaxCacheTTL(time.Duration(cacheTTLDuration*int64(time.Second))))
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/checkimages", verifier.HandleCheckImages)

@@ -193,11 +193,14 @@ spec:
       securityContext:
         runAsNonRoot: true
       containers:
-      - image: ghcr.io/vishal-chdhry/kyverno-notation-aws:mt
+      - image: ghcr.io/vishal-chdhry/kyverno-notation-aws:attestations-rc13
         imagePullPolicy: Always
         name: kyverno-notation-aws
-        # args:
-        # - --debug
+        args:
+        - --debug
+        - --cacheEnabled=true
+        - --cacheMaxSize=1000
+        - --cacheTTLDuration=3600
         # USE IF IRSA IS NOT CONFIGURED
         # - --imagePullSecrets=regcred
         resources:
