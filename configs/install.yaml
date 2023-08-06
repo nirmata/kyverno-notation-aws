@@ -193,7 +193,7 @@ spec:
       securityContext:
         runAsNonRoot: true
       containers:
-      - image: ghcr.io/vishal-chdhry/kyverno-notation-aws:attestations-rc13
+      - image: ghcr.io/vishal-chdhry/kyverno-notation-aws:attestations-rc13-1
         imagePullPolicy: Always
         name: kyverno-notation-aws
         args:
