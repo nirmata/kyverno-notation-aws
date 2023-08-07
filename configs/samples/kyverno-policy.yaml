@@ -38,7 +38,7 @@ spec:
             - name: sbom/example
               conditions:
                 all:
-                - key: creationInfo.licenseListVersion
+                - key: \{{creationInfo.licenseListVersion}}
                   operator: Equals
                   value: "3.17"
         service:

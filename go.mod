@@ -7,7 +7,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.18.7
 	github.com/go-logr/zapr v1.2.4
 	github.com/google/go-containerregistry v0.15.2
-	github.com/nirmata/kyverno-notation-verifier v0.7.3
+	github.com/nirmata/kyverno-notation-verifier v0.7.4
 	github.com/notaryproject/notation-core-go v1.0.0-rc.4
 	github.com/pkg/errors v0.9.1
 	go.uber.org/zap v1.24.0
