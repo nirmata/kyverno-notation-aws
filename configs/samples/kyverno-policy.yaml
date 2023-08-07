@@ -15,6 +15,13 @@ spec:
           - test-notation
           kinds:
           - Pod
+    preconditions:
+      all:
+      - key: "{{request.operation}}"
+        operator: AnyIn
+        value:
+        - CREATE
+        - UPDATE
     context:
     - name: response
       apiCall:
