@@ -236,6 +236,8 @@ spec:
         #   value: ${AWS_SECRET_ACCESS_KEY}
         - name: AWS_REGION
           value: us-west-2
+        - name: DEFAULT_TRUST_POLICY
+          value: aws-signer-trust-policy
         volumeMounts:
           - name: notation
             mountPath: /notation
