@@ -190,6 +190,7 @@ spec:
       labels:
         app: kyverno-notation-aws
     spec:
+      terminationGracePeriodSeconds: 5
       securityContext:
         runAsNonRoot: true
       containers:
@@ -202,8 +203,8 @@ spec:
 
         # CACHING
         - --cacheEnabled
-        - --cacheMaxSize=1000
-        - --cacheTTLDuration=3600
+        - --cacheMaxSize=2000
+        - --cacheTTLDurationSeconds=7200
 
         # USE IF IRSA IS NOT CONFIGURED
         # - --imagePullSecrets=regcred
