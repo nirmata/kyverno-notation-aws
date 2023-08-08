@@ -13,9 +13,9 @@ mutate:
    foreach:
    - list: "response.results"
      patchesJson6902: |-
-         - path: {{ element.path }}
-           op: replace
-           value: {{ element.image }}
+       - path: {{ element.path }}
+         op: replace
+         value: {{ element.image }}
 ```
 
 Returned object structure
@@ -70,6 +70,8 @@ In the following example
               operator: AllNotIn
               value: ["GPL-2.0", "GPL-3.0"]
 ```
+**NOTE:** The conditions key in the attestations must be escaped with `\` so kyverno does not attempt to replace them.
+
 ## Caching
 Users can also enable caching in the plugin, by setting `--cacheEnabled` flag. The cache is a TTL based cache, i.e, entries expire automatically after sometime and the value of TTL can be customized using `--cacheTTLDurationSeconds` (default is 3600) and max number of entries in the cache can be configured using `--cacheMaxSize` (default is 1000).
 
