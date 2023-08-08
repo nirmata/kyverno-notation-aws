@@ -4,6 +4,7 @@ metadata:
   name: check-images     
 spec:
   validationFailureAction: Enforce
+  failurePolicy: Fail
   webhookTimeoutSeconds: 30
   schemaValidation: false
   rules:
@@ -15,14 +16,14 @@ spec:
           - test-notation
           kinds:
           - Pod
-    preconditions:
-      all:
-      - key: "{{request.operation}}"
-        operator: AnyIn
-        value:
-        - CREATE
-        - UPDATE
+          operations:
+            - CREATE
+            - UPDATE
     context:
+    - name: ca-bundle
+      configMap:
+        name: ca-bundle
+        namespace: kyverno-notation-aws
     - name: response
       apiCall:
         method: POST
@@ -30,10 +31,10 @@ spec:
         - key: images
           value: "{{images}}"
         - key: trustPolicy
-          value: aws-signer-trust-policy
+          value: "tp-{{request.namespace}}"
         - key: attestations
           value: 
-          - imageReference: "844333597536.dkr.ecr.us-west-2.amazonaws.com*"
+          - imageReference: "*"
             type: 
             - name: sbom/example
               conditions:
@@ -41,47 +42,14 @@ spec:
                 - key: \{{creationInfo.licenseListVersion}}
                   operator: Equals
                   value: "3.17"
+                  message: invalid license version
         service:
           url: https://svc.kyverno-notation-aws/checkimages
-          caBundle: |-
-            -----BEGIN CERTIFICATE-----
-            MIICijCCAjCgAwIBAgIQdEOXGQG0lzp0ZTpzZHE6tjAKBggqhkjOPQQDAjAbMRkw
-            FwYDVQQDExBteS1zZWxmc2lnbmVkLWNhMB4XDTIzMDgwNDE4MTQwN1oXDTIzMTEw
-            MjE4MTQwN1owMTEQMA4GA1UEChMHbmlybWF0YTEdMBsGA1UEAxMUa3l2ZXJuby1u
-            b3RhdGlvbi1hd3MwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDOiJhK
-            gmtGOHqkyQZP+fTBBhXwMW+TWGAoKcmd6s7hEOU6QhRAYejq9zS1Kn2TOkjl/ozQ
-            6GTPFEnhR9vbPpjRLRC7mAIzGE4hHFd5CPhE8aQ1iJnjreI2ZBpKgtopsUc3prKz
-            0K72y1ILNkh/T0O7dlwx8euPbNeb8lM3tZ/5x1wCQeMff+fqGojH7G59SuPBDO50
-            ThbZrSyEaakyduDL7R8mg0aHCnYirlmJqHtKUYuIbl7snRu/vpWtlh7/g/uAPexL
-            4zvzO/RJJIRlUes1lNuVL2DeBggg43w6RC18uHox+RsY1XgQxxAPLWxFk6Eb+9Sr
-            CmTcnLHNbZH7ukJlAgMBAAGjdTBzMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEF
-            BQcDAjAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFMSCIyrIr+FKVgjBkgBU5S8l
-            f8zWMCMGA1UdEQQcMBqCGHN2Yy5reXZlcm5vLW5vdGF0aW9uLWF3czAKBggqhkjO
-            PQQDAgNIADBFAiEAndKOWVth4KoTDlqY6W2S5yweZMH0V1K2Fw1lOxLjUp8CIAf3
-            Pw2FMvZu8r6DFMR+5XeEP1GAxDt5KPBFLBToAoUQ
-            -----END CERTIFICATE-----
-            -----BEGIN CERTIFICATE-----
-            MIIBdjCCAR2gAwIBAgIRAJA63rRTLfec7JNxOIHjWbwwCgYIKoZIzj0EAwIwGzEZ
-            MBcGA1UEAxMQbXktc2VsZnNpZ25lZC1jYTAeFw0yMzA4MDQxODE0MDJaFw0yMzEx
-            MDIxODE0MDJaMBsxGTAXBgNVBAMTEG15LXNlbGZzaWduZWQtY2EwWTATBgcqhkjO
-            PQIBBggqhkjOPQMBBwNCAAScMrNHKzn6NhpUzdVMgBlAUNvNgoTxgcO7S+mV73ig
-            AfLM38FED9VQprVPQ0JF3D44YmnhhsmyNT4Dk8g6ysTgo0IwQDAOBgNVHQ8BAf8E
-            BAMCAqQwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUxIIjKsiv4UpWCMGSAFTl
-            LyV/zNYwCgYIKoZIzj0EAwIDRwAwRAIgGQGPg6+7Qppz51fgobNW4X3C56K5ylZl
-            Q4Lpo93g2UACIAtq0MnkQ8ebPop13RMFrh9Hj/bGV1hz2i5QEu6QTetb
-            -----END CERTIFICATE-----
-    validate:
-      message: "{{ response.message }}"
-      deny:
-        conditions:
-          all:
-          - key: "{{ response.verified }}"
-            operator: EQUALS
-            value: false
-    # mutate:
-    #   foreach:
-    #   - list: "response.results"
-    #     patchesJson6902: |-
-    #         - path: {{ element.path }}
-    #           op: replace
-    #           value: {{ element.image }}
+          caBundle: '{{ "ca-bundle".data.caBundle }}"'
+    mutate:
+      foreach:
+      - list: "response.results"
+        patchesJson6902: |-
+            - path: {{ element.path }}
+              op: replace
+              value: {{ element.image }}

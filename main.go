@@ -58,7 +58,7 @@ func main() {
 	flag.Int64Var(&cacheMaxSize, "cacheMaxSize", 1000, "Max size limit for the TTL cache, default is 1000.")
 
 	var cacheTTLDuration int64
-	flag.Int64Var(&cacheTTLDuration, "cacheTTLDuration", int64(1*time.Hour), "Max TTL value for a cache in seconds, default is 1 hour.")
+	flag.Int64Var(&cacheTTLDuration, "cacheTTLDurationSeconds", int64(1*time.Hour), "Max TTL value for a cache in seconds, default is 1 hour.")
 
 	flag.Parse()
 	logger, err := zap.NewDevelopment()

@@ -4,7 +4,7 @@ metadata:
   name: trustpolicy-sample
 spec:
   version: '1.0'
-  trustPolicyName: aws-signer-trust-policy
+  trustPolicyName: tp-test-notation
   trustPolicies:
   - name: aws-signer-tp
     registryScopes:
@@ -23,7 +23,7 @@ metadata:
   name: trustpolicy-sample-fail
 spec:
   version: '1.0'
-  trustPolicyName: aws-signer-trust-policy-fail
+  trustPolicyName: tp-test-notation-fail
   trustPolicies:
   - name: aws-signer-tp
     registryScopes:
