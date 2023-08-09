@@ -52,7 +52,7 @@ func main() {
 			"Enabling this will ensure there is only one active controller manager.")
 
 	var cacheEnabled bool
-	flag.BoolVar(&cacheEnabled, "cacheEnabled", false, "Whether to use a TTL cache for storing verified images, default is false")
+	flag.BoolVar(&cacheEnabled, "cacheEnabled", true, "Whether to use a TTL cache for storing verified images, default is true")
 
 	var cacheMaxSize int64
 	flag.Int64Var(&cacheMaxSize, "cacheMaxSize", 1000, "Max size limit for the TTL cache, default is 1000.")
