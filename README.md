@@ -2,6 +2,92 @@
 Kyverno extension service for Notation and the AWS signer
 
 
+# Features
+
+## Digest Mutation
+
+When we pass the Kyverno's `images` variable to the `/checkimages` endpoint, it returns a list of images with their path and mutated digests so users can use Kyverno JSONPatch mutation to mutate their images with a digest as follows.
+
+```yaml 
+mutate:
+   foreach:
+   - list: "response.results"
+     patchesJson6902: |-
+       - path: {{ element.path }}
+         op: replace
+         value: {{ element.image }}
+```
+
+Returned object structure
+```json
+{
+  "verified": true,
+  "message": "...",
+  "results": [
+    {
+       "name": "container1",
+       "path":  "/spec/containers/0",
+       "image":  "ghcr.io/kyverno/test-verify-image@sha256:b31bfb4d0213f254d361e0079deaaebefa4f82ba7aa76ef82e90b4935ad5b105"
+    } 
+  ]
+}
+```
+
+## Attestation Verification
+
+Users can optionally pass a variable called `attestations` in the request of as follows.
+
+`attestations` takes an array of AttestationsInfo which has an `imageReference`, a regular expression to match with the image, and a type where we can specify the name of the attestation and the Kyverno condition we want to verify for the given attestation
+
+In the following example
+1. We are verifying the signatures on `sbom/cyclone-dx` and `application/sarif+json` attached to every image and checking if the `creationInfo.licenseListVersion` is equal to 3.17 in the SBOM and if the licenses in sarif are all not in the given array of licenses.
+2. We are also verifying the signatures on `application/vnd.cyclonedx` on diferent versions of `844333597536.dkr.ecr.us-west-2.amazonaws.com/kyverno-demo` image and checking the licenses on them.
+
+```yaml
+- key: attestations
+  value:
+    - imageReference: "*"
+      type: 
+        - name: sbom/cyclone-dx
+          conditions:
+            all:
+            - key: \{{creationInfo.licenseListVersion}}
+              operator: Equals
+              value: "3.17"
+              message: invalid license version
+        - name: application/sarif+json
+          conditions:
+            all:
+            - key: \{{ element.components[].licenses[].expression }}
+              operator: AllNotIn
+              value: ["GPL-2.0", "GPL-3.0"]
+    - imageReference: "844333597536.dkr.ecr.us-west-2.amazonaws.com/kyverno-demo:*"
+      type:
+        - name: application/vnd.cyclonedx
+          conditions:
+            all:
+            - key: \{{ element.components[].licenses[].expression }}
+              operator: AllNotIn
+              value: ["GPL-2.0", "GPL-3.0"]
+```
+**NOTE:** The conditions key in the attestations must be escaped with `\` so kyverno does not attempt to replace them.
+
+## Caching
+Users can also enable caching in the plugin, by setting `--cacheEnabled` flag. The cache is a TTL based cache, i.e, entries expire automatically after sometime and the value of TTL can be customized using `--cacheTTLDurationSeconds` (default is 3600) and max number of entries in the cache can be configured using `--cacheMaxSize` (default is 1000).
+
+- The cache store the verification outcomes of images for the trust policy and verification outcomes of attestations with the trust policy and conditions.
+- The cache is an in-memory cache which gets cleared when the pod is recreated.
+- Cache will also be cleared when there is any change in trust policies and trust stores.
+
+## Multi Tenancy
+
+We also allow user to specify what trust policy they want to use for verification thus enabling multi tenancy. Mutliple teams can share one cluster and have different trust policies seperate from each other.
+To specify the trust policy to use, we can pass the `trustPolicy` variable in the request.
+```yaml
+ - key: trustPolicy
+   value: "tp-{{request.namespace}}"
+```
+or we can set the `DEFAULT_TRUST_POLICY` env variable. In the above example we are dynamically using the trust policy for the namespace of the request.
 # Setup AWS Signer
 
 1. Create a signing profile:
@@ -91,7 +177,11 @@ kubectl apply -f configs/samples/trustpolicy.yaml
 kubectl -n kyverno-notation-aws get secret kyverno-notation-aws-tls -o json | jq -r '.data."tls.crt"' | base64 -d && kubectl -n kyverno-notation-aws get secret kyverno-notation-aws-tls -o json | jq -r '.data."ca.crt"' | base64 -d
 ```
 
-6. Update the [Kyverno policy](configs/samples/kyverno-policy.yaml) with the TLS cert chain and then apply in your cluster:
+6. Update the [Certs config map](configs/samples/certs.yaml) with the TLS cert chain and then apply in your cluster:
+
+```sh
+kubectl apply -f configs/samples/certs.yaml
+```
 
 ```sh
 kubectl apply -f configs/samples/kyverno-policy.yaml
@@ -144,7 +234,7 @@ aws sso login
 ```
 
 ```sh
-set AWS_TOKEN (aws ecr get-login-password --region us-east-1)
+AWS_TOKEN=$(aws ecr get-login-password --region us-east-1)
 ```
 
 ```sh
@@ -165,23 +255,21 @@ Run a signed image:
 
 ```sh
 kubectl -n test-notation run test --image=844333597536.dkr.ecr.us-west-2.amazonaws.com/kyverno-demo:v1 --dry-run=server
+```
+Output
+```sh
 pod/test created (server dry run)
 ```
-
 Attempt to run an unsigned image:
 
 ```sh
 kubectl -n test-notation run test --image=844333597536.dkr.ecr.us-west-2.amazonaws.com/kyverno-demo:v1-unsigned
-
-Error from server: admission webhook "validate.kyverno.svc-fail" denied the request:
-
-policy Pod/test-notation/test for resource error:
-
-check-images:
-  call-aws-signer-extension: |
-    failed to check deny preconditions: failed to substitute variables in deny conditions: failed to resolve result.verified at path /all/0/key: failed to execute APICall: HTTP 500 Internal Server Error: failed to verify image 844333597536.dkr.ecr.us-west-2.amazonaws.com/kyverno-demo:v1-unsigned: no signature is associated with "844333597536.dkr.ecr.us-west-2.amazonaws.com/kyverno-demo@sha256:74a98f0e4d750c9052f092a7f7a72de7b20f94f176a490088f7a744c76c53ea5", make sure the artifact was signed successfully
 ```
-
+Output
+```sh
+Error from server: admission webhook "mutate.kyverno.svc-fail" denied the request: mutation policy check-images error: failed to apply policy check-images rules [call-aws-signer-extension: failed to load context: failed to fetch data for APICall: HTTP 406 Not Acceptable: failed to verify container kyverno-demo: failed to verify image {{844333597536.dkr.ecr.us-west-2.amazonaws.com kyverno-demo kyverno-demo v1-unsigned } /spec/containers/0/image}: no signature is associated with "844333597536.dkr.ecr.us-west-2.amazonaws.com/kyverno-demo@sha256:74a98f0e4d750c9052f092a7f7a72de7b20f94f176a490088f7a744c76c53ea5", make sure the artifact was signed successfully
+]
+```
 # Troubleshooting
 
 1. Check service
