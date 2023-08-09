@@ -1,16 +1,12 @@
 # kyverno-notation-aws
 
-Kyverno extension service for Notation and the AWS signer
+A [Kyverno](https://kyverno.io) extension service that executes the [AWS Signer](https://docs.aws.amazon.com/signer/index.html) plugin for [Notation](https://notaryproject.dev/) to verify image signatutes and attestations.
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/nirmata/kyverno-notation-aws)](https://goreportcard.com/report/github.com/nirmata/kyverno-notation-aws)
 ![License: Apache-2.0](https://img.shields.io/github/license/kyverno/kyverno?color=blue)
 
 
 ![logo](img/kyverno-notation-aws.png)
-
-# About
-
-A [Kyverno](https://kyverno.io) extension service that executes the [AWS Signer](https://docs.aws.amazon.com/signer/index.html) [Notation](https://notaryproject.dev/) plugin to verify image signatutes and attestations.
 
 # Features
 
