@@ -203,23 +203,13 @@ Update the the `${REGION}` and `${ACCOUNT}` in the [trustpolicy.yaml](configs/sa
 kubectl apply -f configs/samples/trustpolicy.yaml
 ```
 
-5. Get the TLS cert chain from your `kube-notation-aws` service
-
-```sh
-kubectl -n kyverno-notation-aws get secret kyverno-notation-aws-tls -o json | jq -r '.data."tls.crt"' | base64 -d && kubectl -n kyverno-notation-aws get secret kyverno-notation-aws-tls -o json | jq -r '.data."ca.crt"' | base64 -d
-```
-
-6. Update the [Certs config map](configs/samples/certs.yaml) with the TLS cert chain and then apply in your cluster:
-
-```sh
-kubectl apply -f configs/samples/certs.yaml
-```
+5. Apply the policy to the cluster
 
 ```sh
 kubectl apply -f configs/samples/kyverno-policy.yaml
 ```
 
-7. Configure ECR Registry credentials
+6. Configure ECR Registry credentials
 
 If you are using IRSA (recommended):
 
@@ -275,7 +265,7 @@ kubectl create secret docker-registry regcred --docker-username=AWS --docker-pas
 
 Update the `kyverno-notation-aws` Deployment in the [install.yaml](configs/install.yaml) to add the `--imagePullSecrets=regcred` argument:
 
-8. Test signed and unsigned images:
+7. Test signed and unsigned images:
 
 Create the test namespace which the [policy](configs/samples/kyverno-policy.yaml) applies to:
 

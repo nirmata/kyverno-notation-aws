@@ -45,7 +45,9 @@ spec:
                   message: invalid license version
         service:
           url: https://svc.kyverno-notation-aws/checkimages
-          caBundle: '{{ "ca-bundle".data.caBundle }}"'
+          caBundleFromSecret:
+            name: kyverno-notation-aws-tls
+            namespace: kyverno-notation-aws
     mutate:
       foreach:
       - list: "response.results"
