@@ -166,7 +166,7 @@ func main() {
 
 	errsTLS := make(chan error, 1)
 	if !flagNoTLS {
-		tlsReloader, err := NewTLSReloader(zapr.NewLogger(logger), &certInformer, tlsInformer.Lister(), tlsMgrConfig)
+		tlsReloader, err := NewTLSReloader(zapr.NewLogger(logger), &certInformer)
 		if err != nil {
 			log.Fatalf("failed to write certs: %v", err)
 		}

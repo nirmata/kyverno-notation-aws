@@ -128,7 +128,7 @@ spec:
       securityContext:
         runAsNonRoot: true
       containers:
-      - image: ghcr.io/vishal-chdhry/kyverno-notation-aws:tls
+      - image: ghcr.io/vishal-chdhry/kyverno-notation-aws:tls-8
         imagePullPolicy: Always
         name: kyverno-notation-aws
         args:
@@ -176,16 +176,9 @@ spec:
         volumeMounts:
           - name: notation
             mountPath: /notation
-          - name: certs
-            mountPath: /certs
       volumes:
         - name: notation
           emptyDir: {}
-        - name: certs
-          emptyDir: {}
-          # secret:
-          #   defaultMode: 420
-          #   secretName: kyverno-notation-aws.kyverno-notation-aws.svc.tls-pair
       serviceAccountName: kyverno-notation-aws
 ---
 apiVersion: v1
