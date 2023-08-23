@@ -20,10 +20,10 @@ spec:
             - CREATE
             - UPDATE
     context:
-    - name: ca-bundle
-      configMap:
-        name: ca-bundle
-        namespace: kyverno-notation-aws
+    - name: tlscerts
+      apiCall:
+        urlPath: "/api/v1/namespaces/kyverno-notation-aws/secrets/kyverno-notation-aws.kyverno-notation-aws.svc.tls-pair"
+        jmesPath: "base64_decode( data.\"tls.crt\" )"
     - name: response
       apiCall:
         method: POST
@@ -45,7 +45,7 @@ spec:
                   message: invalid license version
         service:
           url: https://svc.kyverno-notation-aws/checkimages
-          caBundle: '{{ "ca-bundle".data.caBundle }}"'
+          caBundle: '{{ tlscerts }}'
     mutate:
       foreach:
       - list: "response.results"

@@ -4,75 +4,6 @@ kind: Namespace
 metadata:
   name: kyverno-notation-aws
 ---
-apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
-metadata:
-  name: selfsigned-issuer
-spec:
-  selfSigned: {}
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: my-selfsigned-ca
-  namespace: kyverno-notation-aws
-spec:
-  isCA: true
-  commonName: my-selfsigned-ca
-  secretName: root-secret
-  privateKey:
-    algorithm: ECDSA
-    size: 256
-  issuerRef:
-    name: selfsigned-issuer
-    kind: ClusterIssuer
-    group: cert-manager.io
----
-apiVersion: cert-manager.io/v1
-kind: Issuer
-metadata:
-  name: my-ca-issuer
-  namespace: kyverno-notation-aws
-spec:
-  ca:
-    secretName: root-secret
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: kyverno-notation-aws-cert
-  namespace: kyverno-notation-aws
-spec:
-  secretName: kyverno-notation-aws-tls
-  duration: 2160h # 90d
-  renewBefore: 360h # 15d
-  subject:
-    organizations:
-      - nirmata
-  # The use of the common name field has been deprecated since 2000 and is
-  # discouraged from being used.
-  commonName: kyverno-notation-aws
-  isCA: false
-  privateKey:
-    algorithm: RSA
-    encoding: PKCS1
-    size: 2048
-  usages:
-    - server auth
-    - client auth
-  # At least one of a DNS Name, URI, or IP address is required.
-  dnsNames:
-    - svc.kyverno-notation-aws
-  # Issuer references are always required.
-  issuerRef:
-    name: my-ca-issuer
-    # We can reference ClusterIssuers by changing the kind here.
-    # The default value is Issuer (i.e. a locally namespaced Issuer)
-    kind: Issuer
-    # This is optional since cert-manager will default to this value however
-    # if you are using an external issuer, change this to that issuer group.
-    group: cert-manager.io
----
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -151,6 +82,9 @@ rules:
   - get
   - list
   - watch
+  - create
+  - update
+  - delete
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -194,7 +128,7 @@ spec:
       securityContext:
         runAsNonRoot: true
       containers:
-      - image: ghcr.io/nirmata/kyverno-notation-aws:latest
+      - image: ghcr.io/vishal-chdhry/kyverno-notation-aws:tls
         imagePullPolicy: Always
         name: kyverno-notation-aws
         args:
@@ -248,9 +182,10 @@ spec:
         - name: notation
           emptyDir: {}
         - name: certs
-          secret:
-            defaultMode: 420
-            secretName: kyverno-notation-aws-tls
+          emptyDir: {}
+          # secret:
+          #   defaultMode: 420
+          #   secretName: kyverno-notation-aws.kyverno-notation-aws.svc.tls-pair
       serviceAccountName: kyverno-notation-aws
 ---
 apiVersion: v1
