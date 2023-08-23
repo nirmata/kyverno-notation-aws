@@ -5,7 +5,6 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"encoding/pem"
-	"fmt"
 
 	"github.com/go-logr/logr"
 	tlsMgr "github.com/kyverno/pkg/tls"
@@ -24,7 +23,7 @@ type tlsreloader struct {
 
 func NewTLSReloader(logger logr.Logger, tlsinformer *chan tlsMgr.TLSCerts) (TLSReloader, error) {
 	tlsCerts := <-*tlsinformer
-	logger.Info(fmt.Sprintf("Writing tls certs to certs/ folder cert=%v", string(certificateToPem(tlsCerts.Cert))))
+	logger.Info("Writing tls certs to certs/ folder", string(certificateToPem(tlsCerts.Cert)))
 
 	cert, err := tls.X509KeyPair(certificateToPem(tlsCerts.Cert), privateKeyToPem(tlsCerts.Key))
 	if err != nil {
