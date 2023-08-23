@@ -8,11 +8,11 @@ require (
 	github.com/go-logr/logr v1.2.4
 	github.com/go-logr/zapr v1.2.4
 	github.com/google/go-containerregistry v0.15.2
+	github.com/kyverno/pkg/certmanager v0.0.8
+	github.com/kyverno/pkg/tls v0.0.8
 	github.com/nirmata/kyverno-notation-verifier v0.7.8
 	github.com/notaryproject/notation-core-go v1.0.0-rc.4
 	github.com/pkg/errors v0.9.1
-	github.com/vishal-chdhry/kyverno-pkg/certmanager v0.0.6
-	github.com/vishal-chdhry/kyverno-pkg/tls v0.0.5
 	go.uber.org/zap v1.25.0
 	gotest.tools v2.2.0+incompatible
 	k8s.io/apimachinery v0.28.0

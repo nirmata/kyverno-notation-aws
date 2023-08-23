@@ -8,8 +8,8 @@ import (
 	"fmt"
 
 	"github.com/go-logr/logr"
+	tlsMgr "github.com/kyverno/pkg/tls"
 	"github.com/pkg/errors"
-	tlsMgr "github.com/vishal-chdhry/kyverno-pkg/tls"
 )
 
 type TLSReloader interface {
