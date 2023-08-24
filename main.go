@@ -95,7 +95,6 @@ func main() {
 		Namespace:   namespace,
 	}
 
-	certInformer := make(chan tlsMgr.TLSCerts, 1)
 	certRenewer := tlsMgr.NewCertRenewer(
 		zapr.NewLogger(logger),
 		kubeClient.CoreV1().Secrets(namespace),
@@ -104,7 +103,6 @@ func main() {
 		TLSValidityDuration,
 		"",
 		tlsMgrConfig,
-		&certInformer,
 	)
 
 	caStopCh := make(chan struct{}, 1)
@@ -166,13 +164,8 @@ func main() {
 
 	errsTLS := make(chan error, 1)
 	if !flagNoTLS {
-		tlsReloader, err := NewTLSReloader(zapr.NewLogger(logger), &certInformer)
-		if err != nil {
-			log.Fatalf("failed to write certs: %v", err)
-		}
-
 		tlsConf := &tls.Config{
-			GetCertificate: tlsReloader.GetCertificate,
+			GetCertificate: certManager.GetCertificate,
 		}
 		srv := &http.Server{
 			Addr:      ":9443",

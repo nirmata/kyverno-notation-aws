@@ -850,10 +850,10 @@ github.com/kyverno/go-jmespath v0.4.1-0.20230204162932-3ee946b9433d h1:g63VNwOo6
 github.com/kyverno/go-jmespath v0.4.1-0.20230204162932-3ee946b9433d/go.mod h1:T8mJZnbsbmF+m6zOOFylbeCJqk5+pHWvzYPziyZiYoo=
 github.com/kyverno/kyverno v1.10.2 h1:epqGJriLm8/0Lc/AjngLruucnxrntGofRBkGabOxb3U=
 github.com/kyverno/kyverno v1.10.2/go.mod h1:U8c+vg1ZXZeKmLdHopU/mR4eq4JuEkOh/kAkZt0MDPU=
-github.com/kyverno/pkg/certmanager v0.0.8 h1:xHpXnozxUobPQOdMuaLar+w16OhOANl+GBSJiNsDaXE=
-github.com/kyverno/pkg/certmanager v0.0.8/go.mod h1:l9ALXfNz2iHMkwxZM94WGZP5J4V8z0Rg0/AY9QqbIYo=
-github.com/kyverno/pkg/tls v0.0.8 h1:y8rF1dBsrzk/t2hwUxCblRmJQwC4GXnJiuf7iWXRSHY=
-github.com/kyverno/pkg/tls v0.0.8/go.mod h1:t2pXB7A1BrS95f6XAvkau70kq/1i7nGjebAwci3L9Go=
+github.com/kyverno/pkg/certmanager v0.0.10 h1:6+1273WynuKpgA04yQSGTtW71KLJGHhHn3rTj9e8oIw=
+github.com/kyverno/pkg/certmanager v0.0.10/go.mod h1:3KZ2WOzigwCh4bII5QnnI3iqP52gqjKu/a+33Fxb0KA=
+github.com/kyverno/pkg/tls v0.0.9 h1:qESRb4YsmBeiXcR6rq6DiKFmbAb5mjmmYmw6VfBreu0=
+github.com/kyverno/pkg/tls v0.0.9/go.mod h1:t2pXB7A1BrS95f6XAvkau70kq/1i7nGjebAwci3L9Go=
 github.com/ldez/gomoddirectives v0.2.1/go.mod h1:sGicqkRgBOg//JfpXwkB9Hj0X5RyJ7mlACM5B9f6Me4=
 github.com/ldez/tagliatelle v0.2.0/go.mod h1:8s6WJQwEYHbKZDsp/LjArytKOG8qaMrKQQ3mFukHs88=
 github.com/leodido/go-urn v1.2.2 h1:7z68G0FCGvDk646jz1AelTYNYWrTNm0bEcFAo147wt4=
