@@ -18,6 +18,7 @@ import (
 	_ "github.com/notaryproject/notation-core-go/signature/cose"
 	_ "github.com/notaryproject/notation-core-go/signature/jws"
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -74,7 +75,9 @@ func main() {
 	flag.Int64Var(&cacheTTLDuration, "cacheTTLDurationSeconds", int64(1*time.Hour), "Max TTL value for a cache in seconds, default is 1 hour.")
 
 	flag.Parse()
-	logger, err := zap.NewDevelopment()
+	zc := zap.NewDevelopmentConfig()
+	zc.Level = zap.NewAtomicLevelAt(zapcore.Level(-2))
+	logger, err := zc.Build()
 	if err != nil {
 		log.Fatalf("failed to initialize logger: %v", err)
 	}

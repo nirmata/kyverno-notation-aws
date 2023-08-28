@@ -9,11 +9,12 @@ require (
 	github.com/google/go-containerregistry v0.15.2
 	github.com/kyverno/pkg/certmanager v0.0.10
 	github.com/kyverno/pkg/tls v0.0.9
-	github.com/nirmata/kyverno-notation-verifier v0.7.8
+	github.com/nirmata/kyverno-notation-verifier v0.8.6
 	github.com/notaryproject/notation-core-go v1.0.0-rc.4
 	github.com/pkg/errors v0.9.1
 	go.uber.org/zap v1.25.0
 	gotest.tools v2.2.0+incompatible
+	k8s.io/api v0.28.0
 	k8s.io/apimachinery v0.28.0
 	k8s.io/client-go v0.28.0
 	oras.land/oras-go/v2 v2.2.0
@@ -250,7 +251,6 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/api v0.28.0 // indirect
 	k8s.io/apiextensions-apiserver v0.27.1 // indirect
 	k8s.io/cli-runtime v0.28.0 // indirect
 	k8s.io/component-base v0.28.0 // indirect
