@@ -22,8 +22,8 @@ spec:
     context:
     - name: tlscerts
       apiCall:
-        urlPath: "/api/v1/namespaces/kyverno-notation-aws/secrets/kyverno-notation-aws-tls"
-        jmesPath: "join('\n', [ base64_decode( data.\"ca.crt\" ), base64_decode( data.\"tls.crt\" ) ] )"
+        urlPath: "/api/v1/namespaces/kyverno-notation-aws/secrets/kyverno-notation-aws.kyverno-notation-aws.svc.tls-pair"
+        jmesPath: "base64_decode( data.\"tls.crt\" )"
     - name: response
       apiCall:
         method: POST
