@@ -31,10 +31,10 @@ import (
 )
 
 var (
-	Namespace      = getEnvWithFallback("POD_NAMESPACE", "kyverno-notation-aws")
+	Namespace      = os.Getenv("POD_NAMESPACE")
+	PodName        = os.Getenv("POD_NAME")
 	ServiceName    = getEnvWithFallback("SERVICE_NAME", "svc")
 	DeploymentName = getEnvWithFallback("DEPLOYMENT_NAME", "kyverno-notation-aws")
-	PodName        = getEnvWithFallback("POD_NAME", "kyverno-notation-aws")
 
 	CertRenewalInterval = 12 * time.Hour
 	CAValidityDuration  = 365 * 24 * time.Hour
