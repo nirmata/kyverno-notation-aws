@@ -22,7 +22,7 @@ spec:
     context:
     - name: tlscerts
       apiCall:
-        urlPath: "/api/v1/namespaces/kyverno-notation-aws/secrets/kyverno-notation-aws.kyverno-notation-aws.svc.tls-pair"
+        urlPath: "/api/v1/namespaces/kyverno-notation-aws/secrets/svc.kyverno-notation-aws.svc.tls-pair"
         jmesPath: "base64_decode( data.\"tls.crt\" )"
     - name: response
       apiCall:

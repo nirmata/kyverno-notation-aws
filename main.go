@@ -31,11 +31,16 @@ import (
 )
 
 var (
-	namespace           = "kyverno-notation-aws"
+	Namespace      = getEnvWithFallback("POD_NAMESPACE", "kyverno-notation-aws")
+	ServiceName    = getEnvWithFallback("SERVICE_NAME", "svc")
+	DeploymentName = getEnvWithFallback("DEPLOYMENT_NAME", "kyverno-notation-aws")
+	PodName        = getEnvWithFallback("POD_NAME", "kyverno-notation-aws")
+
 	CertRenewalInterval = 12 * time.Hour
 	CAValidityDuration  = 365 * 24 * time.Hour
 	TLSValidityDuration = 150 * 24 * time.Hour
-	resyncPeriod        = 15 * time.Minute
+
+	resyncPeriod = 15 * time.Minute
 )
 
 func main() {
@@ -106,30 +111,30 @@ func main() {
 	defer sdown()
 
 	tlsMgrConfig := &tlsMgr.Config{
-		ServiceName: "svc",
-		Namespace:   namespace,
+		ServiceName: ServiceName,
+		Namespace:   Namespace,
 	}
 
 	caStopCh := make(chan struct{}, 1)
-	caInformer := NewSecretInformer(kubeClient, namespace, tlsMgr.GenerateRootCASecretName(tlsMgrConfig), resyncPeriod)
+	caInformer := NewSecretInformer(kubeClient, Namespace, tlsMgr.GenerateRootCASecretName(tlsMgrConfig), resyncPeriod)
 	go caInformer.Informer().Run(caStopCh)
 
 	tlsStopCh := make(chan struct{}, 1)
-	tlsInformer := NewSecretInformer(kubeClient, namespace, tlsMgr.GenerateTLSPairSecretName(tlsMgrConfig), resyncPeriod)
+	tlsInformer := NewSecretInformer(kubeClient, Namespace, tlsMgr.GenerateTLSPairSecretName(tlsMgrConfig), resyncPeriod)
 	go tlsInformer.Informer().Run(tlsStopCh)
 
 	le, err := leaderelection.New(
 		zapr.NewLogger(logger).WithName("leader-election"),
-		"kyverno-notation-aws",
-		namespace,
+		DeploymentName,
+		Namespace,
 		kubeClient,
-		"kyverno-notation-aws",
+		PodName,
 		2*time.Second,
 		func(ctx context.Context) {
 
 			certRenewer := tlsMgr.NewCertRenewer(
-				zapr.NewLogger(logger),
-				kubeClient.CoreV1().Secrets(namespace),
+				zapr.NewLogger(logger).WithName("tls").WithValues("pod", PodName),
+				kubeClient.CoreV1().Secrets(Namespace),
 				CertRenewalInterval,
 				CAValidityDuration,
 				TLSValidityDuration,
@@ -138,7 +143,7 @@ func main() {
 			)
 
 			certManager := certmanager.NewController(
-				zapr.NewLogger(logger),
+				zapr.NewLogger(logger).WithName("certmanager").WithValues("pod", PodName),
 				caInformer,
 				tlsInformer,
 				certRenewer,
