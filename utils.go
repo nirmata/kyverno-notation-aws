@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"time"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -43,4 +44,11 @@ func (i *secretInformer) Informer() cache.SharedIndexInformer {
 
 func (i *secretInformer) Lister() corev1listers.SecretLister {
 	return i.lister
+}
+
+func getEnvWithFallback(name, fallback string) string {
+	if value := os.Getenv(name); value != "" {
+		return value
+	}
+	return fallback
 }

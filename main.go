@@ -7,9 +7,13 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
+	"sync"
+	"syscall"
 	"time"
 
 	"github.com/go-logr/zapr"
+	"github.com/kyverno/kyverno/pkg/leaderelection"
 	"github.com/kyverno/pkg/certmanager"
 	tlsMgr "github.com/kyverno/pkg/tls"
 	"github.com/nirmata/kyverno-notation-verifier/kubenotation"
@@ -17,19 +21,26 @@ import (
 	knvVerifier "github.com/nirmata/kyverno-notation-verifier/verifier"
 	_ "github.com/notaryproject/notation-core-go/signature/cose"
 	_ "github.com/notaryproject/notation-core-go/signature/jws"
+	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	ctrl "sigs.k8s.io/controller-runtime"
 )
 
 var (
-	namespace           = "kyverno-notation-aws"
+	Namespace      = os.Getenv("POD_NAMESPACE")
+	PodName        = os.Getenv("POD_NAME")
+	ServiceName    = getEnvWithFallback("SERVICE_NAME", "svc")
+	DeploymentName = getEnvWithFallback("DEPLOYMENT_NAME", "kyverno-notation-aws")
+
 	CertRenewalInterval = 12 * time.Hour
 	CAValidityDuration  = 365 * 24 * time.Hour
 	TLSValidityDuration = 150 * 24 * time.Hour
-	resyncPeriod        = 15 * time.Minute
+
+	resyncPeriod = 15 * time.Minute
 )
 
 func main() {
@@ -96,39 +107,74 @@ func main() {
 		log.Fatalf("failed to initialize kube client: %v", err)
 	}
 
+	signalCtx, sdown := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer sdown()
+
 	tlsMgrConfig := &tlsMgr.Config{
-		ServiceName: "kyverno-notation-aws",
-		Namespace:   namespace,
+		ServiceName: ServiceName,
+		Namespace:   Namespace,
 	}
 
-	certRenewer := tlsMgr.NewCertRenewer(
-		zapr.NewLogger(logger),
-		kubeClient.CoreV1().Secrets(namespace),
-		CertRenewalInterval,
-		CAValidityDuration,
-		TLSValidityDuration,
-		"",
-		tlsMgrConfig,
-	)
-
 	caStopCh := make(chan struct{}, 1)
-	caInformer := NewSecretInformer(kubeClient, namespace, tlsMgr.GenerateRootCASecretName(tlsMgrConfig), resyncPeriod)
+	caInformer := NewSecretInformer(kubeClient, Namespace, tlsMgr.GenerateRootCASecretName(tlsMgrConfig), resyncPeriod)
 	go caInformer.Informer().Run(caStopCh)
 
 	tlsStopCh := make(chan struct{}, 1)
-	tlsInformer := NewSecretInformer(kubeClient, namespace, tlsMgr.GenerateTLSPairSecretName(tlsMgrConfig), resyncPeriod)
+	tlsInformer := NewSecretInformer(kubeClient, Namespace, tlsMgr.GenerateTLSPairSecretName(tlsMgrConfig), resyncPeriod)
 	go tlsInformer.Informer().Run(tlsStopCh)
 
-	certManager := certmanager.NewController(
-		zapr.NewLogger(logger),
-		caInformer,
-		tlsInformer,
-		certRenewer,
-		tlsMgrConfig,
-	)
+	le, err := leaderelection.New(
+		zapr.NewLogger(logger).WithName("leader-election"),
+		DeploymentName,
+		Namespace,
+		kubeClient,
+		PodName,
+		2*time.Second,
+		func(ctx context.Context) {
 
+			certRenewer := tlsMgr.NewCertRenewer(
+				zapr.NewLogger(logger).WithName("tls").WithValues("pod", PodName),
+				kubeClient.CoreV1().Secrets(Namespace),
+				CertRenewalInterval,
+				CAValidityDuration,
+				TLSValidityDuration,
+				"",
+				tlsMgrConfig,
+			)
+
+			certManager := certmanager.NewController(
+				zapr.NewLogger(logger).WithName("certmanager").WithValues("pod", PodName),
+				caInformer,
+				tlsInformer,
+				certRenewer,
+				tlsMgrConfig,
+			)
+
+			leaderControllers := []Controller{NewController("cert-manager", certManager, 1)}
+
+			// start leader controllers
+			var wg sync.WaitGroup
+			for _, controller := range leaderControllers {
+				controller.Run(signalCtx, zapr.NewLogger(logger).WithName("controllers"), &wg)
+			}
+			// wait all controllers shut down
+			wg.Wait()
+		},
+		nil,
+	)
+	if err != nil {
+		log.Fatalf("failed to initialize leader election: %v", err)
+		os.Exit(1)
+	}
+
+	// start leader election
 	go func() {
-		certManager.Run(context.TODO(), 1)
+		select {
+		case <-signalCtx.Done():
+			return
+		default:
+			le.Run(signalCtx)
+		}
 	}()
 
 	crdSetup, err := kubenotation.Setup(zapr.NewLogger(logger), metricsAddr, probeAddr, enableLeaderElection)
@@ -172,7 +218,23 @@ func main() {
 	errsTLS := make(chan error, 1)
 	if !flagNoTLS {
 		tlsConf := &tls.Config{
-			GetCertificate: certManager.GetCertificate,
+			GetCertificate: func(*tls.ClientHelloInfo) (*tls.Certificate, error) {
+				secret, err := tlsInformer.Lister().Secrets(tlsMgrConfig.Namespace).Get(tlsMgr.GenerateTLSPairSecretName(tlsMgrConfig))
+				if err != nil {
+					return nil, err
+				} else if secret == nil {
+					return nil, errors.New("tls secret not found")
+				} else if secret.Type != corev1.SecretTypeTLS {
+					return nil, errors.New("secret is not a TLS secret")
+				}
+
+				cert, err := tls.X509KeyPair(secret.Data[corev1.TLSCertKey], secret.Data[corev1.TLSPrivateKeyKey])
+				if err != nil {
+					return nil, err
+				}
+
+				return &cert, nil
+			},
 		}
 		srv := &http.Server{
 			Addr:      ":9443",
