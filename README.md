@@ -118,7 +118,11 @@ To specify the trust policy to use, we can pass the `trustPolicy` variable in th
 ```
 or we can set the `DEFAULT_TRUST_POLICY` env variable. In the above example we are dynamically using the trust policy for the namespace of the request.
 
+## High Availability
 
+Kyverno-notation-aws can be installed in a highly-available manner where additional replicas can be deployed for the plugin. The plugin does not use leader election for inbound API requests which means verification requests can be distributed and processed by all available replicas. Leader election is required for certificate management so therefore only one replica will handle these tasks at a given time.
+
+Multiple replicas configured for the plugin can be used for both availability and scale. Vertical scaling of the individual replicas’ resources may also be performed to increase combined throughput.
 
 # Setup
 
@@ -154,7 +158,7 @@ aws signer put-signing-profile --profile-name kyvernodemo --platform-id Notation
 notation key add --id arn:aws:signer:${REGION}:${ACCOUNT}:/signing-profiles/kyvernodemo --plugin com.amazonaws.signer.notation.plugin kyvernodemo
 ```
 
-3. Sign the image using `notation` and the AWS signer:
+4. Sign the image using `notation` and the AWS signer:
 
 (you may need to login to ECR first: `aws ecr get-login-password --region ${REGION} | notation login --username AWS --password-stdin ${REGISTRY}`)
 
@@ -164,25 +168,19 @@ notation sign 844333597536.dkr.ecr.us-east-1.amazonaws.com/kyverno-demo:v1 --key
 
 # Install
 
-1. Install cert-manager in the cluster
-
-```sh
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/cert-manager.yaml
-```
-
-2. Install Kyverno in the cluster
+1. Install Kyverno in the cluster
 
 ```sh
 kubectl create -f https://raw.githubusercontent.com/kyverno/kyverno/main/config/install-latest-testing.yaml
 ```
 
-3. Install the kyverno-notation-aws extension service
+2. Install the kyverno-notation-aws extension service
 
 ```sh
 kubectl apply -f configs/install.yaml
 ```
 
-4. Create CRs for Notation TrustPolicy and TrustStore
+3. Create CRs for Notation TrustPolicy and TrustStore
 
 ```sh
 kubectl apply -f configs/crds/
@@ -203,13 +201,13 @@ Update the the `${REGION}` and `${ACCOUNT}` in the [trustpolicy.yaml](configs/sa
 kubectl apply -f configs/samples/trustpolicy.yaml
 ```
 
-5. Apply the policy to the cluster
+4. Apply the policy to the cluster
 
 ```sh
 kubectl apply -f configs/samples/kyverno-policy.yaml
 ```
 
-6. Configure ECR Registry credentials
+5. Configure ECR Registry credentials
 
 If you are using IRSA (recommended):
 
@@ -265,7 +263,7 @@ kubectl create secret docker-registry regcred --docker-username=AWS --docker-pas
 
 Update the `kyverno-notation-aws` Deployment in the [install.yaml](configs/install.yaml) to add the `--imagePullSecrets=regcred` argument:
 
-7. Test signed and unsigned images:
+6. Test signed and unsigned images:
 
 Create the test namespace which the [policy](configs/samples/kyverno-policy.yaml) applies to:
 
