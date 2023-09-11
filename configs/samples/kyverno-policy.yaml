@@ -33,7 +33,7 @@ spec:
         - key: trustPolicy
           value: "tp-{{request.namespace}}"
         - key: metadata
-          value: '{{ request.object.metadata.annotations."kyverno-notation-aws.io/verify-images" }}'
+          value: "{{ request.object.metadata.annotations.\"kyverno-notation-aws.io/verify-images\" | '' }}"
         - key: attestations
           value: 
           - imageReference: "*"
