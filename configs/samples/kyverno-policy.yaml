@@ -52,6 +52,6 @@ spec:
       foreach:
       - list: "response.results"
         patchesJson6902: |-
-            - path: {{ element.path }}
-              op: {{ element.op }}
-              value: {{ element.value }}
+            - path: '{{ element.path }}'
+              op: '{{ element.op }}'
+              value: '{{ element.value }}'
