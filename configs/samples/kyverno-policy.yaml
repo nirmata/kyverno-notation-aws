@@ -24,6 +24,9 @@ spec:
       apiCall:
         urlPath: "/api/v1/namespaces/kyverno-notation-aws/secrets/svc.kyverno-notation-aws.svc.tls-pair"
         jmesPath: "base64_decode( data.\"tls.crt\" )"
+    - name: awsPluginAnnotation
+      apiCall:
+        urlPath: "/metadata/annotations/kyverno-notation-aws.io~1verify-images"
     - name: response
       apiCall:
         method: POST
@@ -32,6 +35,8 @@ spec:
           value: "{{images}}"
         - key: trustPolicy
           value: "tp-{{request.namespace}}"
+        - key: metadata
+          value: "{{awsPluginAnnotation}}"
         - key: attestations
           value: 
           - imageReference: "*"
@@ -51,5 +56,5 @@ spec:
       - list: "response.results"
         patchesJson6902: |-
             - path: {{ element.path }}
-              op: replace
-              value: {{ element.image }}
+              op: {{ element.op }}
+              value: {{ element.value }}
