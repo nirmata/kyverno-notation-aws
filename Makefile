@@ -21,7 +21,9 @@ GO_ACC                             := $(TOOLS_DIR)/go-acc
 GO_ACC_VERSION                     := latest
 KO                                 := $(TOOLS_DIR)/ko
 KO_VERSION                         := main #e93dbee8540f28c45ec9a2b8aec5ef8e43123966
-TOOLS                              := $(GO_ACC) $(KO)
+HELM                               := $(TOOLS_DIR)/helm
+HELM_VERSION                       := v3.12.3
+TOOLS                              := $(GO_ACC) $(KO) $(HELM)
 
 $(GO_ACC):
 	@echo Install go-acc... >&2
@@ -30,6 +32,10 @@ $(GO_ACC):
 $(KO):
 	@echo Install ko... >&2
 	@GOBIN=$(TOOLS_DIR) go install github.com/google/ko@$(KO_VERSION)
+
+$(HELM):
+	@echo Install helm... >&2
+	@GOBIN=$(TOOLS_DIR) go install helm.sh/helm/v3/cmd/helm@$(HELM_VERSION)
 
 .PHONY: install-tools
 install-tools: $(TOOLS) ## Install tools
@@ -111,3 +117,17 @@ docker-publish:
 	docker tag $(REPO_IMAGE):$(IMAGE_TAG_LATEST) $(REPO_IMAGE):$(IMAGE_TAG_SHA)
 	docker push $(REPO_IMAGE):$(IMAGE_TAG_SHA)
 	docker push $(REPO_IMAGE):$(IMAGE_TAG_LATEST)
+
+########
+# HELM #
+########
+
+.PHONY: codegen-helm-docs
+codegen-helm-docs: ## Generate helm docs
+	@echo Generate helm docs... >&2
+	@docker run -v ${PWD}/charts:/work -w /work jnorwood/helm-docs:v1.11.0 -s file
+
+.PHONY: install-kyverno-notation-aws
+install-kyverno-notation-aws: $(HELM) ## Install kyverno notation AWS helm chart
+	@echo Install kyverno chart... >&2
+	@$(HELM) upgrade --install kyverno-notation-aws --namespace kyverno-notation-aws --create-namespace --wait ./charts/kyverno-notation-aws
