@@ -111,3 +111,12 @@ docker-publish:
 	docker tag $(REPO_IMAGE):$(IMAGE_TAG_LATEST) $(REPO_IMAGE):$(IMAGE_TAG_SHA)
 	docker push $(REPO_IMAGE):$(IMAGE_TAG_SHA)
 	docker push $(REPO_IMAGE):$(IMAGE_TAG_LATEST)
+
+########
+# HELM #
+########
+
+.PHONY: codegen-helm-docs
+codegen-helm-docs: ## Generate helm docs
+	@echo Generate helm docs... >&2
+	@docker run -v ${PWD}/charts:/work -w /work jnorwood/helm-docs:v1.11.0 -s file
