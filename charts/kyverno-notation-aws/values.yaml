@@ -1,0 +1,48 @@
+# -- (string) Override the name of the chart
+nameOverride: ~
+
+# -- (string) Override the expanded name of the chart
+fullnameOverride: ~
+
+# -- (string) Override the namespace the chart deploys to
+namespaceOverride: ~
+
+# CRDs configuration
+crds:
+
+  # -- Whether to have Helm install the Kyverno Notation AWS CRDs.
+  install: true
+
+# Deployment configuration
+deployment:
+
+  # -- Deployment update strategy.
+  # Ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+  # @default -- See [values.yaml](values.yaml)
+  updateStrategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+
+  # -- Image pull secrets in case IRSA isn't configured, this will define the `--imagePullSecrets` argument
+  imagePullSecrets: {}
+  # regcred:
+  #   registry: foo.example.com
+  #   username: foobar
+  #   password: secret
+  # regcred2:
+  #   registry: bar.example.com
+  #   username: barbaz
+  #   password: secret2
+
+# Service account configuration
+serviceAccount:
+
+  # -- The ServiceAccount name
+  name:
+
+  # -- Annotations for the ServiceAccount
+  annotations: {}
+    # To configure IRSA for your cluster, use 'eks.amazonaws.com/role-arn' annotation.
+    # eks.amazonaws.com/role-arn: arn:aws:iam::${aws_account_id}:role/kyverno-notation-aws
