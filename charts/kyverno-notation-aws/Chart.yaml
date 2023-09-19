@@ -1,7 +1,7 @@
 apiVersion: v2
 type: application
 name: kyverno-notation-aws
-version: 0.1.0
+version: v1-rc.1
 appVersion: latest
 description: Kyverno extension service for Notation and the AWS signer
 keywords:
