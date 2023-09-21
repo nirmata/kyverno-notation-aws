@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "kyverno-notation-aws.name" . }}
+  namespace: {{ template "kyverno-notation-aws.namespace" . }}
+  labels:
+    {{- include "kyverno-notation-aws.labels" . | nindent 4 }}
+spec:
+  progressDeadlineSeconds: 600
+  revisionHistoryLimit: 10
+  replicas: 1
+  {{- with .Values.deployment.updateStrategy }}
+  strategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "kyverno-notation-aws.matchLabels.common" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "kyverno-notation-aws.labels" . | nindent 8 }}
+    spec:
+      terminationGracePeriodSeconds: 5
+      securityContext:
+        runAsNonRoot: true
+      serviceAccountName: {{ template "kyverno-notation-aws.serviceAccountName" . }}
+      containers:
+      - image: ghcr.io/nirmata/kyverno-notation-aws:latest
+        imagePullPolicy: Always
+        name: kyverno-notation-aws
+        args:
+          - --debug
+          - --cacheEnabled
+          - --cacheMaxSize=2000
+          - --cacheTTLDurationSeconds=7200
+          {{- if .Values.deployment.imagePullSecrets }}
+          - --imagePullSecrets={{ keys .Values.deployment.imagePullSecrets | join "," }}
+          {{- end }}
+        resources:
+          limits:
+            memory: 512Mi
+          requests:
+            memory: 32Mi
+            cpu: 100m
+        securityContext:
+          runAsUser: 2000
+          runAsGroup: 3000
+          allowPrivilegeEscalation: false
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+              - ALL
+        env:
+        - name: NOTATION_DIR
+          value: /notation
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace  
+        - name: SERVICE_NAME
+          value: {{ template "kyverno-notation-aws.serviceName" . }}
+        - name: DEPLOYMENT_NAME
+          value: {{ template "kyverno-notation-aws.name" . }}
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: AWS_REGION
+          value: us-west-2
+        - name: DEFAULT_TRUST_POLICY
+          value: aws-signer-trust-policy
+        volumeMounts:
+          - name: notation
+            mountPath: /notation
+      volumes:
+        - name: notation
+          emptyDir: {}
