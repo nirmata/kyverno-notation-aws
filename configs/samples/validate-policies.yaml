@@ -1,0 +1,76 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-verify-images-annotation
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+  - name: check-for-verify-images-annotation
+    match:
+      any:
+      - resources:
+          namespaces:
+          - test-notation
+          kinds:
+          - Pod
+    validate:
+      message: "The annotation \"kyverno-notation-aws.io/verify-images\" is required."
+      pattern:
+        metadata:
+          annotations:
+            kyverno-notation-aws.io/verify-images: "*"
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: deny-verify-images-annotation-change
+spec:
+  validationFailureAction: Enforce
+  background: false
+  rules:
+  - name: deny-verify-images-annotation-change
+    match:
+      any:
+      - resources:
+          namespaces:
+          - test-notation
+          kinds:
+          - Pod
+          operations:
+          - CREATE
+          - UPDATE
+    # validate:
+    #   message: >-
+    #     A request was created by {{ request | to_string(@) }}
+    #     and Roles {{ request.roles | to_string(@) }}.
+    #   deny: {}
+    validate:
+      message: "Cannot update annotation \"kyverno-notation-aws.io/verify-images\"."
+      deny:
+        conditions:
+          all:
+          - key: "{{ request.userInfo.username }}"
+            operator: NotEquals
+            value: "system:serviceaccount:kyverno:kyverno-admission-controller"
+          - key: "{{ request.object.metadata.annotations.\"kyverno-notation-aws.io/verify-images\" }}"
+            operator: NotEquals
+            value: "{{ request.oldObject.metadata.annotations.\"kyverno-notation-aws.io/verify-images\" }}"
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: add-annotations
+spec:
+  rules:
+  - name: add-annotations
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    mutate:
+      patchesJson6902: |-
+        - op: add
+          path: /metadata/annotations/kyverno.io~1verify-images
+          value: '{ "img": true }'
