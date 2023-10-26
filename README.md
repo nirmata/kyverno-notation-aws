@@ -18,7 +18,7 @@ The service manages Notation [trust policies](https://github.com/notaryproject/s
 
 ## Image Digest Mutation
 
-To ensure image integrity and prevent tampering, the sevice replaces image tags, which are mutable and can be spoofed, with digests.  
+To ensure image integrity and prevent tampering, the service replaces image tags, which are mutable and can be spoofed, with digests.  
 
 The Kyverno policy passes the `images` variable to the services' `/checkimages` endpoint. The result returns a list of images with their JSON path and digests so Kyverno can mutate each image in the admission payload. 
 
@@ -57,7 +57,7 @@ mutate:
 
 In addition to verifying signatures, the extension service can verify signed metadata i.e. [attestations](https://nirmata.com/2022/03/15/a-map-for-kubernetes-supply-chain-security/).
 
-To verify attestatons, the Kyverno policy can optionally pass a variable called `attestations` in the request:
+To verify attestations, the Kyverno policy can optionally pass a variable called `attestations` in the request:
 
 ```yaml
 - key: attestations
@@ -95,7 +95,7 @@ The `attestations` variable is a JSON array of where each entry has:
 In the  example above we are verifying the following: 
 1. the attestations `sbom/cyclone-dx` and `application/sarif+json` exist for all images
 2. the `creationInfo.licenseListVersion` is equal to 3.17 in the SBOM and GPL licenses are not present.
-3. the attatestion `application/vnd.cyclonedx` is available for all versions of the `844333597536.dkr.ecr.us-west-2.amazonaws.com/kyverno-demo` image and does not contain GPL licenses.
+3. the attestation `application/vnd.cyclonedx` is available for all versions of the `844333597536.dkr.ecr.us-west-2.amazonaws.com/kyverno-demo` image and does not contain GPL licenses.
 
 **NOTE:** The conditions key in the attestations must be escaped with `\` so kyverno does not substitute them before executing the extension service.
 
@@ -111,7 +111,7 @@ The cache stores the verification outcomes of images for the trust policy and ve
 
 In a shared cluster, each team may have different signatures and trust policies. To support such use cases, the extension allows configuring multiple [trust policies](https://github.com/notaryproject/specifications/blob/main/specs/trust-store-trust-policy.md#trust-policy) and [trust stores](https://github.com/notaryproject/specifications/blob/main/specs/trust-store-trust-policy.md#trust-store) as Kubernetes custom resources.
 
-The extension service allows specifying what trust policy they want to use for verification thus enabling multi tenancy. Mutliple teams can share one cluster and have different trust policies seperate from each other.
+The extension service allows specifying what trust policy they want to use for verification thus enabling multi tenancy. Multiple teams can share one cluster and have different trust policies separate from each other.
 To specify the trust policy to use, we can pass the `trustPolicy` variable in the request.
 ```yaml
  - key: trustPolicy
