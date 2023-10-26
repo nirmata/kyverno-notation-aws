@@ -46,3 +46,9 @@ serviceAccount:
   annotations: {}
     # To configure IRSA for your cluster, use 'eks.amazonaws.com/role-arn' annotation.
     # eks.amazonaws.com/role-arn: arn:aws:iam::${aws_account_id}:role/kyverno-notation-aws
+
+# Config map configuration
+configMap:
+  
+  # -- The configmap name
+  name:
