@@ -174,6 +174,8 @@ notation sign 844333597536.dkr.ecr.us-east-1.amazonaws.com/kyverno-demo:v1 --key
 kubectl create -f https://raw.githubusercontent.com/kyverno/kyverno/main/config/install-latest-testing.yaml
 ```
 
+**Note: Kyverno version should be higher than v1.11.0**
+
 2. Install the kyverno-notation-aws extension service
 
 ```sh

@@ -11,6 +11,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	"github.com/google/go-containerregistry/pkg/authn"
+	"github.com/google/go-containerregistry/pkg/name"
 	"github.com/pkg/errors"
 	"oras.land/oras-go/v2/registry"
 )
@@ -36,13 +37,27 @@ func getRegion(registry string) (string, error) {
 	return ecrRegion, nil
 }
 
-func getAuthFromIRSA(ctx context.Context, ref registry.Reference) (authn.AuthConfig, error) {
+func filterAWSImages(image string) bool {
+	parsedRef, err := name.ParseReference(image)
+	if err != nil {
+		return false
+	}
+	registry := parsedRef.Context().RegistryStr()
+	if registry == ecrPublicName {
+		return true
+	}
+
+	matches := ecrPattern.FindStringSubmatch(registry)
+	return len(matches) >= 3
+}
+
+func getAuthFromIRSA(ctx context.Context, ref registry.Reference) (*authn.AuthConfig, error) {
 	awsEcrRegion, err := getRegion(ref.Registry)
 	if err != nil {
 		awsEcrRegion = os.Getenv("AWS_REGION")
 	}
 
-	var authConfig authn.AuthConfig
+	var authConfig *authn.AuthConfig
 	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion(awsEcrRegion))
 	if err != nil {
 		return authConfig, errors.Wrapf(err, "failed to load default configuration")
@@ -72,7 +87,7 @@ func getAuthFromIRSA(ctx context.Context, ref registry.Reference) (authn.AuthCon
 		return authConfig, fmt.Errorf("invalid authorization token, expected the token to have two parts separated by ':', got %d parts", len(tokenSplit))
 	}
 
-	authConfig = authn.AuthConfig{
+	authConfig = &authn.AuthConfig{
 		Username: tokenSplit[0],
 		Password: tokenSplit[1],
 	}

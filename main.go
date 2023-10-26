@@ -203,6 +203,7 @@ func main() {
 		knvVerifier.WithMaxSignatureAttempts(flagMaxSignatureAtempts),
 		knvVerifier.WithEnableDebug(flagEnableDebug),
 		knvVerifier.WithProviderAuthConfigResolver(getAuthFromIRSA),
+		knvVerifier.WithImageFilterFunction(filterAWSImages),
 		knvVerifier.WithTokenReviewEnabled(reviewKyvernoToken),
 		knvVerifier.WithCacheEnabled(cacheEnabled),
 		knvVerifier.WithMaxCacheSize(cacheMaxSize),
