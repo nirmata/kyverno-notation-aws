@@ -44,3 +44,7 @@
 {{- define "kyverno-notation-aws.serviceName" -}}
 {{- printf "%s-svc" (include "kyverno-notation-aws.fullname" .) | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{- define "kyverno-notation-aws.configMap" -}}
+{{ default (include "kyverno-notation-aws.name" .) .Values.configMap.name }}
+{{- end -}}
