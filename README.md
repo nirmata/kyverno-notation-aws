@@ -33,8 +33,9 @@ Here is an example:
   "results": [
     {
        "name": "container1",
+       "op": "replace",
        "path":  "/spec/containers/0",
-       "image":  "ghcr.io/kyverno/test-verify-image@sha256:b31bfb4d0213f254d361e0079deaaebefa4f82ba7aa76ef82e90b4935ad5b105"
+       "value":  "ghcr.io/kyverno/test-verify-image@sha256:b31bfb4d0213f254d361e0079deaaebefa4f82ba7aa76ef82e90b4935ad5b105"
     } 
   ]
 }
