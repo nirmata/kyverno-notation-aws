@@ -47,9 +47,9 @@ mutate:
    foreach:
    - list: "response.results"
      patchesJson6902: |-
-       - path: {{ element.path }}
-         op: replace
-         value: {{ element.image }}
+       - path: '{{ element.path }}'
+         op: '{{ element.op }}'
+         value: '{{ element.value }}'
 ```
 
 ## Attestation Verification
