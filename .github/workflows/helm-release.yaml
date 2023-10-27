@@ -1,0 +1,20 @@
+name: helm-release
+on:
+  push:
+    tags:
+      - 'kyverno-notation-aws-chart-v*'
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
+      - name: Install Helm
+        uses: azure/setup-helm@5119fcb9089d432beecbf79bb2c7915207344b78 # v3.5
+        with:
+          version: v3.10.3
+      - name: Run chart-releaser
+        uses: stefanprodan/helm-gh-pages@0ad2bb377311d61ac04ad9eb6f252fb68e207260 #v1.7.0
+        with:
+          token: "${{ secrets.GITHUB_TOKEN }}"
