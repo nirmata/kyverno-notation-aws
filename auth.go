@@ -11,7 +11,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	"github.com/google/go-containerregistry/pkg/authn"
-	"github.com/google/go-containerregistry/pkg/name"
 	"github.com/pkg/errors"
 	"oras.land/oras-go/v2/registry"
 )
@@ -35,20 +34,6 @@ func getRegion(registry string) (string, error) {
 
 	ecrRegion := matches[3]
 	return ecrRegion, nil
-}
-
-func filterAWSImages(image string) bool {
-	parsedRef, err := name.ParseReference(image)
-	if err != nil {
-		return false
-	}
-	registry := parsedRef.Context().RegistryStr()
-	if registry == ecrPublicName {
-		return true
-	}
-
-	matches := ecrPattern.FindStringSubmatch(registry)
-	return len(matches) >= 3
 }
 
 func getAuthFromIRSA(ctx context.Context, ref registry.Reference) (*authn.AuthConfig, error) {

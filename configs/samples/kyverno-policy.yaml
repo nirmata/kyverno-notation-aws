@@ -30,6 +30,9 @@ spec:
         data:
         - key: images
           value: "{{images}}"
+        - key: imageReferences
+          value: 
+          - "844333597536.dkr.ecr.us-west-2.amazonaws.com*"
         - key: trustPolicy
           value: "tp-{{request.namespace}}"
         - key: attestations

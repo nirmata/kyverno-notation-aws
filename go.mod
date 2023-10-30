@@ -11,7 +11,7 @@ require (
 	github.com/kyverno/kyverno v1.10.2
 	github.com/kyverno/pkg/certmanager v0.0.10
 	github.com/kyverno/pkg/tls v0.0.9
-	github.com/nirmata/kyverno-notation-verifier v0.8.9-0.20231026100025-f13191f1179b
+	github.com/nirmata/kyverno-notation-verifier v0.8.9-0.20231030064839-6cdb1ad76c75
 	github.com/notaryproject/notation-core-go v1.0.0-rc.4
 	github.com/pkg/errors v0.9.1
 	go.uber.org/zap v1.25.0
@@ -131,6 +131,7 @@ require (
 	github.com/google/certificate-transparency-go v1.1.4 // indirect
 	github.com/google/gnostic-models v0.6.8 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
+	github.com/google/go-containerregistry/pkg/authn/k8schain v0.0.0-20221030203717-1711cefd7eec // indirect
 	github.com/google/go-containerregistry/pkg/authn/kubernetes v0.0.0-20230403180904-b8d1c0a1df12 // indirect
 	github.com/google/go-github/v45 v45.2.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
