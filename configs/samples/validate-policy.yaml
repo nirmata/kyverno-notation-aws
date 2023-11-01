@@ -1,7 +1,7 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: check-images     
+  name: validate-images     
 spec:
   validationFailureAction: Enforce
   failurePolicy: Fail
@@ -49,10 +49,11 @@ spec:
         service:
           url: https://svc.kyverno-notation-aws/checkimages
           caBundle: '{{ tlscerts }}'
-    mutate:
-      foreach:
-      - list: "response.results"
-        patchesJson6902: |-
-            - path: '{{ element.path }}'
-              op: '{{ element.op }}'
-              value: '{{ element.value }}'
+    validate:
+      message: "{{ response.message }}"
+      deny:
+        conditions:
+          all:
+          - key: "{{ response.verified }}"
+            operator: EQUALS
+            value: false

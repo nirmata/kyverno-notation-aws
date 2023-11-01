@@ -1,14 +1,14 @@
 apiVersion: notation.nirmata.io/v1alpha1
 kind: TrustPolicy
 metadata:
-  name: trustpolicy-sample
+  name: tp-test-notation
 spec:
   version: '1.0'
   trustPolicyName: tp-test-notation
   trustPolicies:
   - name: aws-signer-tp
     registryScopes:
-    - "*"
+    - "844333597536.dkr.ecr.us-west-2.amazonaws.com/kyverno-demo"
     signatureVerification:
       level: strict
       override: {}
@@ -20,7 +20,7 @@ spec:
 apiVersion: notation.nirmata.io/v1alpha1
 kind: TrustPolicy
 metadata:
-  name: trustpolicy-sample-fail
+  name: tp-test-notation-fail
 spec:
   version: '1.0'
   trustPolicyName: tp-test-notation-fail

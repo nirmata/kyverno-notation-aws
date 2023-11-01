@@ -36,13 +36,13 @@ func getRegion(registry string) (string, error) {
 	return ecrRegion, nil
 }
 
-func getAuthFromIRSA(ctx context.Context, ref registry.Reference) (authn.AuthConfig, error) {
+func getAuthFromIRSA(ctx context.Context, ref registry.Reference) (*authn.AuthConfig, error) {
 	awsEcrRegion, err := getRegion(ref.Registry)
 	if err != nil {
 		awsEcrRegion = os.Getenv("AWS_REGION")
 	}
 
-	var authConfig authn.AuthConfig
+	var authConfig *authn.AuthConfig
 	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion(awsEcrRegion))
 	if err != nil {
 		return authConfig, errors.Wrapf(err, "failed to load default configuration")
@@ -72,7 +72,7 @@ func getAuthFromIRSA(ctx context.Context, ref registry.Reference) (authn.AuthCon
 		return authConfig, fmt.Errorf("invalid authorization token, expected the token to have two parts separated by ':', got %d parts", len(tokenSplit))
 	}
 
-	authConfig = authn.AuthConfig{
+	authConfig = &authn.AuthConfig{
 		Username: tokenSplit[0],
 		Password: tokenSplit[1],
 	}
