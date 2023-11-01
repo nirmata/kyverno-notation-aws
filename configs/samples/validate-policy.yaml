@@ -1,0 +1,59 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: validate-images     
+spec:
+  validationFailureAction: Enforce
+  failurePolicy: Fail
+  webhookTimeoutSeconds: 30
+  schemaValidation: false
+  rules:
+  - name: call-aws-signer-extension
+    match:
+      any:
+      - resources:
+          namespaces:
+          - test-notation
+          kinds:
+          - Pod
+          operations:
+            - CREATE
+            - UPDATE
+    context:
+    - name: tlscerts
+      apiCall:
+        urlPath: "/api/v1/namespaces/kyverno-notation-aws/secrets/svc.kyverno-notation-aws.svc.tls-pair"
+        jmesPath: "base64_decode( data.\"tls.crt\" )"
+    - name: response
+      apiCall:
+        method: POST
+        data:
+        - key: images
+          value: "{{images}}"
+        - key: imageReferences
+          value: 
+          - "844333597536.dkr.ecr.us-west-2.amazonaws.com*"
+        - key: trustPolicy
+          value: "tp-{{request.namespace}}"
+        - key: attestations
+          value: 
+          - imageReference: "*"
+            type: 
+            - name: sbom/example
+              conditions:
+                all:
+                - key: \{{creationInfo.licenseListVersion}}
+                  operator: Equals
+                  value: "3.17"
+                  message: invalid license version
+        service:
+          url: https://svc.kyverno-notation-aws/checkimages
+          caBundle: '{{ tlscerts }}'
+    validate:
+      message: "{{ response.message }}"
+      deny:
+        conditions:
+          all:
+          - key: "{{ response.verified }}"
+            operator: EQUALS
+            value: false
