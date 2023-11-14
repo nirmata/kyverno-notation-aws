@@ -41,7 +41,7 @@ jobs:
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
       - name: Install Cosign
-        uses: sigstore/cosign-installer@6e04d228eb30da1757ee4e1dd75a0ec73a653e06 # v3.1.1
+        uses: sigstore/cosign-installer@1fc5bd396d372bee37d608f955b336615edf79c8 # v3.2.0
       - name: Publish image
         id: publish-kyverno-notation-aws
         uses: ./.github/actions/publish-image
@@ -66,7 +66,7 @@ jobs:
       packages: write   # To upload assets to release.
       actions: read     # To read the workflow path.
     # NOTE: The container generator workflow is not officially released as GA.
-    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@v1.7.0
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@v1.9.0
     with:
       image: ghcr.io/${{ github.repository_owner }}/kyverno-notation-aws
       digest: "${{ needs.publish-images.outputs.image-digest }}"
