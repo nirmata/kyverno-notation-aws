@@ -24,7 +24,7 @@ jobs:
       - name: docker build
         run: VERSION=${{ github.ref_name }} make docker-build
       - name: Trivy Scan Image
-        uses: aquasecurity/trivy-action@41f05d9ecffa2ed3f1580af306000f734b733e54 # v0.11.2
+        uses: aquasecurity/trivy-action@2b6a709cf9c4025c5438138008beaddbb02086f0 # v0.14.0
         with:
           scan-type: 'fs'
           ignore-unfixed: true
