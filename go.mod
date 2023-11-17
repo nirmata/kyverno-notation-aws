@@ -18,7 +18,7 @@ require (
 	gotest.tools v2.2.0+incompatible
 	k8s.io/api v0.28.4
 	k8s.io/apimachinery v0.28.4
-	k8s.io/client-go v0.28.0
+	k8s.io/client-go v0.28.4
 	oras.land/oras-go/v2 v2.2.0
 	sigs.k8s.io/controller-runtime v0.15.0-alpha.1
 )
