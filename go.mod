@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/aws/aws-sdk-go-v2/config v1.18.21
-	github.com/aws/aws-sdk-go-v2/service/ecr v1.22.2
+	github.com/aws/aws-sdk-go-v2/service/ecr v1.23.0
 	github.com/go-logr/logr v1.3.0
 	github.com/go-logr/zapr v1.2.4
 	github.com/google/go-containerregistry v0.15.2
