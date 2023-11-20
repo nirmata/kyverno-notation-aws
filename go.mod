@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.18.21
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.22.2
 	github.com/go-logr/logr v1.3.0
-	github.com/go-logr/zapr v1.2.4
+	github.com/go-logr/zapr v1.3.0
 	github.com/google/go-containerregistry v0.15.2
 	github.com/kyverno/kyverno v1.10.2
 	github.com/kyverno/pkg/certmanager v0.0.10
@@ -14,7 +14,7 @@ require (
 	github.com/nirmata/kyverno-notation-verifier v1.0.0
 	github.com/notaryproject/notation-core-go v1.0.1
 	github.com/pkg/errors v0.9.1
-	go.uber.org/zap v1.25.0
+	go.uber.org/zap v1.26.0
 	gotest.tools v2.2.0+incompatible
 	k8s.io/api v0.28.4
 	k8s.io/apimachinery v0.28.4
