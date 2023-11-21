@@ -32,11 +32,10 @@ Here is an example:
   "message": "...",
   "results": [
     {
-       "name": "container1",
-       "op": "replace",
-       "path":  "/spec/containers/0",
-       "value":  "ghcr.io/kyverno/test-verify-image@sha256:b31bfb4d0213f254d361e0079deaaebefa4f82ba7aa76ef82e90b4935ad5b105"
-    } 
+      "op": "replace",
+      "path": "/spec/containers/0/image",
+      "value": "844333597536.dkr.ecr.us-west-2.amazonaws.com/kyverno-demo@sha256:4a1c4b21597c1b4415bdbecb28a3296c6b5e23ca4f9feeb599860a1dac6a0108"
+    }
   ]
 }
 ```
