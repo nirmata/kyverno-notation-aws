@@ -191,7 +191,7 @@ require (
 	github.com/secure-systems-lab/go-securesystemslib v0.4.0 // indirect
 	github.com/segmentio/ksuid v1.0.4 // indirect
 	github.com/shibumi/go-pathspec v1.3.0 // indirect
-	github.com/sigstore/cosign v1.13.1 // indirect
+	github.com/sigstore/cosign v1.13.2 // indirect
 	github.com/sigstore/fulcio v1.1.0 // indirect
 	github.com/sigstore/k8s-manifest-sigstore v0.4.4 // indirect
 	github.com/sigstore/rekor v1.0.1 // indirect
