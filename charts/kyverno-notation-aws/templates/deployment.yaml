@@ -26,7 +26,7 @@ spec:
         runAsNonRoot: true
       serviceAccountName: {{ template "kyverno-notation-aws.serviceAccountName" . }}
       containers:
-      - image: ghcr.io/nirmata/kyverno-notation-aws:latest
+      - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: Always
         name: kyverno-notation-aws
         args:
@@ -74,6 +74,18 @@ spec:
         volumeMounts:
           - name: notation
             mountPath: /notation
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       volumes:
         - name: notation
           emptyDir: {}
