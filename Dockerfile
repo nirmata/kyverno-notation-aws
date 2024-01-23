@@ -1,7 +1,6 @@
-ARG BUILD_PLATFORM="linux/amd64"
-ARG BUILDER_IMAGE="golang:1.20.6-alpine3.18"
+ARG BUILDER_IMAGE="golang:1.21.6-alpine3.18"
 
-FROM --platform=$BUILD_PLATFORM $BUILDER_IMAGE as builder
+FROM --platform=$BUILDPLATFORM $BUILDER_IMAGE as builder
 
 WORKDIR /
 COPY . ./
@@ -15,7 +14,9 @@ RUN apk update && \
     unzip -o ${SIGNER_BINARY_FILE}
 
 # Build Go binary
-RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="-w -s" -o kyverno-notation-aws .
+ENV GOOS $TARGETOS
+ENV GOARCH $TARGETARCH
+RUN go build -ldflags="-w -s" -o kyverno-notation-aws .
 
 FROM gcr.io/distroless/static:nonroot
 WORKDIR /
