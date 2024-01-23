@@ -315,8 +315,9 @@ Defaulted container "kyverno-notation-aws" out of: kyverno-notation-aws, kube-no
 ```sh
 kubectl run netshoot --rm -i --tty --image nicolaka/netshoot
 ```
+3. Set the `--reviewKyvernoToken` flag to `false` in kyverno-notation-aws deployment.
 
-3. Use curl to make a call to the service as follows:
+4. Use curl to make a call to the service as follows:
 
 ```sh
 curl -k https://svc.kyverno-notation-aws/checkimages -X POST -d '{"images": ["844333597536.dkr.ecr.us-west-2.amazonaws.com/kyverno-demo:v1"]}'
