@@ -14,9 +14,7 @@ RUN apk update && \
     unzip -o ${SIGNER_BINARY_FILE}
 
 # Build Go binary
-ENV GOOS $TARGETOS
-ENV GOARCH $TARGETARCH
-RUN go build -ldflags="-w -s" -o kyverno-notation-aws .
+RUN GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o kyverno-notation-aws .
 
 FROM gcr.io/distroless/static:nonroot
 WORKDIR /
