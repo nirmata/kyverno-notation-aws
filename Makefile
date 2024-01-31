@@ -5,11 +5,11 @@
 GIT_SHA              := $(shell git rev-parse HEAD)
 REGISTRY             ?= ghcr.io
 REPO                 ?= nirmata
-IMAGE                ?= kyverno-notation-aws
+IMAGENAME                ?= kyverno-notation-aws
 GOOS                 ?= $(shell go env GOOS)
 GOARCH               ?= $(shell go env GOARCH)
 CGO_ENABLED          ?= 0
-REPO_IMAGE           := $(REGISTRY)/$(REPO)/$(IMAGE)
+REPO_IMAGE           := $(REGISTRY)/$(REPO)/$(IMAGENAME)
 
 
 #########
@@ -107,14 +107,11 @@ build:
 
 docker-build:
 	@echo Build kyverno-notation-aws image with docker... >&2
-	docker buildx build --platform linux/amd64,linux/arm64/v8 -t $(REPO_IMAGE):$(IMAGE_TAG_LATEST) --push .
+	docker buildx build --platform linux/amd64,linux/arm64 -t $(REPO_IMAGE):$(IMAGE_TAG_LATEST) --push .
 
 docker-publish:
 	@echo Build kyverno-notation-aws image with docker... >&2
-	docker buildx build --platform linux/amd64,linux/arm64/v8 -t $(REPO_IMAGE):$(IMAGE_TAG_LATEST) --push .
-	docker tag $(REPO_IMAGE):$(IMAGE_TAG_LATEST) $(REPO_IMAGE):$(IMAGE_TAG_SHA)
-	docker push $(REPO_IMAGE):$(IMAGE_TAG_SHA)
-	docker push $(REPO_IMAGE):$(IMAGE_TAG_LATEST)
+	docker buildx build --platform linux/amd64,linux/arm64 -t $(REPO_IMAGE):$(IMAGE_TAG_LATEST) --push .
 
 ########
 # HELM #
