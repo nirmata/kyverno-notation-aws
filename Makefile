@@ -108,7 +108,7 @@ build:
 docker-build:
 	@echo Build kyverno-notation-aws image with docker... >&2
 	docker buildx create --name multiarch --driver docker-container --use
-	docker buildx build --platform linux/amd64,linux/arm64 -t $(REPO_IMAGE):$(IMAGE_TAG_LATEST) .
+	docker buildx build --platform linux/amd64,linux/arm64 -t $(REPO_IMAGE):$(IMAGE_TAG_LATEST) --push .
 	docker buildx rm multiarch
 
 docker-publish:
