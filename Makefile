@@ -129,5 +129,5 @@ codegen-helm-docs: ## Generate helm docs
 
 .PHONY: install-kyverno-notation-aws
 install-kyverno-notation-aws: $(HELM) ## Install kyverno notation AWS helm chart
-	@echo Install kyverno chart... >&2
+	@echo Install kyverno-notation-aws chart... >&2
 	@$(HELM) upgrade --install kyverno-notation-aws --namespace kyverno-notation-aws --create-namespace --wait ./charts/kyverno-notation-aws
