@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"sync"
 	"syscall"
 	"time"
@@ -85,8 +86,14 @@ func main() {
 	var cacheTTLDuration int64
 	flag.Int64Var(&cacheTTLDuration, "cacheTTLDurationSeconds", int64(1*time.Hour), "Max TTL value for a cache in seconds, default is 1 hour.")
 
-	var reviewKyvernoToken bool
-	flag.BoolVar(&reviewKyvernoToken, "reviewKyvernoToken", true, "Checks if the Auth token in the request is a token from kyverno admission controller, default is true")
+	var reviewAuthToken bool
+	flag.BoolVar(&reviewAuthToken, "reviewAuthToken", true, "Checks if the Auth token in the request is a token from a trusted source, default is true")
+
+	var kyvernoNamespace string
+	flag.StringVar(&kyvernoNamespace, "kyvernoNamespace", "kyverno", "Namespace where kyverno is installed, default is kyverno")
+
+	var allowedUsers string
+	flag.StringVar(&allowedUsers, "allowedUsers", "", "Comma-seperated list of all the allowed users and service accounts besides kyverno service accounts")
 
 	flag.Parse()
 	zc := zap.NewDevelopmentConfig()
@@ -203,10 +210,12 @@ func main() {
 		knvVerifier.WithMaxSignatureAttempts(flagMaxSignatureAtempts),
 		knvVerifier.WithEnableDebug(flagEnableDebug),
 		knvVerifier.WithProviderAuthConfigResolver(getAuthFromIRSA),
-		knvVerifier.WithTokenReviewEnabled(reviewKyvernoToken),
+		knvVerifier.WithTokenReviewEnabled(reviewAuthToken),
 		knvVerifier.WithCacheEnabled(cacheEnabled),
 		knvVerifier.WithMaxCacheSize(cacheMaxSize),
-		knvVerifier.WithMaxCacheTTL(time.Duration(cacheTTLDuration*int64(time.Second))))
+		knvVerifier.WithMaxCacheTTL(time.Duration(cacheTTLDuration*int64(time.Second))),
+		knvVerifier.WithKyvernoNamespace(kyvernoNamespace),
+		knvVerifier.WithAllowedUsers(strings.Split(allowedUsers, ",")))
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/checkimages", verifier.HandleCheckImages)

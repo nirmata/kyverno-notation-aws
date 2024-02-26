@@ -11,8 +11,8 @@ require (
 	github.com/kyverno/kyverno v1.10.2
 	github.com/kyverno/pkg/certmanager v0.0.10
 	github.com/kyverno/pkg/tls v0.0.9
-	github.com/nirmata/kyverno-notation-verifier v1.0.0
-	github.com/notaryproject/notation-core-go v1.0.1
+	github.com/nirmata/kyverno-notation-verifier v1.0.2-0.20240226100808-71a312da903f
+	github.com/notaryproject/notation-core-go v1.0.2
 	github.com/pkg/errors v0.9.1
 	go.uber.org/zap v1.26.0
 	gotest.tools v2.2.0+incompatible
@@ -101,11 +101,11 @@ require (
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/fxamacker/cbor/v2 v2.5.0 // indirect
 	github.com/ghodss/yaml v1.0.1-0.20190212211648-25d852aebe32 // indirect
-	github.com/go-asn1-ber/asn1-ber v1.5.4 // indirect
+	github.com/go-asn1-ber/asn1-ber v1.5.5 // indirect
 	github.com/go-chi/chi v4.1.2+incompatible // indirect
 	github.com/go-errors/errors v1.4.2 // indirect
 	github.com/go-jose/go-jose/v3 v3.0.1 // indirect
-	github.com/go-ldap/ldap/v3 v3.4.5 // indirect
+	github.com/go-ldap/ldap/v3 v3.4.6 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-openapi/analysis v0.21.4 // indirect
 	github.com/go-openapi/errors v0.20.3 // indirect
@@ -140,7 +140,7 @@ require (
 	github.com/google/s2a-go v0.1.3 // indirect
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
 	github.com/google/trillian v1.5.1 // indirect
-	github.com/google/uuid v1.3.0 // indirect
+	github.com/google/uuid v1.3.1 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.3 // indirect
 	github.com/gregjones/httpcache v0.0.0-20190611155906-901d90724c79 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
@@ -171,7 +171,7 @@ require (
 	github.com/mozillazg/docker-credential-acr-helper v0.3.0 // indirect
 	github.com/mpvl/unique v0.0.0-20150818121801-cbe035fff7de // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
-	github.com/notaryproject/notation-go v1.0.0-rc.6 // indirect
+	github.com/notaryproject/notation-go v1.1.0 // indirect
 	github.com/oklog/ulid v1.3.1 // indirect
 	github.com/oliveagle/jsonpath v0.0.0-20180606110733-2e52cf6e6852 // indirect
 	github.com/open-policy-agent/gatekeeper v0.0.0-20210824170141-dd97b8a7e966 // indirect
@@ -232,14 +232,14 @@ require (
 	go.opentelemetry.io/otel/trace v1.14.0 // indirect
 	go.starlark.net v0.0.0-20230525235612-a134d8f9ddca // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/crypto v0.17.0 // indirect
+	golang.org/x/crypto v0.18.0 // indirect
 	golang.org/x/exp v0.0.0-20230321023759-10a507213a29 // indirect
 	golang.org/x/mod v0.14.0 // indirect
 	golang.org/x/net v0.19.0 // indirect
 	golang.org/x/oauth2 v0.9.0 // indirect
 	golang.org/x/sync v0.5.0 // indirect
-	golang.org/x/sys v0.15.0 // indirect
-	golang.org/x/term v0.15.0 // indirect
+	golang.org/x/sys v0.16.0 // indirect
+	golang.org/x/term v0.16.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	golang.org/x/tools v0.16.1 // indirect
