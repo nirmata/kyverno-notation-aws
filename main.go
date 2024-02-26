@@ -62,6 +62,7 @@ func main() {
 		reviewAuthToken             bool
 		kyvernoNamespace            string
 		allowedUsers                string
+		reviewKyvernoToken          bool
 	)
 
 	flag.BoolVar(&flagLocal, "local", false, "Use local system notation configuration")
@@ -79,6 +80,7 @@ func main() {
 	flag.BoolVar(&cacheEnabled, "cacheEnabled", true, "Whether to use a TTL cache for storing verified images, default is true")
 	flag.Int64Var(&cacheMaxSize, "cacheMaxSize", 1000, "Max size limit for the TTL cache, default is 1000.")
 	flag.Int64Var(&cacheTTLDuration, "cacheTTLDurationSeconds", int64(1*time.Hour), "Max TTL value for a cache in seconds, default is 1 hour.")
+	flag.BoolVar(&reviewKyvernoToken, "reviewKyvernoToken", true, "(deprecated, use reviewAuthToken) Checks if the Auth token in the request is a token from kyverno admission controller, default is true")
 	flag.BoolVar(&reviewAuthToken, "reviewAuthToken", true, "Checks if the Auth token in the request is a token from a trusted source, default is true")
 	flag.StringVar(&kyvernoNamespace, "kyvernoNamespace", "kyverno", "Namespace where kyverno is installed, default is kyverno")
 	flag.StringVar(&allowedUsers, "allowedUsers", "", "Comma-seperated list of all the allowed users and service accounts besides kyverno service accounts")
@@ -198,7 +200,7 @@ func main() {
 		knvVerifier.WithMaxSignatureAttempts(flagMaxSignatureAtempts),
 		knvVerifier.WithEnableDebug(flagEnableDebug),
 		knvVerifier.WithProviderAuthConfigResolver(getAuthFromIRSA),
-		knvVerifier.WithTokenReviewEnabled(reviewAuthToken),
+		knvVerifier.WithTokenReviewEnabled(reviewAuthToken || reviewKyvernoToken),
 		knvVerifier.WithCacheEnabled(cacheEnabled),
 		knvVerifier.WithMaxCacheSize(cacheMaxSize),
 		knvVerifier.WithMaxCacheTTL(time.Duration(cacheTTLDuration*int64(time.Second))),
