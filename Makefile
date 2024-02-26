@@ -87,15 +87,15 @@ code-cov-report: test-clean ## Generate code coverage report
 # BUILD (LOCAL)#
 ################
 
-CMD_DIR           := cmd
-KYVERNO_DIR       := $(CMD_DIR)/kyverno
-IMAGE_TAG_SHA     := $(GIT_SHA)
-IMAGE_TAG_LATEST  := latest
-PACKAGE           ?= github.com/nirmata/kyverno-notation-aws
+CMD_DIR       := cmd
+KYVERNO_DIR   := $(CMD_DIR)/kyverno
+IMAGE_TAG_SHA := $(GIT_SHA)
+IMAGE_TAG     ?= latest
+PACKAGE       ?= github.com/nirmata/kyverno-notation-aws
 ifdef VERSION
-LD_FLAGS          := "-s -w -X $(PACKAGE)/pkg/version.BuildVersion=$(VERSION)"
+LD_FLAGS      := "-s -w -X $(PACKAGE)/pkg/version.BuildVersion=$(VERSION)"
 else
-LD_FLAGS          := "-s -w"
+LD_FLAGS      := "-s -w"
 endif
 
 build:
@@ -107,15 +107,16 @@ build:
 
 docker-build:
 	@echo Build kyverno-notation-aws image with docker... >&2
-	docker buildx create --name multiarch --driver docker-container --use
-	docker buildx build --platform linux/amd64,linux/arm64 -t $(REPO_IMAGE):$(IMAGE_TAG_LATEST) --push .
-	docker buildx rm multiarch
+	docker buildx build -t $(REPO_IMAGE):$(IMAGE_TAG) . --load
 
 docker-publish:
 	@echo Build kyverno-notation-aws image with docker... >&2
 	docker buildx create --name multiarch --driver docker-container --use
-	docker buildx build --platform linux/amd64,linux/arm64 -t $(REPO_IMAGE):$(IMAGE_TAG_LATEST) --push .
+	docker buildx build --platform linux/amd64,linux/arm64 -t $(REPO_IMAGE):$(IMAGE_TAG) --push .
 	docker buildx rm multiarch
+
+t:
+	@echo $(IMAGE_TAG)
 
 ########
 # HELM #
