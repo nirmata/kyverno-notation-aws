@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Publish images
 
 permissions: {}
@@ -5,7 +6,7 @@ permissions: {}
 on:
   push:
     branches:
-      - 'main'
+      - "main"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -16,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       packages: write
-      id-token: write 
+      id-token: write
     outputs:
       image-digest: ${{ steps.publish-kyverno-notation-aws.outputs.digest }}
     steps:
@@ -35,11 +36,11 @@ jobs:
       - name: Run Trivy vulnerability scanner in repo mode
         uses: aquasecurity/trivy-action@d43c1f16c00cfd3978dde6c07f4bbcf9eb6993ca # v0.16.1
         with:
-          scan-type: 'fs'
+          scan-type: "fs"
           ignore-unfixed: true
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-          severity: 'CRITICAL,HIGH'
+          format: "sarif"
+          output: "trivy-results.sarif"
+          severity: "CRITICAL,HIGH"
       - name: Install Cosign
         uses: sigstore/cosign-installer@9614fae9e5c5eddabb09f90a270fcb487c9f7149 # v3.3.0
       - name: Publish image
@@ -57,14 +58,14 @@ jobs:
           sbom-repository: ghcr.io/${{ github.repository }}/sbom
           signature-repository: ghcr.io/${{ github.repository }}/signatures
           main-path: ./
-
+          image-tag: ${{ github.sha }}
 
   generate-kyverno-notation-aws-provenance:
     needs: publish-images
     permissions:
-      id-token: write   # To sign the provenance.
-      packages: write   # To upload assets to release.
-      actions: read     # To read the workflow path.
+      id-token: write # To sign the provenance.
+      packages: write # To upload assets to release.
+      actions: read # To read the workflow path.
     # NOTE: The container generator workflow is not officially released as GA.
     uses: slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@v1.9.0
     with:

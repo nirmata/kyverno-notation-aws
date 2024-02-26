@@ -5,7 +5,7 @@ description: Publishes a docker image, SBOM, scans vulns, and signs the image.
 inputs:
   makefile-target:
     required: true
-    description: makefile target to invoke for publishing image with ko
+    description: makefile target to invoke for publishing image with docker buildx
   registry:
     required: true
     description: registry to publish image to
@@ -36,6 +36,9 @@ inputs:
   main-path:
     required: true
     description: path to main go entry point
+  image-tag:
+    required: true
+    description: the tag used to publish the image
 
 outputs:
   digest:
@@ -45,6 +48,7 @@ outputs:
 runs:
   using: composite
   steps:
+    - uses: imjasonh/setup-crane@00c9e93efa4e1138c9a7a5c594acd6c75a2fbf0c # v0.3.0
     - shell: bash
       id: docker-publish
       env:
@@ -52,10 +56,11 @@ runs:
         REPO: ${{ inputs.repository }}
         REGISTRY_PASSWORD: ${{ inputs.registry-password }}
         COSIGN_REPOSITORY: ${{ inputs.sbom-repository }}
+        IMAGE_TAG: ${{ inputs.image-tag }}
       run: |
         set -e
         make ${{ inputs.makefile-target }}
-        echo "digest=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/${{ github.repository }}:${{ github.sha }})" >> $GITHUB_OUTPUT
+        echo "digest=ghcr.io/${{ github.repository }}@$(crane digest ghcr.io/${{ github.repository }}:${{ inputs.image-tag }})" >> $GITHUB_OUTPUT
     - uses: CycloneDX/gh-gomod-generate-sbom@d4aee0cf5133055dbd98899978246c10c18c440f # v1.1.0
       with:
         version: v1

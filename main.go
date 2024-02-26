@@ -45,54 +45,42 @@ var (
 )
 
 func main() {
-	var flagLocal bool
+	var (
+		flagLocal                   bool
+		flagNoTLS                   bool
+		flagImagePullSecrets        string
+		flagAllowInsecureRegistry   bool
+		flagNotationPluginConfigMap string
+		flagEnableDebug             bool
+		flagMaxSignatureAtempts     int
+		metricsAddr                 string
+		probeAddr                   string
+		enableLeaderElection        bool
+		cacheEnabled                bool
+		cacheMaxSize                int64
+		cacheTTLDuration            int64
+		reviewAuthToken             bool
+		kyvernoNamespace            string
+		allowedUsers                string
+	)
+
 	flag.BoolVar(&flagLocal, "local", false, "Use local system notation configuration")
-
-	var flagNoTLS bool
 	flag.BoolVar(&flagNoTLS, "notls", false, "Do not start the TLS server")
-
-	var flagImagePullSecrets string
 	flag.StringVar(&flagImagePullSecrets, "imagePullSecrets", "", "Secret resource names for image registry access credentials.")
-
-	var flagAllowInsecureRegistry bool
 	flag.BoolVar(&flagAllowInsecureRegistry, "allowInsecureRegistry", false, "Whether to allow insecure connections to registries. Not recommended.")
-
-	var flagNotationPluginConfigMap string
 	flag.StringVar(&flagNotationPluginConfigMap, "pluginConfigMap", "notation-plugin-config", "ConfigMap with notation plugin configuration")
-
-	var flagEnableDebug bool
 	flag.BoolVar(&flagEnableDebug, "debug", false, "Enable debug logging")
-
-	var flagMaxSignatureAtempts int
 	flag.IntVar(&flagMaxSignatureAtempts, "maxSignatureAttempts", 30, "Maximum number of signature envelopes that will be processed for verification")
-
-	var metricsAddr string
 	flag.StringVar(&metricsAddr, "metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
-
-	var probeAddr string
 	flag.StringVar(&probeAddr, "health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
-
-	var enableLeaderElection bool
 	flag.BoolVar(&enableLeaderElection, "leader-elect", false,
 		"Enable leader election for controller manager. "+
 			"Enabling this will ensure there is only one active controller manager.")
-
-	var cacheEnabled bool
 	flag.BoolVar(&cacheEnabled, "cacheEnabled", true, "Whether to use a TTL cache for storing verified images, default is true")
-
-	var cacheMaxSize int64
 	flag.Int64Var(&cacheMaxSize, "cacheMaxSize", 1000, "Max size limit for the TTL cache, default is 1000.")
-
-	var cacheTTLDuration int64
 	flag.Int64Var(&cacheTTLDuration, "cacheTTLDurationSeconds", int64(1*time.Hour), "Max TTL value for a cache in seconds, default is 1 hour.")
-
-	var reviewAuthToken bool
 	flag.BoolVar(&reviewAuthToken, "reviewAuthToken", true, "Checks if the Auth token in the request is a token from a trusted source, default is true")
-
-	var kyvernoNamespace string
 	flag.StringVar(&kyvernoNamespace, "kyvernoNamespace", "kyverno", "Namespace where kyverno is installed, default is kyverno")
-
-	var allowedUsers string
 	flag.StringVar(&allowedUsers, "allowedUsers", "", "Comma-seperated list of all the allowed users and service accounts besides kyverno service accounts")
 
 	flag.Parse()

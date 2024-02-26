@@ -39,6 +39,12 @@ deployment:
   #   registry: bar.example.com
   #   username: barbaz
   #   password: secret2
+  
+  # -- Allow insecure registry specifies whether to allow insecure connections to registries. Not recommended.
+  allowInsecureRegistry: false
+  
+  # -- Max signature attempts specifies the maximum number of signature envelopes that will be processed for verification
+  maxSignatureAttempts: 30
 
 # Service account configuration
 serviceAccount:

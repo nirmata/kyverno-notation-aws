@@ -34,6 +34,9 @@ spec:
           - --cacheEnabled
           - --cacheMaxSize=2000
           - --cacheTTLDurationSeconds=7200
+          - --pluginConfigMap={{ template "kyverno-notation-aws.configMap" . }}
+          - --allowInsecureRegistry={{ .Values.deployment.allowInsecureRegistry }}
+          - --maxSignatureAttempts={{ .Values.deployment.maxSignatureAttempts }}
           {{- if .Values.deployment.imagePullSecrets }}
           - --imagePullSecrets={{ keys .Values.deployment.imagePullSecrets | join "," }}
           {{- end }}
