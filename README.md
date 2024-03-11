@@ -327,7 +327,7 @@ kubectl run netshoot --rm -i --tty --image nicolaka/netshoot
 4. Use curl to make a call to the service as follows:
 
 ```sh
-curl -k https://svc.kyverno-notation-aws/checkimages -X POST -d '{"images": "{\"containers\":{\"test\":{\"registry\":\"844333597536.dkr.ecr.us-west-2.amazonaws.com\",\"path\":\"kyverno-demo\",\"name\":\"kyverno-demo\",\"tag\":\"v1\"}}}"}'
+curl -k https://svc.kyverno-notation-aws/checkimages -X POST -d '{"images": {"containers":{"test":{"registry":"844333597536.dkr.ecr.us-west-2.amazonaws.com","path":"kyverno-demo","name":"kyverno-demo","tag":"v1"}}}}'
 ```
 
 The output should look like this:
