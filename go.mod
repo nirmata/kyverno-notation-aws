@@ -11,7 +11,7 @@ require (
 	github.com/kyverno/kyverno v1.10.2
 	github.com/kyverno/pkg/certmanager v0.0.10
 	github.com/kyverno/pkg/tls v0.0.9
-	github.com/nirmata/kyverno-notation-verifier v1.0.2-0.20240226100808-71a312da903f
+	github.com/nirmata/kyverno-notation-verifier v1.0.2-0.20240311051614-69198b37f3d9
 	github.com/notaryproject/notation-core-go v1.0.2
 	github.com/pkg/errors v0.9.1
 	go.uber.org/zap v1.26.0

@@ -59,7 +59,6 @@ func main() {
 		cacheEnabled                bool
 		cacheMaxSize                int64
 		cacheTTLDuration            int64
-		kyvernoNamespace            string
 		allowedUsers                string
 		reviewKyvernoToken          bool
 	)
@@ -80,8 +79,7 @@ func main() {
 	flag.Int64Var(&cacheMaxSize, "cacheMaxSize", 1000, "Max size limit for the TTL cache, default is 1000.")
 	flag.Int64Var(&cacheTTLDuration, "cacheTTLDurationSeconds", int64(1*time.Hour), "Max TTL value for a cache in seconds, default is 1 hour.")
 	flag.BoolVar(&reviewKyvernoToken, "reviewKyvernoToken", true, "Checks if the Auth token in the request is a token from kyverno controllers or other allowed users, default is true.")
-	flag.StringVar(&kyvernoNamespace, "kyvernoNamespace", "kyverno", "Namespace where kyverno is installed, default is kyverno.")
-	flag.StringVar(&allowedUsers, "allowedUsers", "", "Comma-seperated list of all the allowed users and service accounts.")
+	flag.StringVar(&allowedUsers, "allowedUsers", "system:serviceaccount:kyverno:kyverno-admission-controller,system:serviceaccount:kyverno:kyverno-reports-controller", "Comma-seperated list of all the allowed users and service accounts.")
 
 	flag.Parse()
 	zc := zap.NewDevelopmentConfig()
@@ -202,7 +200,6 @@ func main() {
 		knvVerifier.WithCacheEnabled(cacheEnabled),
 		knvVerifier.WithMaxCacheSize(cacheMaxSize),
 		knvVerifier.WithMaxCacheTTL(time.Duration(cacheTTLDuration*int64(time.Second))),
-		knvVerifier.WithKyvernoNamespace(kyvernoNamespace),
 		knvVerifier.WithAllowedUsers(strings.Split(allowedUsers, ",")))
 
 	mux := http.NewServeMux()
