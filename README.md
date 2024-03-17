@@ -8,122 +8,6 @@ A [Kyverno](https://kyverno.io) extension service that executes the [AWS Signer]
 
 ![logo](img/kyverno-notation-aws.png)
 
-# Features
-
-## Image Signature Verification
-
-The Nirmata extension service is invoked from a Kyverno policy which passes it a list of images to be verified. The service then verifies [notation](https://notaryproject.dev/) format signatures for container images using the [AWS Signer](https://docs.aws.amazon.com/signer/index.html) notation plugin and returns responses back to Kyverno.
-
-The service manages Notation [trust policies](https://github.com/notaryproject/specifications/blob/main/specs/trust-store-trust-policy.md#trust-policy) and [trust stores](https://github.com/notaryproject/specifications/blob/main/specs/trust-store-trust-policy.md#trust-store) as Kubernetes resources.
-
-## Image Digest Mutation
-
-To ensure image integrity and prevent tampering, the service replaces image tags, which are mutable and can be spoofed, with digests.  
-
-The Kyverno policy passes the `images` variable to the services' `/checkimages` endpoint. The result returns a list of images with their JSON path and digests so Kyverno can mutate each image in the admission payload. 
-
-Here is an example:
-
-**Response object structure**
-
-```json
-{
-  "verified": true,
-  "message": "...",
-  "results": [
-    {
-      "op": "replace",
-      "path": "/spec/containers/0/image",
-      "value": "<ACCOUNT>.dkr.ecr.<REGION>.amazonaws.com/<REPO>@sha256:4a1c4b21597c1b4415bdbecb28a3296c6b5e23ca4f9feeb599860a1dac6a0108" 
-    }
-  ]
-}
-```
-
-**Kyverno policy fragment**
-
-```yaml 
-mutate:
-   foreach:
-   - list: "response.results"
-     patchesJson6902: |-
-       - path: '{{ element.path }}'
-         op: '{{ element.op }}'
-         value: '{{ element.value }}'
-```
-
-## Attestation Verification
-
-In addition to verifying signatures, the extension service can verify signed metadata i.e. [attestations](https://nirmata.com/2022/03/15/a-map-for-kubernetes-supply-chain-security/).
-
-To verify attestations, the Kyverno policy can optionally pass a variable called `attestations` in the request:
-
-```yaml
-- key: attestations
-  value:
-    - imageReference: "*"
-      type: 
-        - name: sbom/cyclone-dx
-          conditions:
-            all:
-            - key: \{{creationInfo.licenseListVersion}}
-              operator: Equals
-              value: "3.17"
-              message: invalid license version
-        - name: application/sarif+json
-          conditions:
-            all:
-            - key: \{{ element.components[].licenses[].expression }}
-              operator: AllNotIn
-              value: ["GPL-2.0", "GPL-3.0"]
-    - imageReference: "844333597536.dkr.ecr.us-west-2.amazonaws.com/kyverno-demo*" # this is just an example
-      type:
-        - name: application/vnd.cyclonedx
-          conditions:
-            all:
-            - key: \{{ element.components[].licenses[].expression }}
-              operator: AllNotIn
-              value: ["GPL-2.0", "GPL-3.0"]
-```
-
-The `attestations` variable is a JSON array where each entry has:
-1. an `imageReference` to match images; 
-2. a type which specifies the name of the attestation; and 
-3. a list of conditions we want to verify the attestation data
-
-In the  example above we are verifying the following: 
-1. the attestations `sbom/cyclone-dx` and `application/sarif+json` exist for all images
-2. the `creationInfo.licenseListVersion` is equal to 3.17 in the SBOM and GPL licenses are not present.
-3. the attestation `application/vnd.cyclonedx` is available for all versions of the `844333597536.dkr.ecr.us-west-2.amazonaws.com/kyverno-demo` image and does not contain GPL licenses.
-
-**NOTE:** The conditions key in the attestations must be escaped with `\` so Kyverno does not substitute them before executing the extension service.
-
-## Caching
-
-To prevent repeated lookups for verified images, the Nirmata extension has a built-in cache.
-
-Caching is enabled by default and can be managed using the `--cacheEnabled` flag. The cache is a TTL-based cache, i.e, entries expire automatically after some time and the value of TTL can be customized using `--cacheTTLDurationSeconds` (default is 3600) and the max number of entries in the cache can be configured using `--cacheMaxSize` (default is 1000).
-
-The cache stores the verification outcomes of images for the trust policy and verification outcomes of attestations with the trust policy and conditions. The cache is an in-memory cache that gets cleared when the pod is recreated. The cache will also be cleared when there is any change in trust policies and trust stores.
-
-## Multi-Tenancy
-
-In a shared cluster, each team may have different signatures and trust policies. To support such use cases, the extension allows configuring multiple [trust policies](https://github.com/notaryproject/specifications/blob/main/specs/trust-store-trust-policy.md#trust-policy) and [trust stores](https://github.com/notaryproject/specifications/blob/main/specs/trust-store-trust-policy.md#trust-store) as Kubernetes custom resources.
-
-The extension service allows specifying what trust policy they want to use for verification thus enabling multi-tenancy. Multiple teams can share one cluster and have different trust policies separate from each other.
-To specify the trust policy to use, we can pass the `trustPolicy` variable in the request.
-```yaml
- - key: trustPolicy
-   value: "tp-{{request.namespace}}"
-```
-or we can set the `DEFAULT_TRUST_POLICY` env variable. In the above example, we are dynamically using the trust policy for the namespace of the request.
-
-## High Availability
-
-Kyverno-notation-aws can be installed in a highly-available manner where additional replicas can be deployed for the plugin. The plugin does not use leader election for inbound API requests which means verification requests can be distributed and processed by all available replicas. Leader election is required for certificate management so therefore only one replica will handle these tasks at a given time.
-
-Multiple replicas configured for the plugin can be used for both availability and scale. Vertical scaling of the individual replicas’ resources may also be performed to increase combined throughput.
-
 # Setup
 1. Setup your environment variables:
 ```sh
@@ -181,7 +65,7 @@ notation sign $IMAGE --key kyvernodemo --signature-manifest image
 kubectl create -f https://raw.githubusercontent.com/kyverno/kyverno/main/config/install-latest-testing.yaml
 ```
 
-**Note: Kyverno version should be higher than v1.11.0**
+**Note: Kyverno v1.11.0 or higher is required**
 
 2. Install the kyverno-notation-aws extension service
 
@@ -189,7 +73,7 @@ kubectl create -f https://raw.githubusercontent.com/kyverno/kyverno/main/config/
 kubectl apply -f configs/install.yaml
 ```
 
-3. Create CRs for Notation TrustPolicy and TrustStore
+3. Create resources for the Notation TrustPolicy and TrustStore
 
 ```sh
 kubectl apply -f configs/crds/
@@ -199,7 +83,9 @@ kubectl apply -f configs/crds/
 kubectl apply -f configs/samples/truststore.yaml
 ```
 
-Update the `${REGION}`, `${ACCOUNT}` and `${AWS_SIGNER_PROFILE_NAME}` in the [trustpolicy.yaml](configs/samples/trustpolicy.yaml) and then install in your cluster:
+**NOTE 1**: Update the `${REGION}`, `${ACCOUNT}` and `${AWS_SIGNER_PROFILE_NAME}` in the [trustpolicy.yaml](configs/samples/trustpolicy.yaml) and then install in your cluster:
+
+**NOTE 2**: The sample is configured to use commercial regions. For AWS GovCloud (US) see [Using AWS GovCloud](#using-aws-govcloud-and-commercial-regions).
 
 ```yaml
     trustedIdentities:
@@ -340,3 +226,154 @@ The output should look like this:
     "verified": true
 }
 ````
+
+
+# Features
+
+## Image Signature Verification
+
+The Nirmata extension service is invoked from a Kyverno policy which passes it a list of images to be verified. The service then verifies [notation](https://notaryproject.dev/) format signatures for container images using the [AWS Signer](https://docs.aws.amazon.com/signer/index.html) notation plugin and returns responses back to Kyverno.
+
+The service manages Notation [trust policies](https://github.com/notaryproject/specifications/blob/main/specs/trust-store-trust-policy.md#trust-policy) and [trust stores](https://github.com/notaryproject/specifications/blob/main/specs/trust-store-trust-policy.md#trust-store) as Kubernetes resources.
+
+## Image Digest Mutation
+
+To ensure image integrity and prevent tampering, the service replaces image tags, which are mutable and can be spoofed, with digests.  
+
+The Kyverno policy passes the `images` variable to the services' `/checkimages` endpoint. The result returns a list of images with their JSON path and digests so Kyverno can mutate each image in the admission payload. 
+
+Here is an example:
+
+**Response object structure**
+
+```json
+{
+  "verified": true,
+  "message": "...",
+  "results": [
+    {
+      "op": "replace",
+      "path": "/spec/containers/0/image",
+      "value": "<ACCOUNT>.dkr.ecr.<REGION>.amazonaws.com/<REPO>@sha256:4a1c4b21597c1b4415bdbecb28a3296c6b5e23ca4f9feeb599860a1dac6a0108" 
+    }
+  ]
+}
+```
+
+**Kyverno policy fragment**
+
+```yaml 
+mutate:
+   foreach:
+   - list: "response.results"
+     patchesJson6902: |-
+       - path: '{{ element.path }}'
+         op: '{{ element.op }}'
+         value: '{{ element.value }}'
+```
+
+## Attestation Verification
+
+In addition to verifying signatures, the extension service can verify signed metadata i.e. [attestations](https://nirmata.com/2022/03/15/a-map-for-kubernetes-supply-chain-security/).
+
+To verify attestations, the Kyverno policy can optionally pass a variable called `attestations` in the request:
+
+```yaml
+- key: attestations
+  value:
+    - imageReference: "*"
+      type: 
+        - name: sbom/cyclone-dx
+          conditions:
+            all:
+            - key: \{{creationInfo.licenseListVersion}}
+              operator: Equals
+              value: "3.17"
+              message: invalid license version
+        - name: application/sarif+json
+          conditions:
+            all:
+            - key: \{{ element.components[].licenses[].expression }}
+              operator: AllNotIn
+              value: ["GPL-2.0", "GPL-3.0"]
+    - imageReference: "844333597536.dkr.ecr.us-west-2.amazonaws.com/kyverno-demo*" # this is just an example
+      type:
+        - name: application/vnd.cyclonedx
+          conditions:
+            all:
+            - key: \{{ element.components[].licenses[].expression }}
+              operator: AllNotIn
+              value: ["GPL-2.0", "GPL-3.0"]
+```
+
+The `attestations` variable is a JSON array where each entry has:
+1. an `imageReference` to match images; 
+2. a type which specifies the name of the attestation; and 
+3. a list of conditions we want to verify the attestation data
+
+In the  example above we are verifying the following: 
+1. the attestations `sbom/cyclone-dx` and `application/sarif+json` exist for all images
+2. the `creationInfo.licenseListVersion` is equal to 3.17 in the SBOM and GPL licenses are not present.
+3. the attestation `application/vnd.cyclonedx` is available for all versions of the `844333597536.dkr.ecr.us-west-2.amazonaws.com/kyverno-demo` image and does not contain GPL licenses.
+
+**NOTE:** The conditions key in the attestations must be escaped with `\` so Kyverno does not substitute them before executing the extension service.
+
+## Caching
+
+To prevent repeated lookups for verified images, the Nirmata extension has a built-in cache.
+
+Caching is enabled by default and can be managed using the `--cacheEnabled` flag. The cache is a TTL-based cache, i.e, entries expire automatically after some time and the value of TTL can be customized using `--cacheTTLDurationSeconds` (default is 3600) and the max number of entries in the cache can be configured using `--cacheMaxSize` (default is 1000).
+
+The cache stores the verification outcomes of images for the trust policy and verification outcomes of attestations with the trust policy and conditions. The cache is an in-memory cache that gets cleared when the pod is recreated. The cache will also be cleared when there is any change in trust policies and trust stores.
+
+## Multi-Tenancy
+
+In a shared cluster, each team may have different signatures and trust policies. To support such use cases, the extension allows configuring multiple [trust policies](https://github.com/notaryproject/specifications/blob/main/specs/trust-store-trust-policy.md#trust-policy) and [trust stores](https://github.com/notaryproject/specifications/blob/main/specs/trust-store-trust-policy.md#trust-store) as Kubernetes custom resources.
+
+The extension service allows specifying what trust policy they want to use for verification thus enabling multi-tenancy. Multiple teams can share one cluster and have different trust policies separate from each other.
+To specify the trust policy to use, we can pass the `trustPolicy` variable in the request.
+```yaml
+ - key: trustPolicy
+   value: "tp-{{request.namespace}}"
+```
+or we can set the `DEFAULT_TRUST_POLICY` env variable. In the above example, we are dynamically using the trust policy for the namespace of the request.
+
+## High Availability
+
+Kyverno-notation-aws can be installed in a highly-available manner where additional replicas can be deployed for the plugin. The plugin does not use leader election for inbound API requests which means verification requests can be distributed and processed by all available replicas. Leader election is required for certificate management so therefore only one replica will handle these tasks at a given time.
+
+Multiple replicas configured for the plugin can be used for both availability and scale. Vertical scaling of the individual replicas’ resources may also be performed to increase combined throughput.
+
+## Using Other Regions 
+
+A TrustPolicy can reference one or more TrustStore resources. For example, here is how a policy can be configured for both AWS GovCloud and commercial regions:
+
+```yaml
+apiVersion: notation.nirmata.io/v1alpha1
+kind: TrustPolicy
+metadata:
+  name: aws-signer-tp
+spec:
+  version: '1.0'
+  trustPolicyName: aws-signer-tp
+  trustPolicies:
+  - name: aws-signer-tp
+    registryScopes:
+    - "*"
+    signatureVerification:
+      level: strict
+      override: {}
+    trustStores:
+    - signingAuthority:aws-signer-ts
+    - signingAuthority:aws-us-gov-signer-ts
+    trustedIdentities:
+    - arn:aws:signer:Region:111122223333:/signing-profiles/ecr_signing_profile
+    - arn:aws:signer:Region:111122223333:/signing-profiles/ecr_signing_profile2
+
+```
+
+Each TrustStore will then have to be configured with the appropriate root certificates, for the region. 
+
+The [sample TrustStore](./configs/samples/truststore.yaml) contains examples you can customize with your account and region information.
+
+For more information, please refer to: https://docs.aws.amazon.com/signer/latest/developerguide/image-verification.html.
