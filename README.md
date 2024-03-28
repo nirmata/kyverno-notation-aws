@@ -85,7 +85,7 @@ kubectl apply -f configs/samples/truststore.yaml
 
 **NOTE 1**: Update the `${REGION}`, `${ACCOUNT}` and `${AWS_SIGNER_PROFILE_NAME}` in the [trustpolicy.yaml](configs/samples/trustpolicy.yaml) and then install in your cluster:
 
-**NOTE 2**: The sample is configured to use commercial regions. For AWS GovCloud (US) see [Using AWS GovCloud](#using-aws-govcloud-and-commercial-regions).
+**NOTE 2**: The sample is configured to use commercial regions. For AWS GovCloud (US) see [Using AWS GovCloud](#using-other-regions).
 
 ```yaml
     trustedIdentities:
