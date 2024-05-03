@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	"flag"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -13,7 +14,9 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/awslabs/amazon-ecr-credential-helper/ecr-login"
 	"github.com/go-logr/zapr"
+	"github.com/google/go-containerregistry/pkg/authn"
 	"github.com/kyverno/kyverno/pkg/leaderelection"
 	"github.com/kyverno/pkg/certmanager"
 	tlsMgr "github.com/kyverno/pkg/tls"
@@ -195,7 +198,7 @@ func main() {
 		knvVerifier.WithPluginConfig(flagNotationPluginConfigMap),
 		knvVerifier.WithMaxSignatureAttempts(flagMaxSignatureAtempts),
 		knvVerifier.WithEnableDebug(flagEnableDebug),
-		knvVerifier.WithProviderAuthConfigResolver(getAuthFromIRSA),
+		knvVerifier.WithProviderKeychain(authn.NewKeychainFromHelper(ecr.NewECRHelper(ecr.WithLogger(io.Discard)))),
 		knvVerifier.WithTokenReviewEnabled(reviewKyvernoToken),
 		knvVerifier.WithCacheEnabled(cacheEnabled),
 		knvVerifier.WithMaxCacheSize(cacheMaxSize),
