@@ -58,7 +58,7 @@ jobs:
           sbom-repository: ghcr.io/${{ github.repository }}/sbom
           signature-repository: ghcr.io/${{ github.repository }}/signatures
           main-path: ./
-          image-tag: ${{ github.sha }}
+          image-tag: latest
 
   generate-kyverno-notation-aws-provenance:
     needs: publish-images
