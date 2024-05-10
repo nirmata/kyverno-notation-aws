@@ -4,7 +4,7 @@ go 1.22.3
 
 require (
 	github.com/aws/aws-sdk-go-v2/config v1.27.12
-	github.com/aws/aws-sdk-go-v2/service/ecr v1.24.7
+	github.com/aws/aws-sdk-go-v2/service/ecr v1.28.0
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240116161626-88cfadc80e8f
 	github.com/go-logr/logr v1.4.1
 	github.com/go-logr/zapr v1.3.0
