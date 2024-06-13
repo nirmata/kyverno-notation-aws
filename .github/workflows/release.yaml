@@ -18,7 +18,7 @@ jobs:
       image-digest: ${{ steps.publish-kyverno-notation-aws.outputs.digest }}
     steps:
       - name: Checkout
-        uses: actions/checkout@44c2b7a8a4ea60a981eaca3cf939b5f4305c123b # v4.1.5
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - name: Setup build env
         uses: ./.github/actions/setup-build-env
         with:
@@ -79,7 +79,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout
-        uses: actions/checkout@44c2b7a8a4ea60a981eaca3cf939b5f4305c123b # v4.1.5
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - uses: creekorful/goreportcard-action@1f35ced8cdac2cba28c9a2f2288a16aacfd507f9 # v1.0
       - name: Install Cosign
         uses: sigstore/cosign-installer@59acb6260d9c0ba8f4a2f9d9b48431a222b68e20 # v3.5.0
