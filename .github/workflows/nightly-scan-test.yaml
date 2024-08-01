@@ -23,16 +23,19 @@ jobs:
           - main
 
     steps:
-      - name: Checkout
+      - name: Checkout ${{ matrix.branch }} branch
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: ${{ matrix.branch }}
+          fetch-depth: 0
+          lfs: true
 
-      - name: Setup Go
-        uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5.0.2
-        with:
-          go-version-file: go.mod
-          cache-dependency-path: go.sum
+      - name: Get latest tag on branch
+        shell: bash
+        run: |
+          BRANCH_NAME=${{ matrix.branch }}  
+          LATEST_TAG=$(git tag --merged ${BRANCH_NAME} --sort=-creatordate | head -n 1)
+          echo "IMAGE_TAG=${LATEST_TAG}" >> $GITHUB_ENV
 
       - name: Log into registry ${{env.REGISTRY}}
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
@@ -41,14 +44,10 @@ jobs:
           username: ${{github.actor}}
           password: ${{secrets.GITHUB_TOKEN}}
 
-      - name: Publish image
-        id: publish-kyverno-notation-aws
-        run: |
-          make docker-publish IMAGENAME=nightly-kyverno-notation-aws
       
       - name: Set Image name
         run: |
-          echo IMAGE_NAME="ghcr.io/nirmata/nightly-kyverno-notation-aws" >> $GITHUB_ENV
+          echo IMAGE_NAME="ghcr.io/nirmata/kyverno-notation-aws:${{ env.IMAGE_TAG }}" >> $GITHUB_ENV
 
       - name: Scan image using grype
         id: grype-scan
