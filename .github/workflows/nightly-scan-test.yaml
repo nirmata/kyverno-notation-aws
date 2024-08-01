@@ -44,7 +44,7 @@ jobs:
       - name: Publish image
         id: publish-kyverno-notation-aws
         run: |
-          make docker-publish IMAGE_NAME=nightly-kyverno-notation-aws
+          make docker-publish IMAGENAME=nightly-kyverno-notation-aws
       
       - name: Set Image name
         run: |
