@@ -67,3 +67,24 @@ jobs:
           output: 'trivy-scan.json'
           exit-code: '1'
 
+      - name: Convert trivy json file to tabular form
+        uses: aquasecurity/trivy-action@0.12.0
+        if: always() && steps.trivy-scan.conclusion == 'failure'
+        with:
+          scan-type: convert
+          vuln-type: ""
+          image-ref: trivy-scan.json
+          format: table
+          output: trivy-scan.txt
+
+      - name: Cat trivy/grype scan file if status == failure
+        if: always() && (steps.trivy-scan.conclusion == 'failure' || steps.grype-scan.conclusion == 'failure')
+        shell: bash
+        run: |
+          echo "====trivy-scan-txt===="
+          [ -s "trivy-scan.txt" ] && cat trivy-scan.txt
+          echo "====trivy-scan-json===="
+          [ -s "trivy-scan-json" ] && cat trivy-scan-json
+          echo "====grype-scan===="
+          cat ${{ steps.grype-scan.outputs.sarif }}
+          exit 1  
