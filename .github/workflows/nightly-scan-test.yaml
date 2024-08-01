@@ -45,66 +45,25 @@ jobs:
         id: publish-kyverno-notation-aws
         run: |
           make docker-publish IMAGE_NAME=nightly-kyverno-notation-aws
-
-      - name: image scanning
-        id: scan
-        uses: nirmata/reusable-workflows/.github/actions/image-scanning@cleanup
-        with:
-          pcc_url: ${{ secrets.PCC_URL }}
-          pcc_user: ${{ secrets.PCC_USER }}
-          pcc_pass: ${{ secrets.PCC_PASS }}
-          image_name: ${{env.REGISTRY}}/${{env.IMAGE_NAME}}
-          free-disk: 'true'
-
-  publish-scan-tags:
-    name: Publish
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-      id-token: write
-    strategy:
-      fail-fast: false
-      matrix:
-        tag:
-          - v4.1.1
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
-        with:
-          ref: ${{ matrix.tag }}
-
-      - name: Setup Go
-        uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5.0.2
-        with:
-          go-version-file: go.mod
-          cache-dependency-path: go.sum
-
+      
       - name: Set Image name
         run: |
-          echo IMAGE_NAME="nirmata/nightly-nctl" >> $GITHUB_ENV
-      
-      - name: Install KO
-        uses: ko-build/setup-ko@3aebd0597dc1e9d1a26bcfdb7cbeb19c131d3037 # v0.7
+          echo IMAGE_NAME="ghcr.io/nirmata/nightly-kyverno-notation-aws" >> $GITHUB_ENV
 
-      - name: Log into registry ${{env.REGISTRY}}
-        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+      - name: Scan image using grype
+        id: grype-scan
+        uses: anchore/scan-action@v3
         with:
-          registry: ${{env.REGISTRY}}
-          username: ${{github.actor}}
-          password: ${{secrets.GITHUB_TOKEN}}
+          image: ${{ env.IMAGE_NAME }}
+          severity-cutoff: low
+          fail-build: true
 
-
-      - name: Build and Push 
-        run: |
-          make build-ko KO_REGISTRY=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} KO_TAGS=${{ matrix.tag }}
-
-      - name: image scanning
-        id: scan
-        uses: nirmata/reusable-workflows/.github/actions/image-scanning@main
+      - name: Scan image using trivy
+        uses: aquasecurity/trivy-action@master
+        id: trivy-scan
         with:
-          pcc_url: ${{ secrets.PCC_URL }}
-          pcc_user: ${{ secrets.PCC_USER }}
-          pcc_pass: ${{ secrets.PCC_PASS }}
-          image_name: ${{env.REGISTRY}}/${{env.IMAGE_NAME}}:${{ matrix.tag }}
+          image-ref: ${{ env.IMAGE_NAME }}
+          format: 'json'
+          output: 'trivy-scan.json'
+          exit-code: '1'
+
