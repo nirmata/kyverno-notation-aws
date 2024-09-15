@@ -48,7 +48,7 @@ deployment:
 
 # Service account configuration
 serviceAccount:
-
+  enabled: true
   # -- The ServiceAccount name
   name:
 
