@@ -61,7 +61,7 @@ spec:
         - name: POD_NAMESPACE
           valueFrom:
             fieldRef:
-              fieldPath: metadata.namespace  
+              fieldPath: metadata.namespace
         - name: SERVICE_NAME
           value: {{ template "kyverno-notation-aws.serviceName" . }}
         - name: DEPLOYMENT_NAME
@@ -71,7 +71,7 @@ spec:
             fieldRef:
               fieldPath: metadata.name
         - name: AWS_REGION
-          value: us-west-2
+          value: {{ .Values.region }}
         - name: DEFAULT_TRUST_POLICY
           value: aws-signer-trust-policy
         volumeMounts:
