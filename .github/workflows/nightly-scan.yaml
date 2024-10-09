@@ -54,7 +54,7 @@ jobs:
           exit-code: '1'
 
       - name: Convert trivy json file to tabular form
-        uses: aquasecurity/trivy-action@0.24.0
+        uses: aquasecurity/trivy-action@0.26.0
         if: always() && steps.trivy-scan.conclusion == 'failure'
         with:
           scan-type: convert
