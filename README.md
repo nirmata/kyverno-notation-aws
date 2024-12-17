@@ -66,12 +66,12 @@ kubectl create -f https://raw.githubusercontent.com/kyverno/kyverno/main/config/
 ```
 
 **Note: Kyverno v1.11.0 or higher is required**
-
 2. Install the kyverno-notation-aws extension service
 
 ```sh
 kubectl apply -f configs/install.yaml
 ```
+> Note: If you have installed Kyverno in a custom namespace or are using a custom service account, you should use the `--allowedUsers` flags to provide the list of service that can access kyverno-notation-aws. You can disable token authorization altogether using `--reviewKyvernoToken` flag.
 
 3. Create resources for the Notation TrustPolicy and TrustStore
 
