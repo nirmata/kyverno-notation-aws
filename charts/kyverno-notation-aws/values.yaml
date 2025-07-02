@@ -1,3 +1,5 @@
+region: us-west-2
+
 # -- (string) Override the name of the chart
 nameOverride: ~
 
@@ -39,16 +41,16 @@ deployment:
   #   registry: bar.example.com
   #   username: barbaz
   #   password: secret2
-  
+
   # -- Allow insecure registry specifies whether to allow insecure connections to registries. Not recommended.
   allowInsecureRegistry: false
-  
+
   # -- Max signature attempts specifies the maximum number of signature envelopes that will be processed for verification
   maxSignatureAttempts: 30
 
 # Service account configuration
 serviceAccount:
-
+  enabled: true
   # -- The ServiceAccount name
   name:
 
@@ -59,7 +61,7 @@ serviceAccount:
 
 # Config map configuration
 configMap:
-  
+
   # -- The notation-plugin-config configmap name
   name: notation-plugin-config
 
