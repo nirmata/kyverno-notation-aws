@@ -3,8 +3,14 @@ ARG BUILDER_IMAGE="golang:1.22.3-alpine3.18"
 FROM --platform=$BUILDPLATFORM $BUILDER_IMAGE as builder
 
 WORKDIR /
+
+COPY go.mod go.sum .
+RUN go mod download
+
 COPY . ./
 
+ARG TARGETOS
+ARG TARGETARCH
 # Get Signer plugin binary
 ARG SIGNER_BINARY_LINK="https://d2hvyiie56hcat.cloudfront.net/linux/amd64/plugin/latest/notation-aws-signer-plugin.zip"
 ARG SIGNER_BINARY_FILE="notation-aws-signer-plugin.zip"
@@ -14,7 +20,7 @@ RUN apk update && \
     unzip -o ${SIGNER_BINARY_FILE}
 
 # Build Go binary
-RUN GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o kyverno-notation-aws .
+RUN GOOS=$TARGETOS GOARCH=$TARGETARCH go build -ldflags="-w -s" -o kyverno-notation-aws .
 
 FROM gcr.io/distroless/static:nonroot
 WORKDIR /
