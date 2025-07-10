@@ -6,7 +6,7 @@ toolchain go1.24.4
 
 require (
 	github.com/aws/aws-sdk-go-v2/config v1.29.17
-	github.com/aws/aws-sdk-go-v2/service/ecr v1.40.3
+	github.com/aws/aws-sdk-go-v2/service/ecr v1.45.1
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.9.1
 	github.com/go-logr/logr v1.4.2
 	github.com/go-logr/zapr v1.3.0
