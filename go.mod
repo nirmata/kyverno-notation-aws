@@ -15,7 +15,7 @@ require (
 	github.com/kyverno/pkg/certmanager v0.0.10
 	github.com/kyverno/pkg/tls v0.0.9
 	github.com/nirmata/kyverno-notation-verifier v1.0.2-0.20240508102455-7ead86e72ae9
-	github.com/notaryproject/notation-core-go v1.2.0
+	github.com/notaryproject/notation-core-go v1.3.0
 	github.com/pkg/errors v0.9.1
 	go.uber.org/zap v1.27.0
 	gotest.tools v2.2.0+incompatible
@@ -114,7 +114,7 @@ require (
 	github.com/evanphx/json-patch/v5 v5.9.11 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/fsnotify/fsnotify v1.8.0 // indirect
-	github.com/fxamacker/cbor/v2 v2.7.0 // indirect
+	github.com/fxamacker/cbor/v2 v2.8.0 // indirect
 	github.com/ghodss/yaml v1.0.1-0.20190212211648-25d852aebe32 // indirect
 	github.com/go-asn1-ber/asn1-ber v1.5.7 // indirect
 	github.com/go-chi/chi v4.1.2+incompatible // indirect
