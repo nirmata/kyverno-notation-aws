@@ -10,8 +10,19 @@ fullnameOverride: ~
 namespaceOverride: ~
 
 image:
-  repository: ghcr.io/nirmata/kyverno-notation-aws
-  tag: c6d5d94e638e36bd9c29ff0a78fbfa64b555d561
+  # -- (string) Image registry
+  defaultRegistry: ghcr.io
+  registry: ~
+
+  # -- (string) Image repository
+  repository: nirmata/kyverno-notation-aws
+
+  # -- (string) Image tag
+  # Defaults to appVersion in Chart.yaml if omitted
+  tag: ~
+
+  # -- (string) Image pull policy
+  pullPolicy: IfNotPresent
 
 # CRDs configuration
 crds:
@@ -76,3 +87,78 @@ tolerations: []
 # affinity for extension Deployment. More details:
 # https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity
 affinity: {}
+
+
+# -- Startup probe.
+# The block is directly forwarded into the deployment, so you can use whatever startupProbes configuration you want.
+# ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+# @default -- See [values.yaml](values.yaml)
+startupProbe:
+  httpGet:
+    path: /readyz
+    port: 8081
+    scheme: HTTP
+  failureThreshold: 20
+  initialDelaySeconds: 2
+  periodSeconds: 6
+
+# -- Liveness probe.
+# The block is directly forwarded into the deployment, so you can use whatever livenessProbe configuration you want.
+# ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+# @default -- See [values.yaml](values.yaml)
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: 8081
+    scheme: HTTP
+  initialDelaySeconds: 15
+  periodSeconds: 20
+  failureThreshold: 2
+  successThreshold: 1
+
+# -- Readiness Probe.
+# The block is directly forwarded into the deployment, so you can use whatever readinessProbe configuration you want.
+# ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+# @default -- See [values.yaml](values.yaml)
+readinessProbe:
+  httpGet:
+    path: /readyz
+    port: 8081
+    scheme: HTTP
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 6
+  successThreshold: 1
+
+
+
+test:
+  # -- Sleep time before running test
+  sleep: 20
+
+  image:
+    # -- (string) Image registry
+    registry: ~
+    # -- Image repository
+    repository: busybox
+    # -- Image tag
+    # Defaults to `latest` if omitted
+    tag: '1.35'
+    # -- (string) Image pull policy
+    # Defaults to image.pullPolicy if omitted
+    pullPolicy: ~
+
+  # -- Image pull secrets
+  imagePullSecrets: []
+  # - name: secretName
+
+  resources:
+    # -- Pod resource limits
+    limits:
+      cpu: 100m
+      memory: 256Mi
+    # -- Pod resource requests
+    requests:
+      cpu: 10m
+      memory: 64Mi
