@@ -32,8 +32,6 @@ nodes:
         hostPort: 443
         protocol: TCP
   - role: worker
-  - role: worker
-  - role: worker
 featureGates:
   "PodDisruptionConditions": true
   "ProcMountType": true
