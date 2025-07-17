@@ -131,8 +131,6 @@ readinessProbe:
   failureThreshold: 6
   successThreshold: 1
 
-
-
 test:
   # -- Sleep time before running test
   sleep: 20
