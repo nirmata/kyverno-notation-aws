@@ -42,7 +42,7 @@ jobs:
       - name: Setup test env
         uses: ./.github/actions/setup-test-env
       - name: Helm test
-        run: make helm test
+        run: make helm-test
       - name: Debug failure
         if: failure()
         uses: ./.github/actions/kyverno-notation-aws-logs
