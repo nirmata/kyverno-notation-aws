@@ -1,0 +1,24 @@
+name: kyverno-notation-aws-logs
+description: Show kyverno-notation-aws pods logs
+
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: |
+        set -e
+        kubectl auth can-i --list --as system:serviceaccount:kyverno-notation-aws:kyverno-notation-aws
+    - shell: bash
+      run: |
+        set -e
+        kubectl -n kyverno-notation-aws get pod
+    - shell: bash
+      run: |
+        set -e
+        kubectl -n kyverno-notation-aws describe pod | grep -i events -A10
+    - shell: bash
+      run: |
+        set -e
+        kubectl -n kyverno-notation-aws logs deploy/kyverno-notation-aws --all-containers
+        
