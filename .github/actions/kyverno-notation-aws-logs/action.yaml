@@ -1,6 +1,6 @@
 name: kyverno-notation-aws-logs
-description: Show kyverno-notation-aws pods logs
 
+description: Show kyverno-notation-aws pods logs
 
 runs:
   using: composite

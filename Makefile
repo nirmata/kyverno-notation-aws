@@ -12,7 +12,7 @@ CGO_ENABLED          ?= 0
 REPO_IMAGE           := $(REGISTRY)/$(REPO)/$(IMAGENAME)
 KIND_IMAGE           ?= kindest/node:v1.33.1
 KIND_NAME            ?= kind
-KIND_CONFIG          ?= default
+KIND_CONFIG			 ?= default
 BUILD_WITH			 ?= docker
 
 

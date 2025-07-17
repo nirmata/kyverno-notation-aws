@@ -97,7 +97,7 @@ startupProbe:
   httpGet:
     path: /readyz
     port: 8081
-    scheme: HTTP
+    scheme: HTTPS
   failureThreshold: 20
   initialDelaySeconds: 2
   periodSeconds: 6
@@ -110,7 +110,7 @@ livenessProbe:
   httpGet:
     path: /healthz
     port: 8081
-    scheme: HTTP
+    scheme: HTTPS
   initialDelaySeconds: 15
   periodSeconds: 20
   failureThreshold: 2
@@ -124,12 +124,14 @@ readinessProbe:
   httpGet:
     path: /readyz
     port: 8081
-    scheme: HTTP
+    scheme: HTTPS
   initialDelaySeconds: 5
   periodSeconds: 10
   timeoutSeconds: 5
   failureThreshold: 6
   successThreshold: 1
+
+
 
 test:
   # -- Sleep time before running test
@@ -146,10 +148,6 @@ test:
     # -- (string) Image pull policy
     # Defaults to image.pullPolicy if omitted
     pullPolicy: ~
-
-  # -- Image pull secrets
-  imagePullSecrets: []
-  # - name: secretName
 
   resources:
     # -- Pod resource limits

@@ -10,10 +10,6 @@ metadata:
 spec:
   automountServiceAccountToken: {{ .Values.test.automountServiceAccountToken }}
   restartPolicy: Never
-  {{- with .Values.test.imagePullSecrets | default .Values.deployment.imagePullSecrets }}
-  imagePullSecrets:
-    - {{ tpl (include "kyverno-notation-aws.sortedImagePullSecrets" .) $ | nindent 4 }}
-  {{- end }}
   containers:
     - name: test
       image: {{ template "kyverno-notation-aws.test.image" . }}
