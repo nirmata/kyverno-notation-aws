@@ -26,7 +26,7 @@ spec:
         runAsNonRoot: true
       serviceAccountName: {{ template "kyverno-notation-aws.serviceAccountName" . }}
       containers:
-      - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+      - image: {{ include "kyverno-notation-aws.image" (dict "image" .Values.image "defaultTag" .Chart.AppVersion) | quote }}
         imagePullPolicy: Always
         name: kyverno-notation-aws
         args:
@@ -74,6 +74,18 @@ spec:
           value: us-west-2
         - name: DEFAULT_TRUST_POLICY
           value: aws-signer-trust-policy
+        {{- with .Values.startupProbe }}
+        startupProbe:
+          {{- tpl (toYaml .) $ | nindent 10 }}
+        {{- end }}
+        {{- with .Values.livenessProbe }}
+        livenessProbe:
+          {{ tpl (toYaml .) $ | nindent 10 }}
+        {{- end }}
+        {{- with .Values.readinessProbe }}
+        readinessProbe:
+          {{ tpl (toYaml .) $ | nindent 10 }}
+        {{- end }}
         volumeMounts:
           - name: notation
             mountPath: /notation
