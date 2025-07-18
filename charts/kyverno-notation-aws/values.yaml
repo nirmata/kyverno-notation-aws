@@ -76,3 +76,8 @@ tolerations: []
 # affinity for extension Deployment. More details:
 # https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity
 affinity: {}
+
+# user supplied labels to apply to all resources excluding label selectors
+commonLabels: {}
+  # my-sweet-label: rad
+  # foo: bar
