@@ -97,7 +97,7 @@ startupProbe:
   httpGet:
     path: /readyz
     port: 8081
-    scheme: HTTPS
+    scheme: HTTP
   failureThreshold: 20
   initialDelaySeconds: 2
   periodSeconds: 6
@@ -110,7 +110,7 @@ livenessProbe:
   httpGet:
     path: /healthz
     port: 8081
-    scheme: HTTPS
+    scheme: HTTP
   initialDelaySeconds: 15
   periodSeconds: 20
   failureThreshold: 2
@@ -124,7 +124,7 @@ readinessProbe:
   httpGet:
     path: /readyz
     port: 8081
-    scheme: HTTPS
+    scheme: HTTP
   initialDelaySeconds: 5
   periodSeconds: 10
   timeoutSeconds: 5
