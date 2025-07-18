@@ -5,15 +5,15 @@
 GIT_SHA              := $(shell git rev-parse HEAD)
 REGISTRY             ?= ghcr.io
 REPO                 ?= nirmata
-IMAGENAME                ?= kyverno-notation-aws
+IMAGENAME            ?= kyverno-notation-aws
 GOOS                 ?= $(shell go env GOOS)
 GOARCH               ?= $(shell go env GOARCH)
 CGO_ENABLED          ?= 0
 REPO_IMAGE           := $(REGISTRY)/$(REPO)/$(IMAGENAME)
 KIND_IMAGE           ?= kindest/node:v1.33.1
 KIND_NAME            ?= kind
-KIND_CONFIG			 ?= default
-BUILD_WITH			 ?= docker
+KIND_CONFIG	         ?= default
+BUILD_WITH           ?= docker
 
 
 #########
