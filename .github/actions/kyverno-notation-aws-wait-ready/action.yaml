@@ -1,0 +1,10 @@
+name: Kyverno-notation-aws pods ready
+
+description: Wait kyverno-notation-aws pods to be ready
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: |
+        kubectl wait --namespace kyverno-notation-aws --for=condition=ready pod --selector '!job-name' --timeout=60s
