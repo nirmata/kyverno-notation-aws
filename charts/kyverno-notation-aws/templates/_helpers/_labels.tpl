@@ -26,6 +26,12 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 app.kubernetes.io/version: {{ template "kyverno-notation-aws.chartVersion" . }}
 {{- end -}}
 
+{{- define "kyverno-notation-aws.labels.values" -}}
+{{- range $key, $value := .Values.commonLabels }}
+{{ $key }}: {{ $value }}
+{{- end }}
+{{- end -}}
+
 {{- define "kyverno-notation-aws.labels.common" -}}
 {{- template "kyverno-notation-aws.labels.merge" (list
   (include "kyverno-notation-aws.labels.helm" .)
