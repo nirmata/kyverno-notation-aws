@@ -4,6 +4,7 @@
 {{- template "kyverno-notation-aws.labels.merge" (list
   (include "kyverno-notation-aws.labels.common" .)
   (include "kyverno-notation-aws.test.matchLabels" .)
+  (include "kyverno-notation-aws.labels.component" "test")
 ) -}}
 {{- end -}}
 
