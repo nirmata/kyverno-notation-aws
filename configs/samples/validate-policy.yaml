@@ -55,5 +55,5 @@ spec:
         conditions:
           all:
           - key: "{{ response.verified }}"
-            operator: EQUALS
+            operator: Equals
             value: false

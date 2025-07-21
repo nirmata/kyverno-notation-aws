@@ -38,3 +38,8 @@ app.kubernetes.io/version: {{ template "kyverno-notation-aws.chartVersion" . }}
 app.kubernetes.io/part-of: {{ template "kyverno-notation-aws.fullname" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
+
+
+{{- define "kyverno-notation-aws.labels.component" -}}
+app.kubernetes.io/component: {{ . }}
+{{- end -}}
