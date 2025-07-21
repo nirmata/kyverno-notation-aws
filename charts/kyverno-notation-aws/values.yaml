@@ -78,6 +78,6 @@ tolerations: []
 affinity: {}
 
 # -- user supplied labels to apply to all resources excluding label selectors
-commonLabels: {}
+customLabels: {}
   # my-sweet-label: rad
   # foo: bar
