@@ -30,6 +30,7 @@ app.kubernetes.io/version: {{ template "kyverno-notation-aws.chartVersion" . }}
 {{- template "kyverno-notation-aws.labels.merge" (list
   (include "kyverno-notation-aws.labels.helm" .)
   (include "kyverno-notation-aws.labels.version" .)
+  (toYaml .Values.customLabels)
 ) -}}
 {{- end -}}
 

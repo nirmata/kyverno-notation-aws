@@ -88,6 +88,10 @@ tolerations: []
 # https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity
 affinity: {}
 
+# -- user supplied labels to apply to all resources excluding label selectors
+customLabels: {}
+  # my-sweet-label: rad
+  # foo: bar
 
 # -- Startup probe.
 # The block is directly forwarded into the deployment, so you can use whatever startupProbes configuration you want.
