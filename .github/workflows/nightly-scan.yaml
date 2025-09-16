@@ -38,7 +38,7 @@ jobs:
 
       - name: Scan image using grype
         id: grype-scan
-        uses: anchore/scan-action@v6
+        uses: anchore/scan-action@v7
         with:
           image: ${{ env.IMAGE_NAME }}
           severity-cutoff: low
