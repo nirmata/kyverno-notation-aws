@@ -27,7 +27,6 @@ import (
 	_ "github.com/notaryproject/notation-core-go/signature/jws"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
@@ -64,6 +63,7 @@ func main() {
 		cacheTTLDuration            int64
 		allowedUsers                string
 		reviewKyvernoToken          bool
+		flagLogLevel                string
 	)
 
 	flag.BoolVar(&flagLocal, "local", false, "Use local system notation configuration")
@@ -83,10 +83,12 @@ func main() {
 	flag.Int64Var(&cacheTTLDuration, "cacheTTLDurationSeconds", int64(1*time.Hour), "Max TTL value for a cache in seconds, default is 1 hour.")
 	flag.BoolVar(&reviewKyvernoToken, "reviewKyvernoToken", true, "Checks if the Auth token in the request is a token from kyverno controllers or other allowed users, default is true.")
 	flag.StringVar(&allowedUsers, "allowedUsers", "system:serviceaccount:kyverno:kyverno-admission-controller,system:serviceaccount:kyverno:kyverno-reports-controller", "Comma-seperated list of all the allowed users and service accounts.")
+	flag.StringVar(&flagLogLevel, "logLevel", "info", "Log level: trace, debug, info, warn, error")
 
 	flag.Parse()
 	zc := zap.NewDevelopmentConfig()
-	zc.Level = zap.NewAtomicLevelAt(zapcore.Level(-2))
+	zc.Level = zap.NewAtomicLevelAt(parseLevel(flagLogLevel))
+
 	logger, err := zc.Build()
 	if err != nil {
 		log.Fatalf("failed to initialize logger: %v", err)
