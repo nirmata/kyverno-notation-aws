@@ -128,6 +128,32 @@ docker-publish:
 t:
 	@echo $(IMAGE_TAG)
 
+
+##############
+# BUILD (KO) #
+##############
+
+.PHONY: ko-login
+ko-login: $(KO)
+	@$(KO) login $(REGISTRY) --username $(REGISTRY_USERNAME) --password $(REGISTRY_PASSWORD)
+
+.PHONY: ko-build
+ko-build: ## Build Docker image with ko
+ko-build: fmt
+ko-build: vet
+ko-build: $(KO)
+	@echo Build Docker image with ko... >&2
+	@LD_FLAGS=$(LD_FLAGS) KO_DOCKER_REPO=$(KO_REGISTRY) $(KO) build . --preserve-import-paths --tags=$(KO_TAGS)
+
+.PHONY: ko-publish
+ko-publish: ## Publish Docker image with ko
+ko-publish: fmt
+ko-publish: vet
+ko-publish: ko-login
+ko-publish: $(KO)
+	@echo Publish Docker image with ko... >&2
+	@LD_FLAGS=$(LD_FLAGS) KO_DOCKER_REPO=$(REGISTRY)/$(REPO)/$(IMAGE) $(KO) build . --bare --tags=$(KO_TAGS) --platform=$(KO_PLATFORMS)
+
 #################
 # BUILD (IMAGE) #
 #################
