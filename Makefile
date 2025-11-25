@@ -14,6 +14,7 @@ KIND_IMAGE           ?= kindest/node:v1.33.1
 KIND_NAME            ?= kind
 KIND_CONFIG	         ?= default
 BUILD_WITH           ?= docker
+KUBE_VERSION		 ?= v1.25.0
 
 
 #########
@@ -216,3 +217,17 @@ kind-deploy-image: $(HELM) kind-load-image ## Build image, load it inside kind c
 kind-install-image: $(HELM) helm-setup-openreports ## Install helm-chart
 	@echo Installing kyverno-notation-aws helm chart
 	@$(HELM) upgrade --install kyverno-notation-aws --namespace kyverno-notation-aws --create-namespace --wait ./charts/kyverno-notation-aws
+
+
+###########
+# CODEGEN #
+###########
+.PHONY: codegen-manifest-release
+codegen-manifest-release: ## Create release manifest
+codegen-manifest-release:
+	@echo Generate release manifest... >&2
+	@mkdir -p ./.manifest
+	@$(HELM) template kyverno-notation-aws --kube-version $(KUBE_VERSION) --namespace kyverno-notation-aws --skip-tests ./charts/kyverno-notation-aws \
+		--set image.tag=$(VERSION) \
+ 		| $(SED) -e '/^#.*/d' \
+		> ./.manifest/release.yaml
