@@ -19,8 +19,8 @@ require (
 	github.com/pkg/errors v0.9.1
 	go.uber.org/zap v1.27.0
 	gotest.tools v2.2.0+incompatible
-	k8s.io/api v0.34.1
-	k8s.io/apimachinery v0.34.1
+	k8s.io/api v0.34.2
+	k8s.io/apimachinery v0.34.2
 	k8s.io/client-go v0.34.1
 	oras.land/oras-go/v2 v2.6.0
 	sigs.k8s.io/controller-runtime v0.21.0
