@@ -5,23 +5,27 @@ before:
     - go mod tidy
 
 builds:
-  - id: kyverno-envoy-plugin
+  - id: kyverno-notation-aws
+
     env:
       - CGO_ENABLED=0
     goos:
       - linux
       - windows
       - darwin
-    binary: kyverno-envoy-plugin
+    binary: kyverno-notation-aws
+
     flags:
       - -trimpath
     ldflags:
       - -s -w
 
 kos:
-  - build: kyverno-envoy-plugin
+  - build: kyverno-notation-aws
+
     repositories:
-    - ghcr.io/nirmata/kyverno-envoy-plugin
+    - ghcr.io/nirmata/kyverno-notation-aws
+
     tags:
       - '{{ .Tag }}'
       - '{{ if not .Prerelease }}latest{{ end }}'
@@ -31,7 +35,7 @@ kos:
     platforms:
       - all
     labels:
-      org.opencontainers.image.source: https://github.com/nirmata/kyverno-envoy-plugin
+      org.opencontainers.image.source: https://github.com/nirmata/kyverno-notation-aws
       org.opencontainers.image.description: Kyverno AWS Signer Plugin
 
 signs:
@@ -82,4 +86,3 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
-

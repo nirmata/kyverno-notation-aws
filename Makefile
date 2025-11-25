@@ -14,7 +14,6 @@ KIND_IMAGE           ?= kindest/node:v1.33.1
 KIND_NAME            ?= kind
 KIND_CONFIG	         ?= default
 BUILD_WITH           ?= docker
-KUBE_VERSION		 ?= v1.25.0
 
 
 #########
@@ -25,12 +24,18 @@ TOOLS_DIR                          := $(PWD)/.tools
 GO_ACC                             := $(TOOLS_DIR)/go-acc
 GO_ACC_VERSION                     := latest
 KO                                 := $(TOOLS_DIR)/ko
-KO_VERSION                         := main #e93dbee8540f28c45ec9a2b8aec5ef8e43123966
+KO_VERSION                         ?= v0.18.0
 HELM                               := $(TOOLS_DIR)/helm
 HELM_VERSION                       := v3.12.3
 TOOLS                              := $(GO_ACC) $(KO) $(HELM)
 KIND                               ?= $(TOOLS_DIR)/kind
 KIND_VERSION                       ?= v0.29.0
+ifeq ($(GOOS), darwin)
+SED                                := gsed
+else
+SED                                := sed
+endif
+KUBE_VERSION		 ?= v1.25.0
 
 $(GO_ACC):
 	@echo Install go-acc... >&2
@@ -129,32 +134,6 @@ docker-publish:
 t:
 	@echo $(IMAGE_TAG)
 
-
-##############
-# BUILD (KO) #
-##############
-
-.PHONY: ko-login
-ko-login: $(KO)
-	@$(KO) login $(REGISTRY) --username $(REGISTRY_USERNAME) --password $(REGISTRY_PASSWORD)
-
-.PHONY: ko-build
-ko-build: ## Build Docker image with ko
-ko-build: fmt
-ko-build: vet
-ko-build: $(KO)
-	@echo Build Docker image with ko... >&2
-	@LD_FLAGS=$(LD_FLAGS) KO_DOCKER_REPO=$(KO_REGISTRY) $(KO) build . --preserve-import-paths --tags=$(KO_TAGS)
-
-.PHONY: ko-publish
-ko-publish: ## Publish Docker image with ko
-ko-publish: fmt
-ko-publish: vet
-ko-publish: ko-login
-ko-publish: $(KO)
-	@echo Publish Docker image with ko... >&2
-	@LD_FLAGS=$(LD_FLAGS) KO_DOCKER_REPO=$(REGISTRY)/$(REPO)/$(IMAGE) $(KO) build . --bare --tags=$(KO_TAGS) --platform=$(KO_PLATFORMS)
-
 #################
 # BUILD (IMAGE) #
 #################
@@ -224,6 +203,7 @@ kind-install-image: $(HELM) helm-setup-openreports ## Install helm-chart
 ###########
 .PHONY: codegen-manifest-release
 codegen-manifest-release: ## Create release manifest
+codegen-manifest-release: $(HELM)
 codegen-manifest-release:
 	@echo Generate release manifest... >&2
 	@mkdir -p ./.manifest

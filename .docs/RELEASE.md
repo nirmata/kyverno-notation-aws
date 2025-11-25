@@ -12,6 +12,7 @@ There are two types of releases:
 ## Creating a Code Release
 
 1. Ensure all tests pass and the main branch is up to date
+2. Update the appVersion in `charts/kyverno-notation-aws/Chart.yaml`
 2. Create and push a new tag with format `v*.*.*` (following semantic versioning)
    ```bash
    git tag v1.2.3

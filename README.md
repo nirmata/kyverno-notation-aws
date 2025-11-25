@@ -393,7 +393,7 @@ metadata:
 spec:
   version: '1.0'
   trustPolicyName: aws-signer-tp
-  trustPolicies:        
+  trustPolicies:
   - name: aws-signer-tp
     registryScopes:
     - "*"
