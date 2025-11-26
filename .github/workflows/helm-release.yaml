@@ -1,12 +1,19 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: helm-release
+
 on:
   push:
     tags:
-      - 'kyverno-notation-aws-chart-v*'
+      - 'charts-v*'
 
 jobs:
   create-release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      packages: write
+      pages: write
     steps:
       - name: Checkout
         uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
@@ -14,7 +21,27 @@ jobs:
         uses: azure/setup-helm@1a275c3b69536ee54be43f2070a358922e12c8d4 # v4.3.1
         with:
           version: v3.10.3
+      - name: Install Cosign
+        uses:  sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad # v4.0.0
+      - name: Parse version
+        id: version
+        uses: booxmedialtd/ws-action-parse-semver@7784200024d6b3fc01253e617ec0168daf603de3 # v1.4.7
+        with:
+          input_string: ${{ github.ref_name }}
+          version_extractor_regex: ^charts-v(.*)$
       - name: Run chart-releaser
         uses: stefanprodan/helm-gh-pages@0ad2bb377311d61ac04ad9eb6f252fb68e207260 #v1.7.0
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
+          linting: off
+          charts_dir: charts
+          chart_version: ${{ steps.version.outputs.fullversion }}
+      - name: Login to Github container registry
+        run: |
+          helm registry login ghcr.io -u ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish OCI Helm chart
+        run: |
+          helm package charts/kyverno-notation-aws --version ${{ steps.version.outputs.fullversion }} --destination ./dist
+          helm push ./dist/kyverno-notation-aws-*.tgz oci://ghcr.io/${{ github.repository_owner }}/charts |& tee .digest
+          cosign login --username ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }} ghcr.io
+          cosign sign --yes ghcr.io/${{ github.repository_owner }}/charts/kyverno-notation-aws@$(cat .digest | awk -F "[, ]" '/Digest/{print $NF}')

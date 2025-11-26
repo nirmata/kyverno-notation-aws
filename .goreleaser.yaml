@@ -1,0 +1,88 @@
+version: 2
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: kyverno-notation-aws
+
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    binary: kyverno-notation-aws
+
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+
+kos:
+  - build: kyverno-notation-aws
+
+    repositories:
+    - ghcr.io/nirmata/kyverno-notation-aws
+
+    tags:
+      - '{{ .Tag }}'
+      - '{{ if not .Prerelease }}latest{{ end }}'
+    bare: true
+    preserve_import_paths: false
+    sbom: none
+    platforms:
+      - all
+    labels:
+      org.opencontainers.image.source: https://github.com/nirmata/kyverno-notation-aws
+      org.opencontainers.image.description: Kyverno AWS Signer Plugin
+
+signs:
+  - cmd: cosign
+    certificate: '${artifact}.pem'
+    args:
+      - sign-blob
+      - '--output-certificate=${certificate}'
+      - '--output-signature=${signature}'
+      - '${artifact}'
+      - '--yes'
+    artifacts: all
+    output: true
+
+docker_signs:
+  - cmd: cosign
+    artifacts: all
+    output: true
+    args:
+      - sign
+      - '${artifact}'
+      - '--yes'
+
+archives:
+  - name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}'
+
+checksum:
+  disable: false
+  name_template: checksums.txt
+
+source:
+  enabled: true
+
+sboms:
+  - artifacts: archive
+  - id: source
+    artifacts: source
+
+snapshot:
+  version_template: '{{ inpatch .Version }}-next'
+
+release:
+  prerelease: auto
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'

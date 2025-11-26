@@ -137,7 +137,7 @@ readinessProbe:
 
 test:
   # -- Sleep time before running test
-  sleep: 20
+  sleep: 50
 
   image:
     # -- (string) Image registry

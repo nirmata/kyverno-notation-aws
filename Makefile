@@ -24,12 +24,18 @@ TOOLS_DIR                          := $(PWD)/.tools
 GO_ACC                             := $(TOOLS_DIR)/go-acc
 GO_ACC_VERSION                     := latest
 KO                                 := $(TOOLS_DIR)/ko
-KO_VERSION                         := main #e93dbee8540f28c45ec9a2b8aec5ef8e43123966
+KO_VERSION                         ?= v0.18.0
 HELM                               := $(TOOLS_DIR)/helm
 HELM_VERSION                       := v3.12.3
 TOOLS                              := $(GO_ACC) $(KO) $(HELM)
 KIND                               ?= $(TOOLS_DIR)/kind
 KIND_VERSION                       ?= v0.29.0
+ifeq ($(GOOS), darwin)
+SED                                := gsed
+else
+SED                                := sed
+endif
+KUBE_VERSION		 ?= v1.25.0
 
 $(GO_ACC):
 	@echo Install go-acc... >&2
@@ -190,3 +196,18 @@ kind-deploy-image: $(HELM) kind-load-image ## Build image, load it inside kind c
 kind-install-image: $(HELM) helm-setup-openreports ## Install helm-chart
 	@echo Installing kyverno-notation-aws helm chart
 	@$(HELM) upgrade --install kyverno-notation-aws --namespace kyverno-notation-aws --create-namespace --wait ./charts/kyverno-notation-aws
+
+
+###########
+# CODEGEN #
+###########
+.PHONY: codegen-manifest-release
+codegen-manifest-release: ## Create release manifest
+codegen-manifest-release: $(HELM)
+codegen-manifest-release:
+	@echo Generate release manifest... >&2
+	@mkdir -p ./.manifest
+	@$(HELM) template kyverno-notation-aws --kube-version $(KUBE_VERSION) --namespace kyverno-notation-aws --skip-tests ./charts/kyverno-notation-aws \
+		--set image.tag=$(VERSION) \
+ 		| $(SED) -e '/^#.*/d' \
+		> ./.manifest/release.yaml
