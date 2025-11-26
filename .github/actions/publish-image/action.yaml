@@ -36,9 +36,9 @@ inputs:
   main-path:
     required: true
     description: path to main go entry point
-  image-tag:
-    required: true
-    description: the tag used to publish the image
+  image-tags:
+    required: false
+    description: comma-separated list of tags to publish (first tag is used for build/push; others are applied to the same digest)
 
 outputs:
   digest:
@@ -56,11 +56,38 @@ runs:
         REPO: ${{ inputs.repository }}
         REGISTRY_PASSWORD: ${{ inputs.registry-password }}
         COSIGN_REPOSITORY: ${{ inputs.sbom-repository }}
-        IMAGE_TAG: ${{ inputs.image-tag }}
       run: |
-        set -e
+        set -euo pipefail
+        # Determine tags input: prefer image-tags, fallback to image-tag
+        TAGS_INPUT="${{ inputs.image-tags }}"
+        if [ -z "${TAGS_INPUT}" ]; then
+          TAGS_INPUT="${{ inputs.image-tag }}"
+        fi
+        # Normalize and split into array
+        TAGS_INPUT=$(echo "${TAGS_INPUT}" | tr -d ' ')
+        IFS=',' read -r -a TAGS <<< "${TAGS_INPUT}"
+        PRIMARY_TAG="${TAGS[0]:-}"
+        if [ -z "${PRIMARY_TAG}" ]; then
+          echo "Error: no image tag provided. Set 'image-tags' or 'image-tag'." >&2
+          exit 1
+        fi
+        export IMAGE_TAG="${PRIMARY_TAG}"
+        echo "Building and publishing primary tag: ${IMAGE_TAG}"
         make ${{ inputs.makefile-target }}
-        echo "digest=ghcr.io/${{ github.repository }}@$(crane digest ghcr.io/${{ github.repository }}:${{ inputs.image-tag }})" >> $GITHUB_OUTPUT
+        # Compute digest from the primary tag
+        DIGEST=$(crane digest ghcr.io/${{ github.repository }}:${PRIMARY_TAG})
+        echo "Primary digest: ${DIGEST}"
+        echo "digest=ghcr.io/${{ github.repository }}@${DIGEST}" >> $GITHUB_OUTPUT
+        # Apply additional tags to the same digest
+        if [ ${#TAGS[@]} -gt 1 ]; then
+          for t in "${TAGS[@]}"; do
+            [ -z "$t" ] && continue
+            if [ "$t" != "$PRIMARY_TAG" ]; then
+              echo "Tagging digest ${DIGEST} as: $t"
+              crane tag ghcr.io/${{ github.repository }}@${DIGEST} "$t"
+            fi
+          done
+        fi
     - uses: CycloneDX/gh-gomod-generate-sbom@d4aee0cf5133055dbd98899978246c10c18c440f # v1.1.0
       with:
         version: v1

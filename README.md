@@ -8,6 +8,43 @@ A [Kyverno](https://kyverno.io) extension service that executes the [AWS Signer]
 
 ![logo](img/kyverno-notation-aws.png)
 
+
+## Installing
+
+### Prerequisites
+
+- Kyverno v1.11.0 or higher
+
+To install the extension service, you will need to have Kyverno installed you can use one of the following methods:
+
+### Manifest
+
+```sh
+kubectl apply -f https://github.com/nirmata/kyverno-notation-aws/releases/download/<version>/install.yaml
+```
+
+Or install the latest dev manifests from the `main` branch:
+
+```sh
+kubectl apply -f https://raw.githubusercontent.com/nirmata/kyverno-notation-aws/refs/heads/main/config/install.yaml
+```
+
+### Helm
+
+Using OCI:
+
+```sh
+helm install oci://ghcr.io/nirmata/charts/kyverno-notation-aws:<version>
+```
+
+Using the repository:
+
+```sh
+helm upgrade --install kyverno-notation-aws \
+     --repo https://nirmata.github.io/kyverno-notation-aws \
+     kyverno-notation-aws
+```
+
 # Setup
 1. Setup your environment variables:
 ```sh

@@ -21,3 +21,4 @@ notation-com.amazonaws.signer.notation.plugin_linux_amd64
 .tools
 coverage.txt
 /.idea/
+.manifest/
