@@ -3,14 +3,6 @@
 {{- define "kyverno-notation-aws.test.labels" -}}
 {{- template "kyverno-notation-aws.labels.merge" (list
   (include "kyverno-notation-aws.labels.common" .)
-  (include "kyverno-notation-aws.test.matchLabels" .)
-  (include "kyverno-notation-aws.labels.component" "test")
-) -}}
-{{- end -}}
-
-{{- define "kyverno-notation-aws.test.matchLabels" -}}
-{{- template "kyverno-notation-aws.labels.merge" (list
-  (include "kyverno-notation-aws.matchLabels.common" .)
   (include "kyverno-notation-aws.labels.component" "test")
 ) -}}
 {{- end -}}

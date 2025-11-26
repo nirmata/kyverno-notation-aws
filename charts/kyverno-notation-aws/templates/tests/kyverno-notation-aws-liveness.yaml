@@ -6,7 +6,7 @@ metadata:
   labels:
     {{ include "kyverno-notation-aws.test.labels" . | nindent 4 }}
   annotations:
-    {{- include "kyverno-notation-aws.test.annotations" . | nindent 4 }}
+    {{ include "kyverno-notation-aws.test.annotations" . | nindent 4 }}
 spec:
   automountServiceAccountToken: {{ .Values.test.automountServiceAccountToken }}
   restartPolicy: Never
