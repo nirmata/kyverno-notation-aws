@@ -2,8 +2,10 @@ package main
 
 import (
 	"os"
+	"strings"
 	"time"
 
+	"go.uber.org/zap/zapcore"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/fields"
 	corev1informers "k8s.io/client-go/informers/core/v1"
@@ -51,4 +53,21 @@ func getEnvWithFallback(name, fallback string) string {
 		return value
 	}
 	return fallback
+}
+
+func parseLevel(s string) zapcore.Level {
+	switch strings.ToLower(s) {
+	case "trace":
+		return zapcore.Level(-2)
+	case "debug":
+		return zapcore.DebugLevel
+	case "info":
+		return zapcore.InfoLevel
+	case "warn":
+		return zapcore.WarnLevel
+	case "error":
+		return zapcore.ErrorLevel
+	default:
+		return zapcore.InfoLevel
+	}
 }
