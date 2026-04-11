@@ -11,13 +11,13 @@ COPY . ./
 
 ARG TARGETOS
 ARG TARGETARCH
-# Get Signer plugin binary
-ARG SIGNER_BINARY_LINK="https://d2hvyiie56hcat.cloudfront.net/linux/amd64/plugin/latest/notation-aws-signer-plugin.zip"
-ARG SIGNER_BINARY_FILE="notation-aws-signer-plugin.zip"
-RUN wget -O ${SIGNER_BINARY_FILE} ${SIGNER_BINARY_LINK} 
-RUN apk update && \
-    apk add unzip && \
-    unzip -o ${SIGNER_BINARY_FILE}
+# Build Signer plugin from source — the pre-built CDN binary bundles an outdated
+# AWS SDK that rejects the EKS Pod Identity endpoint (169.254.170.23).
+RUN apk add --no-cache git && \
+    git clone --depth 1 https://github.com/aws/aws-signer-notation-plugin.git /aws-signer-plugin && \
+    cd /aws-signer-plugin && \
+    GOOS=$TARGETOS GOARCH=$TARGETARCH CGO_ENABLED=0 go build -ldflags="-w -s" \
+      -o /notation-com.amazonaws.signer.notation.plugin ./cmd
 
 # Build Go binary
 RUN GOOS=$TARGETOS GOARCH=$TARGETARCH go build -ldflags="-w -s" -o kyverno-notation-aws .
