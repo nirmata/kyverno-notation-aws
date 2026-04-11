@@ -27,7 +27,7 @@ spec:
       serviceAccountName: {{ template "kyverno-notation-aws.serviceAccountName" . }}
       containers:
       - image: {{ include "kyverno-notation-aws.image" (dict "image" .Values.image "defaultTag" .Chart.AppVersion) | quote }}
-        imagePullPolicy: Always
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: kyverno-notation-aws
         args:
           - --debug
@@ -71,7 +71,7 @@ spec:
             fieldRef:
               fieldPath: metadata.name
         - name: AWS_REGION
-          value: {{ .Values.region }}
+          value: {{ .Values.region | quote }}
         - name: DEFAULT_TRUST_POLICY
           value: aws-signer-trust-policy
         {{- with .Values.startupProbe }}
@@ -80,11 +80,11 @@ spec:
         {{- end }}
         {{- with .Values.livenessProbe }}
         livenessProbe:
-          {{ tpl (toYaml .) $ | nindent 10 }}
+          {{- tpl (toYaml .) $ | nindent 10 }}
         {{- end }}
         {{- with .Values.readinessProbe }}
         readinessProbe:
-          {{ tpl (toYaml .) $ | nindent 10 }}
+          {{- tpl (toYaml .) $ | nindent 10 }}
         {{- end }}
         volumeMounts:
           - name: notation
