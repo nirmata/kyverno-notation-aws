@@ -80,7 +80,7 @@ func main() {
 			"Enabling this will ensure there is only one active controller manager.")
 	flag.BoolVar(&cacheEnabled, "cacheEnabled", true, "Whether to use a TTL cache for storing verified images, default is true")
 	flag.Int64Var(&cacheMaxSize, "cacheMaxSize", 1000, "Max size limit for the TTL cache, default is 1000.")
-	flag.Int64Var(&cacheTTLDuration, "cacheTTLDurationSeconds", int64(1*time.Hour), "Max TTL value for a cache in seconds, default is 1 hour.")
+	flag.Int64Var(&cacheTTLDuration, "cacheTTLDurationSeconds", int64(time.Hour/time.Second), "Max TTL value for a cache in seconds, default is 1 hour.")
 	flag.BoolVar(&reviewKyvernoToken, "reviewKyvernoToken", true, "Checks if the Auth token in the request is a token from kyverno controllers or other allowed users, default is true.")
 	flag.StringVar(&allowedUsers, "allowedUsers", "system:serviceaccount:kyverno:kyverno-admission-controller,system:serviceaccount:kyverno:kyverno-reports-controller", "Comma-seperated list of all the allowed users and service accounts.")
 	flag.StringVar(&flagLogLevel, "logLevel", "info", "Log level: trace, debug, info, warn, error")
@@ -200,7 +200,7 @@ func main() {
 		knvVerifier.WithPluginConfig(flagNotationPluginConfigMap),
 		knvVerifier.WithMaxSignatureAttempts(flagMaxSignatureAtempts),
 		knvVerifier.WithEnableDebug(flagEnableDebug),
-		knvVerifier.WithProviderKeychain(authn.NewKeychainFromHelper(ecr.NewECRHelper(ecr.WithLogger(io.Discard)))),
+		knvVerifier.WithProviderKeychain(NewCachedKeychain(authn.NewKeychainFromHelper(ecr.NewECRHelper(ecr.WithLogger(io.Discard))))),
 		knvVerifier.WithTokenReviewEnabled(reviewKyvernoToken),
 		knvVerifier.WithCacheEnabled(cacheEnabled),
 		knvVerifier.WithMaxCacheSize(cacheMaxSize),
