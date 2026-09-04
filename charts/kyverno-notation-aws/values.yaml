@@ -1,5 +1,8 @@
 region: us-west-2
 
+# -- (int) Number of replicas for the Deployment
+replicaCount: 1
+
 # -- (string) Override the name of the chart
 nameOverride: ~
 
@@ -87,6 +90,13 @@ tolerations: []
 # affinity for extension Deployment. More details:
 # https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity
 affinity: {}
+
+# podAnnotations for extension Deployment pods.
+podAnnotations: {}
+
+# topologySpreadConstraints for extension Deployment. More details:
+# https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/
+topologySpreadConstraints: []
 
 # -- user supplied labels to apply to all resources excluding label selectors
 customLabels: {}
