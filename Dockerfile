@@ -11,13 +11,16 @@ COPY . ./
 
 ARG TARGETOS
 ARG TARGETARCH
-# Get Signer plugin binary
-ARG SIGNER_BINARY_LINK="https://d2hvyiie56hcat.cloudfront.net/linux/amd64/plugin/latest/notation-aws-signer-plugin.zip"
-ARG SIGNER_BINARY_FILE="notation-aws-signer-plugin.zip"
-RUN wget -O ${SIGNER_BINARY_FILE} ${SIGNER_BINARY_LINK} 
-RUN apk update && \
-    apk add unzip && \
-    unzip -o ${SIGNER_BINARY_FILE}
+# Build the signer plugin from source so it links against the current Go
+# toolchain. The prebuilt CDN binary ships compiled with Go 1.23.6 and carries
+# that stdlib's CVEs, which no change in this repo's go.mod can reach.
+ARG SIGNER_PLUGIN_REF="main"
+RUN apk add --no-cache git && \
+    git clone --depth 1 --branch ${SIGNER_PLUGIN_REF} \
+      https://github.com/aws/aws-signer-notation-plugin.git /aws-signer-plugin && \
+    cd /aws-signer-plugin && \
+    GOOS=$TARGETOS GOARCH=$TARGETARCH CGO_ENABLED=0 go build -ldflags="-w -s" \
+      -o /notation-com.amazonaws.signer.notation.plugin ./cmd
 
 # Build Go binary
 RUN GOOS=$TARGETOS GOARCH=$TARGETARCH go build -ldflags="-w -s" -o kyverno-notation-aws .
@@ -28,7 +31,7 @@ WORKDIR /
 # Notation home
 ENV PLUGINS_DIR=/plugins
 
-COPY --from=builder notation-com.amazonaws.signer.notation.plugin plugins/com.amazonaws.signer.notation.plugin/notation-com.amazonaws.signer.notation.plugin
+COPY --from=builder /notation-com.amazonaws.signer.notation.plugin plugins/com.amazonaws.signer.notation.plugin/notation-com.amazonaws.signer.notation.plugin
 
 COPY --from=builder kyverno-notation-aws kyverno-notation-aws
 ENTRYPOINT ["/kyverno-notation-aws"]
