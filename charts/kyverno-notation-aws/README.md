@@ -1,6 +1,6 @@
 # kyverno-notation-aws
 
-![Version: v1.1](https://img.shields.io/badge/Version-v1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.1](https://img.shields.io/badge/AppVersion-v1.1-informational?style=flat-square)
+![Version: 1.2.2](https://img.shields.io/badge/Version-1.2.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.2.2](https://img.shields.io/badge/AppVersion-v1.2.2-informational?style=flat-square)
 
 Kyverno extension service for Notation and the AWS signer
 
@@ -33,7 +33,7 @@ Kyverno extension service for Notation and the AWS signer
 | startupProbe | object | See [values.yaml](values.yaml) | Startup probe. The block is directly forwarded into the deployment, so you can use whatever startupProbes configuration you want. ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/ |
 | livenessProbe | object | See [values.yaml](values.yaml) | Liveness probe. The block is directly forwarded into the deployment, so you can use whatever livenessProbe configuration you want. ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/ |
 | readinessProbe | object | See [values.yaml](values.yaml) | Readiness Probe. The block is directly forwarded into the deployment, so you can use whatever readinessProbe configuration you want. ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/ |
-| test.sleep | int | `20` | Sleep time before running test |
+| test.sleep | int | `50` | Sleep time before running test |
 | test.image.registry | string | `nil` | Image registry |
 | test.image.repository | string | `"busybox"` | Image repository |
 | test.image.tag | string | `"1.35"` | Image tag Defaults to `latest` if omitted |
