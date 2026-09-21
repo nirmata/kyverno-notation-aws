@@ -12,7 +12,7 @@ require (
 	github.com/kyverno/kyverno v1.19.1
 	github.com/kyverno/pkg/certmanager v0.0.10
 	github.com/kyverno/pkg/tls v0.0.9
-	github.com/nirmata/kyverno-notation-verifier v1.0.2-0.20240508102455-7ead86e72ae9
+	github.com/nirmata/kyverno-notation-verifier v1.1.0
 	github.com/notaryproject/notation-core-go v1.3.0
 	github.com/pkg/errors v0.9.1
 	go.uber.org/zap v1.28.0
@@ -119,7 +119,6 @@ require (
 	github.com/go-asn1-ber/asn1-ber v1.5.7 // indirect
 	github.com/go-chi/chi/v5 v5.3.0 // indirect
 	github.com/go-errors/errors v1.5.1 // indirect
-	github.com/go-jose/go-jose/v3 v3.0.5 // indirect
 	github.com/go-jose/go-jose/v4 v4.1.4 // indirect
 	github.com/go-ldap/ldap/v3 v3.4.10 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
@@ -229,7 +228,6 @@ require (
 	github.com/secure-systems-lab/go-securesystemslib v0.11.0 // indirect
 	github.com/segmentio/asm v1.2.1 // indirect
 	github.com/shibumi/go-pathspec v1.3.0 // indirect
-	github.com/sigstore/cosign/v2 v2.6.2 // indirect
 	github.com/sigstore/cosign/v3 v3.1.2 // indirect
 	github.com/sigstore/fulcio v1.8.8 // indirect
 	github.com/sigstore/k8s-manifest-sigstore v0.5.5-0.20251214123302-4152ec03ed3d // indirect
@@ -269,7 +267,6 @@ require (
 	github.com/youmark/pkcs8 v0.0.0-20240726163527-a2c0da244d78 // indirect
 	github.com/zach-klippenstein/goregen v0.0.0-20160303162051-795b5e3961ea // indirect
 	gitlab.com/gitlab-org/api/client-go v1.46.0 // indirect
-	go.mongodb.org/mongo-driver v1.17.7 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.69.0 // indirect
 	go.opentelemetry.io/otel v1.45.0 // indirect
