@@ -74,6 +74,13 @@ spec:
           value: {{ .Values.region }}
         - name: DEFAULT_TRUST_POLICY
           value: aws-signer-trust-policy
+        {{- if .Values.deployment.awsEcrCacheDir }}
+        - name: AWS_ECR_CACHE_DIR
+          value: {{ .Values.deployment.awsEcrCacheDir | quote }}
+        {{- end }}
+        {{- with .Values.extraEnv }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
         {{- with .Values.startupProbe }}
         startupProbe:
           {{- tpl (toYaml .) $ | nindent 10 }}
