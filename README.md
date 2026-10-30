@@ -311,7 +311,7 @@ mutate:
 
 ## Attestation Verification
 
-In addition to verifying signatures, the extension service can verify signed metadata i.e. [attestations](https://nirmata.com/2022/03/15/a-map-for-kubernetes-supply-chain-security/).
+In addition to verifying signatures, the extension service can verify signed metadata i.e. [attestations](https://nirmata.com/2022/03/15/a-map-for-kubernetes-supply-chain-security/?utm_source=github&utm_medium=readme&utm_campaign=kyverno-notation-aws).
 
 To verify attestations, the Kyverno policy can optionally pass a variable called `attestations` in the request:
 
@@ -414,3 +414,10 @@ Each TrustStore will then have to be configured with the appropriate root certif
 The [sample TrustStore](./configs/samples/truststore.yaml) contains examples you can customize with your account and region information.
 
 For more information, please refer to: https://docs.aws.amazon.com/signer/latest/developerguide/image-verification.html.
+
+# Enterprise support
+
+This extension is built and maintained by [Nirmata](https://nirmata.com/?utm_source=github&utm_medium=readme&utm_campaign=kyverno-notation-aws), the creators of Kyverno.
+For supply chain security policies, hardened Kyverno builds and enterprise support, see
+[Nirmata Enterprise for Kyverno](https://nirmata.com/nirmata-enterprise-for-kyverno/?utm_source=github&utm_medium=readme&utm_campaign=kyverno-notation-aws) or
+[talk to us](https://nirmata.com/request-a-demo/?utm_source=github&utm_medium=readme&utm_campaign=kyverno-notation-aws).
