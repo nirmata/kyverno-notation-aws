@@ -31,6 +31,10 @@ RUN GOOS=$TARGETOS GOARCH=$TARGETARCH go build -ldflags="-w -s" -o kyverno-notat
 FROM gcr.io/distroless/static:nonroot
 WORKDIR /
 
+# image.source links the GHCR package back to this repository
+LABEL org.opencontainers.image.source=https://github.com/nirmata/kyverno-notation-aws
+LABEL org.opencontainers.image.description="Kyverno AWS Signer Plugin"
+
 # Notation home
 ENV PLUGINS_DIR=/plugins
 
