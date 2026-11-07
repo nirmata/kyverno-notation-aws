@@ -9,6 +9,7 @@ Kyverno extension service for Notation and the AWS signer
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | region | string | `"us-west-2"` |  |
+| replicaCount | int | `1` | Number of replicas for the Deployment |
 | nameOverride | string | `nil` | Override the name of the chart |
 | fullnameOverride | string | `nil` | Override the expanded name of the chart |
 | namespaceOverride | string | `nil` | Override the namespace the chart deploys to |
@@ -29,6 +30,8 @@ Kyverno extension service for Notation and the AWS signer
 | nodeSelector | object | `{}` |  |
 | tolerations | list | `[]` |  |
 | affinity | object | `{}` |  |
+| podAnnotations | object | `{}` | podAnnotations for extension Deployment pods. |
+| topologySpreadConstraints | list | `[]` | topologySpreadConstraints for extension Deployment. More details: https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/ |
 | customLabels | object | `{}` | user supplied labels to apply to all resources excluding label selectors |
 | startupProbe | object | See [values.yaml](values.yaml) | Startup probe. The block is directly forwarded into the deployment, so you can use whatever startupProbes configuration you want. ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/ |
 | livenessProbe | object | See [values.yaml](values.yaml) | Liveness probe. The block is directly forwarded into the deployment, so you can use whatever livenessProbe configuration you want. ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/ |
