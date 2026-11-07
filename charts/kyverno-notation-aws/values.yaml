@@ -59,6 +59,22 @@ deployment:
   # -- Max signature attempts specifies the maximum number of signature envelopes that will be processed for verification
   maxSignatureAttempts: 30
 
+  # -- ECR credential cache directory (sets the AWS_ECR_CACHE_DIR env variable).
+  # The amazon-ecr-credential-helper caches ECR auth tokens under ~/.ecr by default.
+  # Point it at a writable directory to avoid the error, e.g.:
+  # awsEcrCacheDir: /tmp/.ecr
+
+# -- Additional environment variables for the extension container.
+# extraEnv:
+#   - name: HOME
+#     value: /tmp
+#   - name: AWS_ACCESS_KEY_ID
+#     valueFrom:
+#       secretKeyRef:
+#         name: aws-creds
+#         key: access-key-id
+extraEnv: []
+
 # Service account configuration
 serviceAccount:
   enabled: true
